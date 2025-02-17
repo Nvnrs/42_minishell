@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:10:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/17 14:10:42 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/17 15:27:24 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,15 +52,15 @@ t_bool	is_double_redirection(char *str, int index)
 {
 	if ((str[index] == '>' && str[index + 1] == '>')
 		|| (str[index] == '<' && str[index + 1] == '<'))
-		return (1);
-	return (0);
+		return (TRUE);
+	return (FALSE);
 }
 
 t_bool	is_single_operator(char *str, int index)
 {
 	if (c_is_in_charset(str[index], "><|"))
-		return (1);
-	return (0);
+		return (TRUE);
+	return (FALSE);
 }
 
 int	handle_quote(char **split, int split_index, char *str, int i_start)
@@ -70,7 +70,7 @@ int	handle_quote(char **split, int split_index, char *str, int i_start)
 	i_end = i_start;
 	if (ft_strlen(str) - i_start >= 2)
 	{
-		while (str[i_end] == SINGLE_QUOTE || str[i_end] == DOUBLE_QUOTE)
+		while (str[i_end] == SINGLE_QUOTE || str[i_end] == DOUBLE_QUOTE || (str[i_end] != ' ' && !is_single_operator(str, i_end)))
 		{
 			if (str[i_end] == SINGLE_QUOTE)
 			{
@@ -99,7 +99,7 @@ int	count_quote(char *str, int i_start)
 	i_end = i_start;
 	if (ft_strlen(str) - i_start >= 2)
 	{
-		while (str[i_end] == SINGLE_QUOTE || str[i_end] == DOUBLE_QUOTE)
+		while (str[i_end] == SINGLE_QUOTE || str[i_end] == DOUBLE_QUOTE || (str[i_end] != ' ' && !is_single_operator(str, i_end)))
 		{
 			if (str[i_end] == SINGLE_QUOTE)
 			{
@@ -120,6 +120,53 @@ int	count_quote(char *str, int i_start)
 	return (0);
 }
 
+int	handle_no_quote(char **split, int split_index, char *str, int i_start)
+{
+	int	i_end;
+
+	i_end = i_start;
+	while (str[i_end] != ' ' && str[i_end] != '\0' && !is_single_operator(str, i_end))
+		i_end++;
+	split[split_index] = ft_substr(str, i_start, i_end - i_start);
+	return (i_end - i_start);
+}
+
+int	count_no_quote(char *str, int i_start)
+{
+	int	i_end;
+
+	i_end = i_start;
+	while (str[i_end] != ' ' && str[i_end] != '\0' && !is_single_operator(str, i_end))
+		i_end++;
+	return (i_end - i_start);
+}
+
+void	count_token2(int *count, int *i, char *str)
+{
+	if (str[*i] == SINGLE_QUOTE || str[*i] == DOUBLE_QUOTE)
+	{
+		*count += 1;
+		*i += count_quote(str, *i);
+	}
+	else if (is_double_redirection(str, *i))
+	{
+		*count += 1;
+		*i += 2;//i + 2
+	}
+	else if (is_single_operator(str, *i))
+	{
+		*count += 1;
+		*i += 1;
+	}
+	else if (str[*i] != ' ')
+	{
+		*count += 1;
+		*i += count_no_quote(str, *i);
+	}
+	else
+		*i += 1;
+}
+
 int	count_token(char *str)
 {
 	int		i;
@@ -129,23 +176,7 @@ int	count_token(char *str)
 	count = 0;
 	while (str[i])
 	{
-		if (str[i] == SINGLE_QUOTE || str[i] == DOUBLE_QUOTE)
-		{
-			count++;
-			i += count_quote(str, i);
-		}
-		else if (is_double_redirection(str, i))
-		{
-			count++;
-			i += 2;//i + 2
-		}
-		else if (is_single_operator(str, i))
-		{
-			count++;
-			i++;
-		}
-		else
-			i++;
+		count_token2(&count, &i, str);
 	}
 	return (count);
 }
@@ -176,6 +207,11 @@ char	**parse_str(char *str)
 		{
 			split[i_split] = ft_substr(str, i, 1);
 			i++;
+			i_split++;
+		}
+		else if (str[i] != ' ')
+		{
+			i += handle_no_quote(split, i_split, str, i);
 			i_split++;
 		}
 		else

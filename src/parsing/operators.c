@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 11:51:11 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/17 14:09:51 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/17 14:49:07 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,24 +104,66 @@ t_bool	after_operator_is_valid(char *str)
 	
 // }
 
-// t_bool	consecutives_operators(char *str)
-// {
-// 	int	i;
+// return len of 
+int	is_an_operator(char *str, int i)
+{	
+	int len_operator;
 
-// 	i = 0;
-// 	while (str[i])
-// 	{
-// 		if (is_start_of_operator("<<"))
-// 		{
-			
-// 		}
-// 		i++;
-// 	}
-	
-// }
+	len_operator = 0;
+	if (is_start_of_operator("<<", str, i)
+		|| is_start_of_operator(">>", str, i))
+	{
+		len_operator = 2;
+	}
+	else if (is_start_of_operator(">", str, i)
+		|| is_start_of_operator("<", str, i)
+		|| is_start_of_operator("|", str, i))
+	{
+		len_operator = 1;
+	}
+	return (len_operator);
+}
+
+int	skip_spaces(char *str)
+{
+	int skip;
+
+	skip = 0;
+	while (str[skip] && str[skip] == ' ')
+		skip++;
+	return (skip);
+}
+t_bool	consecutives_operators(char *str)
+{
+	int	i;
+	int	len_operator;
+
+	i = 0;
+	while (str[i])
+	{
+		len_operator = is_an_operator(str, i);
+		if (len_operator)
+		{
+			printf("BEFORE skip :%s\n", &str[i]);
+			i += len_operator;
+			printf("OPERATOR DETECTED : %d\n", len_operator);
+			printf("SKIP :%s\n", &str[i]);
+			i += skip_spaces(&str[i]);
+			printf("SKIP SPACE :%s\n", &str[i]);
+			if (is_an_operator(str, i))
+			{
+				printf("DOUBLE\n");
+				return (TRUE);
+			}
+		}
+		i++;
+	}
+	return (FALSE);
+}
 
 int main()
 {
-	after_operator_is_valid("< salut < salut je test >                 ");
+	// after_operator_is_valid("< salut < salut je test >                 ");
+	consecutives_operators("<<|");
 	return (0);
 }

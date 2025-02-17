@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   quotes.c                                           :+:      :+:    :+:   */
+/*   checks_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:52:28 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/17 14:19:35 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/17 17:13:54 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "../../lib/MYLIB42/mylib42.h"
-#include "../minishell.h"
+#include "minishell.h"
+
 t_bool	nb_quotes_is_even(char type_quote, char *str)
 {
 	int	i;
@@ -30,7 +30,7 @@ t_bool	nb_quotes_is_even(char type_quote, char *str)
 	return (FALSE);
 }
 
-t_bool	quotes_is_valid(char *str)
+t_bool	quotes_are_valid(char *str)
 {
 	if (!nb_quotes_is_even('\'', str))
 		return (FALSE);

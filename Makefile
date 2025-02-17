@@ -1,9 +1,23 @@
 SRC_DIR = ./src
-SRC= $(SRC_DIR)/main.c \
+SRC_PARSE_DIR = $(SRC_DIR)/parsing
+
+SRC_PARSE = $(SRC_PARSE_DIR)/parse_input.c \
+		$(SRC_PARSE_DIR)/parse_utils.c \
+		$(SRC_PARSE_DIR)/handle_quote.c \
+		$(SRC_PARSE_DIR)/handle_no_quote.c \
+		$(SRC_PARSE_DIR)/checks/checks_after_operators.c \
+		$(SRC_PARSE_DIR)/checks/checks_consecutive_operators.c \
+		$(SRC_PARSE_DIR)/checks/checks_operators.c \
+		$(SRC_PARSE_DIR)/checks/checks_quotes.c \
+		$(SRC_PARSE_DIR)/checks/checks.c
+
+SRC = $(SRC_DIR)/main.c \
+	$(SRC_DIR)/split_utils.c \
+	$(SRC_PARSE)
 
 OBJ = $(SRC:.c=.o)
 CC = gcc
-CFLAGS += -Wall -Wextra -Werror -g
+CFLAGS += -Wall -Wextra -Werror -g -Isrc
 NAME = minishell
 
 LIB_DIR = ./lib

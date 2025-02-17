@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/17 15:07:40 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/17 17:28:21 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,43 @@
 
 # define DOUBLE_QUOTE 34
 # define SINGLE_QUOTE 39
+
+//src/parsing/parse_input.c
+int		count_word_in_input(char *str);
+char	**parse_input(char *str);
+
+//src/parsing/handle_no_quote.c
+int		handle_no_quote(char **split, int split_index, char *str, int i_start);
+int		count_no_quote(char *str, int i_start);
+
+//src/parsing/handle_quote.c
+int		handle_quote(char **split, int split_index, char *str, int i_start);
+int		count_quote(char *str, int i_start);
+
+//src/parsing/parse_utils.c
+t_bool	is_double_redirection(char *str, int index);
+t_bool	is_single_operator(char *str, int index);
+
+//src/parsing/checks/checks_after_operators.c
+t_bool	after_operators_is_empty(char *str);
+
+//src/parsing/checks/checks_operators.c
+t_bool	is_start_of_operator(char *operator, char *str, int i_str);
+t_bool	operators_are_valid(char *str);
+
+//src/parsing/checks/checks_consecutive_operators.c
+t_bool	consecutives_operators(char *str);
+
+//src/parsing/checks/check_quotes.c
+t_bool	nb_quotes_is_even(char type_quote, char *str);
+t_bool	quotes_are_valid(char *str);
+
+//src/parsing/checks/checks.c
+t_bool	basics_checks(char *str);
+
+//?/split_utils.c
+int		len_split(char **split);
+void	free_split(char **split);
+void	print_split(char **split);
 
 #endif

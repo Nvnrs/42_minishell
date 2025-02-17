@@ -1,43 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/17 10:10:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/17 17:18:32 by nveneros         ###   ########.fr       */
+/*   Created: 2025/02/17 17:11:16 by nveneros          #+#    #+#             */
+/*   Updated: 2025/02/17 17:12:34 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(void)
+t_bool	is_double_redirection(char *str, int index)
 {
-	char	*rd;
-	int		flag;
-	char	**split;
+	if ((str[index] == '>' && str[index + 1] == '>')
+		|| (str[index] == '<' && str[index + 1] == '<'))
+		return (TRUE);
+	return (FALSE);
+}
 
-	flag = 1;
-	while (flag)
-	{
-		rd = readline("> ");
-		if (rd && *rd)
-		{
-			add_history(rd);
-			if (!basics_checks(rd))
-			{
-				free(rd);
-				continue;
-			}
-			split = parse_input(rd);
-			print_split(split);
-			free_split(split);
-		}
-		else if (rd == NULL)
-			flag = 0;
-		free(rd);
-	}
-	rl_clear_history();
-	return (0);
+t_bool	is_single_operator(char *str, int index)
+{
+	if (c_is_in_charset(str[index], "><|"))
+		return (TRUE);
+	return (FALSE);
 }

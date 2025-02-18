@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/18 11:31:13 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/18 13:14:57 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,16 @@ t_bool	quotes_are_valid(char *str);
 //src/parsing/checks/checks.c
 t_bool	basics_checks(char *str);
 
-// ENV
+// STR to ENV
 t_key_val	*init_env_var(char *key, char *value);
 t_list		**init_list_env(char *envp[]);
 void		free_env_var(void *env_var_void);
 void		free_list_env(t_list **env);
 void		print_env_var(t_key_val *env_var);
 void		print_list_env(t_list **env);
+
+// ENV to STR
+char		**lst_env_to_tab_str(t_list **lst_env);
 
 //?/split_utils.c
 int		len_split(char **split);

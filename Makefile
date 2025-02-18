@@ -1,5 +1,6 @@
 SRC_DIR = ./src
 SRC_PARSE_DIR = $(SRC_DIR)/parsing
+SRC_ENV_DIR = $(SRC_DIR)/env
 
 SRC_PARSE = $(SRC_PARSE_DIR)/parse_input.c \
 		$(SRC_PARSE_DIR)/parse_utils.c \
@@ -10,10 +11,14 @@ SRC_PARSE = $(SRC_PARSE_DIR)/parse_input.c \
 		$(SRC_PARSE_DIR)/checks/checks_operators.c \
 		$(SRC_PARSE_DIR)/checks/checks_quotes.c \
 		$(SRC_PARSE_DIR)/checks/checks.c
+	
+SRC_ENV = $(SRC_ENV_DIR)/env_lst.c \
+		$(SRC_ENV_DIR)/env_tab_str.c \
+		$(SRC_ENV_DIR)/env_utils.c
 
 SRC = $(SRC_DIR)/main.c \
 	$(SRC_DIR)/split_utils.c \
-	$(SRC_DIR)/env_struct.c \
+	$(SRC_ENV) \
 	$(SRC_PARSE)
 
 OBJ = $(SRC:.c=.o)

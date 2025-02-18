@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:10:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/18 11:27:02 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/18 13:23:13 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ int	main(int argc, char *argv[], char *envp[])
 	(void)argc;
 	(void)argv;
 	env = init_list_env(envp);
-	print_list_env(env);
-	free_list_env(env);
 	flag = 1;
 	while (flag)
 	{
@@ -45,5 +43,6 @@ int	main(int argc, char *argv[], char *envp[])
 		free(rd);
 	}
 	rl_clear_history();
+	free_list_env(env);
 	return (0);
 }

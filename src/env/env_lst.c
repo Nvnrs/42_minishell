@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_lst.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/18 13:18:56 by nveneros          #+#    #+#             */
+/*   Updated: 2025/02/18 13:20:20 by nveneros         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-char	**split_on_first_equal(char *str)
+static char	**split_on_first_equal(char *str)
 {
 	char	**split;
 	int		i;
@@ -40,22 +52,15 @@ t_list	**init_list_env(char *envp[])
 
 	i = 0;
 	env = malloc(sizeof (t_list *));
-	// *env = premier
 	if (env == NULL)
 		return (NULL);
 	while (envp[i] && envp)
 	{
 		split = split_on_first_equal(envp[i]);
 		if (i == 0)
-		{
 			*env = ft_lstnew(init_env_var(split[0], split[1]));
-		}
 		else
-		{
-		// if (len_split(split) == 2)
 			ft_lstadd_back(env, ft_lstnew(init_env_var(split[0], split[1])));
-		}
-		// print_split(split);
 		free_split(split);
 		i++;
 	}
@@ -78,21 +83,4 @@ void	free_list_env(t_list **env)
 	ft_lstclear(env, free_env_var);
 	free(env);
 	env = NULL;
-}
-
-void	print_env_var(t_key_val *env_var)
-{
-	printf("%s=%s\n", env_var->key, env_var->value);
-}
-
-void	print_list_env(t_list **env)
-{
-	t_list	*lst;
-
-	lst = *env;
-	while (lst)
-	{
-		print_env_var(lst->content);
-		lst = lst->next;
-	}
 }

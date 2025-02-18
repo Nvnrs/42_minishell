@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:10:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/18 13:23:13 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/18 16:51:22 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ int	main(int argc, char *argv[], char *envp[])
 				continue;
 			}
 			split = parse_input(rd);
-			print_split(split);
+			// print_split(split);
+			init_lst_cmd(split);
 			free_split(split);
 		}
 		else if (rd == NULL)

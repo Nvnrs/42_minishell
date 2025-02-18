@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/18 13:14:57 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/18 17:08:33 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,15 @@ typedef struct s_key_val
 	char	*key;
 	char	*value;
 }	t_key_val;
+
+typedef struct s_cmd
+{
+	char	*name;
+	char	**args_exec;
+	t_list	**operators_in;
+	t_list	**operators_out;
+	int		pipes[2][2];
+}	t_cmd;
 
 //src/parsing/parse_input.c
 int		count_word_in_input(char *str);
@@ -72,9 +81,9 @@ t_bool	quotes_are_valid(char *str);
 t_bool	basics_checks(char *str);
 
 // STR to ENV
-t_key_val	*init_env_var(char *key, char *value);
+t_key_val	*init_key_val(char *key, char *value);
 t_list		**init_list_env(char *envp[]);
-void		free_env_var(void *env_var_void);
+void		free_key_val(void *env_var_void);
 void		free_list_env(t_list **env);
 void		print_env_var(t_key_val *env_var);
 void		print_list_env(t_list **env);
@@ -86,5 +95,13 @@ char		**lst_env_to_tab_str(t_list **lst_env);
 int		len_split(char **split);
 void	free_split(char **split);
 void	print_split(char **split);
+
+//operators.c
+int		ft_strcmp(const char *s1, const char *s2);
+t_list	**init_operators(char **split, int i_start, int i_end);
+
+t_list	**init_lst_cmd(char **input);
+t_cmd	*init_cmd(void);
+void	print_start_end(char **tab, int start, int end);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 13:18:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/18 13:20:20 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/18 16:15:05 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,6 @@ static char	**split_on_first_equal(char *str)
 	return (split);
 }
 
-t_key_val	*init_env_var(char *key, char *value)
-{
-	t_key_val	*env_var;
-
-	env_var = malloc(sizeof (t_key_val));
-	env_var->key = ft_strdup(key);
-	env_var->value = ft_strdup(value);
-	return (env_var);
-}
-
 t_list	**init_list_env(char *envp[])
 {
 	t_list	**env;
@@ -58,29 +48,19 @@ t_list	**init_list_env(char *envp[])
 	{
 		split = split_on_first_equal(envp[i]);
 		if (i == 0)
-			*env = ft_lstnew(init_env_var(split[0], split[1]));
+			*env = ft_lstnew(init_key_val(split[0], split[1]));
 		else
-			ft_lstadd_back(env, ft_lstnew(init_env_var(split[0], split[1])));
+			ft_lstadd_back(env, ft_lstnew(init_key_val(split[0], split[1])));
 		free_split(split);
 		i++;
 	}
-
 	return (env);
 }
 
-void	free_env_var(void *env_var_void)
-{
-	t_key_val *env_var;
-
-	env_var = env_var_void;
-	free(env_var->key);
-	free(env_var->value);
-	free(env_var);
-}
 
 void	free_list_env(t_list **env)
 {
-	ft_lstclear(env, free_env_var);
+	ft_lstclear(env, free_key_val);
 	free(env);
 	env = NULL;
 }

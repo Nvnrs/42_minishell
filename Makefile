@@ -13,6 +13,7 @@ SRC_PARSE = $(SRC_PARSE_DIR)/parse_input.c \
 
 SRC = $(SRC_DIR)/main.c \
 	$(SRC_DIR)/split_utils.c \
+	$(SRC_DIR)/env_struct.c \
 	$(SRC_PARSE)
 
 OBJ = $(SRC:.c=.o)

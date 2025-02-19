@@ -27,8 +27,9 @@ SRC = $(SRC_DIR)/main.c \
 	$(SRC_PARSE)
 
 OBJ = $(SRC:.c=.o)
-CC = gcc
-CFLAGS += -Wall -Wextra -Werror -g -Isrc
+CC = cc
+# CFLAGS += -Wall -Wextra -Werror -g -Isrc
+CFLAGS += -Isrc
 NAME = minishell
 
 LIB_DIR = ./lib

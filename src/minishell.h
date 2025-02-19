@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/19 11:32:26 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/19 15:06:12 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,5 +107,9 @@ void	print_start_end(char **tab, int start, int end);
 char	*get_cmd_name(char	**input, int i_start, int i_end);
 int		count_cmd_arguments(char **input, int i_start, int i_end);
 char	**get_cmd_arguments(char **input, int i_start, int i_end);
+void	free_lst_cmd(t_list **lst_cmd);
+void	print_cmd(void *cmd_content);
+void	free_cmd(void *cmd_void);
+void	print_list_operators(t_list **operators);
 
 #endif

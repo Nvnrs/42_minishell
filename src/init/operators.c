@@ -6,30 +6,16 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 16:05:53 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/19 15:37:48 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/19 16:56:46 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	size_t	i;
-
-	i = 0;
-	while (s1[i] || s2[i])
-	{
-		if ((unsigned char)s1[i] != (unsigned char)s2[i])
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		i++;
-	}
-	return (0);
-}
-
 t_list	**init_operators_in(char **split, int i_start, int i_end)
 {
 	t_list	**operators_in;
-	int	counter;
+	int		counter;
 
 	counter = 0;
 	operators_in = NULL;
@@ -57,7 +43,7 @@ t_list	**init_operators_in(char **split, int i_start, int i_end)
 t_list	**init_operators_out(char **split, int i_start, int i_end)
 {
 	t_list	**operators_out;
-	int	counter;
+	int		counter;
 
 	counter = 0;
 	operators_out = NULL;

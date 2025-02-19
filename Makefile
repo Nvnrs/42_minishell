@@ -1,30 +1,45 @@
 SRC_DIR = ./src
 SRC_PARSE_DIR = $(SRC_DIR)/parsing
 SRC_INIT_DIR = $(SRC_DIR)/init
+SRC_PARSE_CHECK_DIR = $(SRC_PARSE_DIR)/checks
+SRC_INIT_CMD_DIR = $(SRC_INIT_DIR)/cmd
+SRC_INIT_ENV_DIR = $(SRC_INIT_DIR)/env
+SRC_DEBUG_DIR = $(SRC_DIR)/debug
 
 SRC_PARSE = $(SRC_PARSE_DIR)/parse_input.c \
 		$(SRC_PARSE_DIR)/parse_utils.c \
 		$(SRC_PARSE_DIR)/handle_quote.c \
 		$(SRC_PARSE_DIR)/handle_no_quote.c \
-		$(SRC_PARSE_DIR)/checks/checks_after_operators.c \
-		$(SRC_PARSE_DIR)/checks/checks_consecutive_operators.c \
-		$(SRC_PARSE_DIR)/checks/checks_operators.c \
-		$(SRC_PARSE_DIR)/checks/checks_quotes.c \
-		$(SRC_PARSE_DIR)/checks/checks.c
+	
+SRC_PARSE_CHECK = $(SRC_PARSE_CHECK_DIR)/checks_after_operators.c \
+				$(SRC_PARSE_CHECK_DIR)/checks_consecutive_operators.c \
+				$(SRC_PARSE_CHECK_DIR)/checks_operators.c \
+				$(SRC_PARSE_CHECK_DIR)/checks_quotes.c \
+				$(SRC_PARSE_CHECK_DIR)/checks.c
 
-SRC_INIT = $(SRC_INIT_DIR)/key_val.c
+SRC_INIT = $(SRC_INIT_DIR)/key_val.c \
+		$(SRC_INIT_DIR)/operators.c \
 
-SRC_ENV = $(SRC_INIT_DIR)/env/env_lst.c \
-		$(SRC_INIT_DIR)/env/env_tab_str.c \
-		$(SRC_INIT_DIR)/env/env_utils.c
+SRC_INIT_CMD = $(SRC_INIT_CMD_DIR)/cmd_arguments.c \
+			$(SRC_INIT_CMD_DIR)/cmd_name.c \
+			$(SRC_INIT_CMD_DIR)/cmd.c
+
+SRC_INIT_ENV = $(SRC_INIT_ENV_DIR)/env_lst.c \
+		$(SRC_INIT_ENV_DIR)/env_tab_str.c
+
+SRC_DEBUG = $(SRC_DEBUG_DIR)/cmd.c \
+		$(SRC_DEBUG_DIR)/env.c \
+		$(SRC_DEBUG_DIR)/operators.c
 
 SRC = $(SRC_DIR)/main.c \
+	$(SRC_DIR)/utils.c \
 	$(SRC_DIR)/split_utils.c \
-	$(SRC_DIR)/init/operators.c \
-	$(SRC_DIR)/init/cmd.c \
 	$(SRC_INIT) \
-	$(SRC_ENV) \
-	$(SRC_PARSE)
+	$(SRC_INIT_CMD) \
+	$(SRC_INIT_ENV) \
+	$(SRC_PARSE) \
+	$(SRC_PARSE_CHECK) \
+	$(SRC_DEBUG)
 
 OBJ = $(SRC:.c=.o)
 CC = cc

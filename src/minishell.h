@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/19 15:06:12 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/19 16:47:21 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ int		ft_strcmp(const char *s1, const char *s2);
 t_list	**init_operators_in(char **split, int i_start, int i_end);
 t_list	**init_operators_out(char **split, int i_start, int i_end);
 
+//cmd.c
 t_list	**init_lst_cmd(char **input);
 t_cmd	*init_cmd(char **input, int start, int end);
 void	print_start_end(char **tab, int start, int end);
@@ -111,5 +112,9 @@ void	free_lst_cmd(t_list **lst_cmd);
 void	print_cmd(void *cmd_content);
 void	free_cmd(void *cmd_void);
 void	print_list_operators(t_list **operators);
+
+
+//utils.c
+void	init_int_zero(int *first, int *second, int *third, int *fourth);
 
 #endif

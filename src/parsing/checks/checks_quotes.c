@@ -6,13 +6,23 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:52:28 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/18 13:37:48 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/19 11:30:14 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_bool	nb_quotes_is_even(char type_quote, char *str)
+
+void	skip_inside_quote(char quote, char *str, int *i)
+{
+	*i += 1;
+	while (str[*i] && str[*i] != quote)
+	{ 
+		*i += 1;
+	}
+}
+
+t_bool	nb_quotes_is_even(char quote, char other_quote, char *str)
 {
 	int	i;
 	int	count;
@@ -21,31 +31,35 @@ t_bool	nb_quotes_is_even(char type_quote, char *str)
 	count = 0;
 	while (str[i])
 	{
-		if (type_quote == str[i])
-			count++;
+		if (str[i] == other_quote)
+			skip_inside_quote(other_quote, str, &i);
+		else if (str[i] == quote)
+		{
+			skip_inside_quote(quote, str, &i);
+			if (str[i] == quote)
+				count += 2;
+			else
+				count++;
+		}
 		i++;
 	}
-	if (count % 2 == 0 )
-		return (TRUE);
-	return (FALSE);
+	return (count % 2 == 0);
 }
 
 t_bool	quotes_are_valid(char *str)
 {
-	if (!nb_quotes_is_even('\'', str))
+	if (!nb_quotes_is_even(SINGLE_QUOTE, DOUBLE_QUOTE, str))
 		return (FALSE);
-	if (!nb_quotes_is_even('\"', str))
+	if (!nb_quotes_is_even(DOUBLE_QUOTE, SINGLE_QUOTE, str))
 		return (FALSE);
 	return (TRUE);
 }
 
-
-// #include <stdio.h>
 // void	test(char *str, t_bool exp)
 // {
 // 	static int i = 1;
-// 	t_bool otp = quotes_is_valid(str);
-// 	// printf("%s\n", str);
+// 	t_bool otp = quotes_are_valid(str);
+// 	printf("%s\n", str);
 // 	// printf("quotes is valid %d\n", otp);
 // 	printf("TEST: %d | ", i);
 // 	if (exp == otp)
@@ -57,10 +71,14 @@ t_bool	quotes_are_valid(char *str)
 // }
 // int	main(void)
 // {
-// 	test("1 single quote test '", FALSE);
-// 	test("2 single quote test ''", TRUE);
-// 	test("1 double quote test \"", FALSE);
-// 	test("2 double quote test \"\"", TRUE);
-// 	test(" 0 quote test", TRUE);
+// 	test("impair double quote \"", FALSE);
+// 	test("pair double quote \"\"", TRUE);
+// 	test("impair single quote \'", FALSE);
+// 	test("pair single quote \'\'", TRUE);
+// 	test("pair single quote but impair double quote \'\'\"", FALSE);
+// 	test("pair double quote but impair single quote \"\"\'", FALSE);
+// 	test("impair single quote insid double \"hello\'\"", TRUE);
+// 	test("impair double quote insid single \'hello\"\'", TRUE);
+// 	test("ALL \" salut je test\' \" pour voir\' \"", FALSE);
 // 	return (0);
 // }

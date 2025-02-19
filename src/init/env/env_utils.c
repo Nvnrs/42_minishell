@@ -6,13 +6,13 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 13:19:38 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/18 17:08:09 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/19 10:46:48 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_env_var(t_env_var *env_var)
+void	print_env_var(t_key_val *env_var)
 {
 	printf("%s=%s\n", env_var->key, env_var->value);
 }

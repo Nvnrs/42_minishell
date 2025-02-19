@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/18 17:08:33 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/19 11:32:26 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ t_bool	operators_are_valid(char *str);
 t_bool	consecutives_operators(char *str);
 
 //src/parsing/checks/check_quotes.c
-t_bool	nb_quotes_is_even(char type_quote, char *str);
+t_bool	nb_quotes_is_even(char type_quote, char other_quote, char *str);
 t_bool	quotes_are_valid(char *str);
 
 //src/parsing/checks/checks.c
@@ -98,10 +98,14 @@ void	print_split(char **split);
 
 //operators.c
 int		ft_strcmp(const char *s1, const char *s2);
-t_list	**init_operators(char **split, int i_start, int i_end);
+t_list	**init_operators_in(char **split, int i_start, int i_end);
+t_list	**init_operators_out(char **split, int i_start, int i_end);
 
 t_list	**init_lst_cmd(char **input);
-t_cmd	*init_cmd(void);
+t_cmd	*init_cmd(char **input, int start, int end);
 void	print_start_end(char **tab, int start, int end);
+char	*get_cmd_name(char	**input, int i_start, int i_end);
+int		count_cmd_arguments(char **input, int i_start, int i_end);
+char	**get_cmd_arguments(char **input, int i_start, int i_end);
 
 #endif

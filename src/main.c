@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:10:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/19 11:43:17 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/19 11:50:21 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ int	main(int argc, char *argv[], char *envp[])
 				continue;
 			}
 			split = parse_input(rd);
-			printf("%s\n", get_cmd_name(split, 0, len_split(split)));
-			print_split(get_cmd_arguments(split, 0, len_split(split)));
+			printf("%s\n", get_cmd_name(split, 0, len_split(split) - 1));
+			print_split(get_cmd_arguments(split, 0, len_split(split) - 1));
 			// print_split(split);
 			//init_lst_cmd(split);
 			free_split(split);

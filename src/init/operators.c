@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 16:05:53 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/19 10:26:13 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/19 11:50:03 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_list	**init_operators_in(char **split, int i_start, int i_end)
 	operators_in = malloc(sizeof (t_list *));
 	if (operators_in == NULL)
 		return (NULL);
-	while (split[i_start] && split && i_start < i_end)
+	while (split[i_start] && split && i_start <= i_end)
 	{
 		if (ft_strcmp(split[i_start], "<<") == 0 || ft_strcmp(split[i_start], "<") == 0)
 		{
@@ -61,7 +61,7 @@ t_list	**init_operators_out(char **split, int i_start, int i_end)
 	operators_out = malloc(sizeof (t_list *));
 	if (operators_out == NULL)
 		return (NULL);
-	while (split[i_start] && split && i_start < i_end)
+	while (split[i_start] && split && i_start <= i_end)
 	{
 		if (ft_strcmp(split[i_start], ">>") == 0 ||ft_strcmp(split[i_start], ">") == 0)
 		{

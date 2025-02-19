@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 15:53:02 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/19 11:41:07 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/19 11:50:54 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_cmd	*init_cmd(char **input, int start, int end)
 
 char	*get_cmd_name(char	**input, int i_start, int i_end)
 {
-	while (input[i_start] && i_start < i_end)
+	while (input[i_start] && i_start <= i_end)
 	{
 		if (is_start_of_operator("<", input[i_start], 0) || is_start_of_operator(">", input[i_start], 0))
 			i_start += 2;
@@ -61,7 +61,7 @@ int		count_cmd_arguments(char **input, int i_start, int i_end)
 	int	counter;
 
 	counter = 0;
-	while (input[i_start] && i_start < i_end)
+	while (input[i_start] && i_start <= i_end)
 	{
 		if (is_start_of_operator("<", input[i_start], 0) || is_start_of_operator(">", input[i_start], 0))
 			i_start += 2;
@@ -85,7 +85,7 @@ char	**get_cmd_arguments(char **input, int i_start, int i_end)
 	if (cmd_arguments == NULL)
 		return (NULL);
 	i_arguments = 0;
-	while (input[i_start] && i_start < i_end)
+	while (input[i_start] && i_start <= i_end)
 	{
 		if (is_start_of_operator("<", input[i_start], 0) || is_start_of_operator(">", input[i_start], 0))
 			i_start += 2;
@@ -96,7 +96,6 @@ char	**get_cmd_arguments(char **input, int i_start, int i_end)
 			i_arguments++;
 		}
 	}
-	printf("number of args: %d", number_of_arguments);
 	cmd_arguments[number_of_arguments] = NULL;
 	return (cmd_arguments);
 }

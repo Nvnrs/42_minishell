@@ -6,12 +6,11 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 10:53:47 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/21 15:19:06 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/21 17:35:05 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 char *find_value_in_env(char *key, t_list **lst_env)
 {
@@ -32,6 +31,7 @@ char *find_value_in_env(char *key, t_list **lst_env)
 	
 	return (NULL);
 }
+
 int	len_key_in_str(char *str)
 {
 	int	i;
@@ -74,7 +74,10 @@ char	*get_key_in_str(char *str)
 	return (key);
 }
 
-int	expansion(char *str, char *out, int *i_out, t_list **lst_env)
+
+
+
+int	expansion_var(char *str, char *out, int *i_out, t_list **lst_env)
 {
 	char	*value;
 	char	*key;
@@ -90,9 +93,6 @@ int	expansion(char *str, char *out, int *i_out, t_list **lst_env)
 		free(key);
 		return len_key;
 	}
-	printf("%s\n", value);
-	printf("%s\n", key);
-	printf("%d\n", len_key);
 	while (value[i])
 	{
 		out[*i_out] = value[i];
@@ -103,7 +103,6 @@ int	expansion(char *str, char *out, int *i_out, t_list **lst_env)
 	return (len_key);
 }
 
-
 t_bool	is_start_of_env_var(char *str, int i)
 {
 	if (str[i] == '$'
@@ -113,74 +112,152 @@ t_bool	is_start_of_env_var(char *str, int i)
 	return (FALSE);
 }
 
-char	*expansion_var(char *str, t_list **lst_env)
+void	handle_single_quote(char *str, int *i, char *output, int *i_out)
+{
+	output[*i_out] = str[*i];
+	*i += 1;
+	*i_out += 1;
+	while (str[*i] != SINGLE_QUOTE)
+	{
+		output[*i_out] = str[*i];
+		*i += 1;
+		*i_out += 1;
+	}
+}
+
+int	handle_double_quote(char *str, char *output, int *i_out_main, t_list **lst_env)
+{
+	int	i;
+	int	i_out;
+
+	i = 0;
+	i_out = *i_out_main;
+	output[i_out++] = str[i++];
+	while (str[i] != DOUBLE_QUOTE)
+	{
+		if (is_start_of_env_var(str, i))
+		{
+			i++;
+			i+= expansion_var(&str[i], output, &i_out, lst_env);
+			continue;
+		}	
+		output[i_out++] = str[i++];
+	}
+	*i_out_main = i_out;
+	return (i);
+}
+
+int	add_len_expansion_var(char *str, int *i_out, t_list **lst_env)
+{
+	char	*value;
+	char	*key;
+	int		len_key;
+
+	key = get_key_in_str(str);
+	len_key = ft_strlen(key);
+	value = find_value_in_env(key, lst_env);
+	if (value == NULL)
+	{
+		free(key);
+		return (len_key);
+	}
+	*i_out += ft_strlen(value);
+	free(key);
+	return (len_key);
+}
+
+int	len_in_double_quote(char *str, int *i_out, t_list **lst_env)
+{
+	int	i;
+
+	i = 0;
+	i++;
+	*i_out += 1;
+	while (str[i] != DOUBLE_QUOTE)
+	{
+		if (is_start_of_env_var(str, i))
+		{
+			i++;
+			i+= add_len_expansion_var(&str[i], i_out, lst_env);
+			continue;
+		}	
+		i++;
+		*i_out+=1;
+	}
+	return (i);
+}
+
+int	len_expansion_str(char *str, t_list **lst_env)
+{
+	int		i;
+	int		i_out;
+
+	init_int_zero(&i, &i_out, NULL, NULL);
+	while (str[i])
+	{
+		if (str[i] == SINGLE_QUOTE)
+		{
+			i += 1;
+			i_out += 1;
+			while (str[i] != SINGLE_QUOTE)
+			{
+				i += 1;
+				i_out += 1;
+			}
+		}
+		else if (str[i] == DOUBLE_QUOTE)
+		{
+			i+= len_in_double_quote(&str[i], &i_out, lst_env);
+		}
+		else if (is_start_of_env_var(str, i))
+		{
+			i++;
+			i+= add_len_expansion_var(&str[i], &i_out, lst_env);
+			continue;
+		}
+		i++;
+		i_out++;
+	}
+	return (i_out);
+}
+
+char	*expansion_str(char *str, t_list **lst_env)
 {
 	// printf("before %s\n", str);
 	int		i;
 	int		i_out;
 	char	*output;
 
-	i = 0;
-	i_out = 0;
-	output = malloc(1000);
+	init_int_zero(&i, &i_out, NULL, NULL);
+	output = malloc((len_expansion_str(str, lst_env) + 1) * sizeof(char));
 	output[0] = '\0';
 	while (str[i])
 	{
 		if (str[i] == SINGLE_QUOTE)
-		{
-			output[i_out++] = str[i++];
-			while (str[i] != SINGLE_QUOTE)
-				output[i_out++] = str[i++];
-		}
+			handle_single_quote(str, &i, output, &i_out);
 		else if (str[i] == DOUBLE_QUOTE)
-		{
-			output[i_out++] = str[i++];
-			while (str[i] != DOUBLE_QUOTE)
-			{
-				if (is_start_of_env_var(str, i))
-				{
-					i++;
-					i+= expansion(&str[i], output, &i_out, lst_env);
-					continue;
-				}	
-				output[i_out++] = str[i++];
-			}
-		}
-		if (is_start_of_env_var(str, i))
+			i+= handle_double_quote(&str[i], output, &i_out, lst_env);
+		else if (is_start_of_env_var(str, i))
 		{
 			i++;
-			i+= expansion(&str[i], output, &i_out, lst_env);
+			i+= expansion_var(&str[i], output, &i_out, lst_env);
 			continue;
 		}
 		output[i_out++] = str[i++];
 	}
 	output[i_out] = '\0';
-	printf("\nafter : %s\n", output);
 	return (output);
 }
-
-
-// void	expansion_var(char *str)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (str[i])
-// 	{
-// 		i++;
-// 	}
-	
-// }
-
-
 
 void	test(char *str, t_list **env, char *expected)
 {
 	char			*output;
 	static int		i = 1;
 
-	output = expansion_var(str, env);
+	output = expansion_str(str, env);
 	// printf("expected : %s\n", expected);
+	printf("Len exp : %d\n", (int)ft_strlen(output));
+	printf("Len out : %d\n", len_expansion_str(str, env));
 	printf("Test %d | ", i);
 	if (ft_strcmp(output, expected) == 0)
 	{
@@ -189,6 +266,7 @@ void	test(char *str, t_list **env, char *expected)
 	else
 		printf("\033[0;31mKO");
 	printf("\033[0;37m\n");
+	free(output);
 	i++;
 }
 

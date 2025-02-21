@@ -19,6 +19,10 @@ SRC_PARSE_CHECK = $(SRC_PARSE_CHECK_DIR)/checks_after_operators.c \
 
 SRC_INIT = $(SRC_INIT_DIR)/key_val.c \
 		$(SRC_INIT_DIR)/operators.c \
+		$(SRC_INIT_DIR)/basic_redirections.c \
+		$(SRC_INIT_DIR)/close_pipes.c \
+		$(SRC_INIT_DIR)/free_pipes.c \
+		$(SRC_INIT_DIR)/pipes.c
 
 SRC_INIT_CMD = $(SRC_INIT_CMD_DIR)/cmd_arguments.c \
 			$(SRC_INIT_CMD_DIR)/cmd_name.c \

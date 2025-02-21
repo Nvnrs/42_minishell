@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 15:53:02 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/19 16:55:07 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/21 16:41:09 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 //   * t_list operators_out
 //   * int pipes[2][2]
 
-t_cmd	*init_cmd(char **input, int start, int end)
+t_cmd	*init_cmd(char **input, int start, int end, int **pipes)
 {
 	t_cmd	*cmd;
 
@@ -27,10 +27,11 @@ t_cmd	*init_cmd(char **input, int start, int end)
 	cmd->args_exec = get_cmd_arguments(input, start, end);
 	cmd->operators_in = init_operators_in(input, start, end);
 	cmd->operators_out = init_operators_out(input, start, end);
+	cmd->pipes = pipes;
 	return (cmd);
 }
 
-t_list	**init_lst_cmd(char **input)
+t_list	**init_lst_cmd(char **input, int **pipes)
 {
 	t_list	**lst_cmd;
 	int		i;
@@ -48,13 +49,14 @@ t_list	**init_lst_cmd(char **input)
 			if (i == (len_split(input) - 1))
 				end = i;
 			if (*lst_cmd == NULL)
-				*lst_cmd =  ft_lstnew(init_cmd(input, start, end));
+				*lst_cmd =  ft_lstnew(init_cmd(input, start, end, pipes));
 			else
-				ft_lstadd_back(lst_cmd, ft_lstnew(init_cmd(input, start, end)));
+				ft_lstadd_back(lst_cmd, ft_lstnew(init_cmd(input, start, end, pipes)));
 			start = i + 1;
 		}
 		i++;
 	}
+	apply_basic_redirect(lst_cmd, ft_lstsize(*lst_cmd));
 	return (lst_cmd);
 }
 

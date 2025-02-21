@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/19 16:47:21 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/21 16:45:59 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,9 @@ typedef struct s_cmd
 	char	**args_exec;
 	t_list	**operators_in;
 	t_list	**operators_out;
-	int		pipes[2][2];
+	int		basic_redirect_in;
+	int		basic_redirect_out;
+	int		**pipes;
 }	t_cmd;
 
 //src/parsing/parse_input.c
@@ -102,8 +104,8 @@ t_list	**init_operators_in(char **split, int i_start, int i_end);
 t_list	**init_operators_out(char **split, int i_start, int i_end);
 
 //cmd.c
-t_list	**init_lst_cmd(char **input);
-t_cmd	*init_cmd(char **input, int start, int end);
+t_list	**init_lst_cmd(char **input, int **pipes);
+t_cmd	*init_cmd(char **input, int start, int end, int **pipes);
 void	print_start_end(char **tab, int start, int end);
 char	*get_cmd_name(char	**input, int i_start, int i_end);
 int		count_cmd_arguments(char **input, int i_start, int i_end);
@@ -116,5 +118,22 @@ void	print_list_operators(t_list **operators);
 
 //utils.c
 void	init_int_zero(int *first, int *second, int *third, int *fourth);
+
+//basic_redirections.c
+void	apply_basic_redirect(t_list **lst_cmd, int nb_cmd);
+
+//pipes.c
+int		**init_pipes(int nb_pipe);
+
+//close_pipes.c
+void	close_pipe(int pipes[2]);
+void	close_all_pipes(int **pipes, int nb_pipe);
+void	close_npipe(int **pipes, int nb_pipe, int n);
+void	close_and_free_pipes(int **pipes, int nb_pipe);
+void	close_and_free_npipe(int **pipes, int nb_pipe, int n);
+
+//free_pipes.c
+void	free_all_pipes(int **pipes, int nb_pipe);
+void	free_npipe(int **pipes, int nb_pipe, int n);
 
 #endif

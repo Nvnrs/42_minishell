@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:10:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/19 16:32:36 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/21 16:41:20 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	main(int argc, char *argv[], char *envp[])
 	char	**input;
 	t_list	**env;
 	t_list	**lst_cmd;
+	int		**pipes;
 
 	(void)argc;
 	(void)argv;
@@ -36,9 +37,13 @@ int	main(int argc, char *argv[], char *envp[])
 				continue;
 			}
 			input = parse_input(rd);
-			lst_cmd = init_lst_cmd(input);
+			pipes = init_pipes(2);
+			// printf("pipes[0][0] = %d\npipes[0][1] = %d\npipes[1][0] = %d\npipes[1][1] = %d\n", pipes[0][0], pipes[0][1], pipes[1][0], pipes[1][1]);
+			lst_cmd = init_lst_cmd(input, pipes);
+			ft_lstiter(*lst_cmd, print_cmd);
 			free_lst_cmd(lst_cmd);
 			free_split(input);
+			close_and_free_pipes(pipes, 2);
 		}
 		else if (rd == NULL)
 			flag = 0;

@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 15:53:02 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/21 16:41:09 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:24:37 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ t_list	**init_lst_cmd(char **input, int **pipes)
 		}
 		i++;
 	}
-	apply_basic_redirect(lst_cmd, ft_lstsize(*lst_cmd));
+	add_basic_redirect(lst_cmd, ft_lstsize(*lst_cmd));
 	return (lst_cmd);
 }
 

@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 10:53:47 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/21 17:35:05 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/21 17:53:46 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,17 @@ int	len_in_double_quote(char *str, int *i_out, t_list **lst_env)
 	}
 	return (i);
 }
+void	len_in_single_quote(char *str, int *i, int *i_out, t_list **lst_env)
+{
+	*i += 1;
+	*i_out += 1;
+	while (str[*i] != SINGLE_QUOTE)
+	{
+		*i += 1;
+		*i_out += 1;
+	}
+}
+
 
 int	len_expansion_str(char *str, t_list **lst_env)
 {
@@ -196,19 +207,9 @@ int	len_expansion_str(char *str, t_list **lst_env)
 	while (str[i])
 	{
 		if (str[i] == SINGLE_QUOTE)
-		{
-			i += 1;
-			i_out += 1;
-			while (str[i] != SINGLE_QUOTE)
-			{
-				i += 1;
-				i_out += 1;
-			}
-		}
+			len_in_single_quote(str, &i, &i_out, lst_env);
 		else if (str[i] == DOUBLE_QUOTE)
-		{
 			i+= len_in_double_quote(&str[i], &i_out, lst_env);
-		}
 		else if (is_start_of_env_var(str, i))
 		{
 			i++;
@@ -223,7 +224,6 @@ int	len_expansion_str(char *str, t_list **lst_env)
 
 char	*expansion_str(char *str, t_list **lst_env)
 {
-	// printf("before %s\n", str);
 	int		i;
 	int		i_out;
 	char	*output;
@@ -249,42 +249,42 @@ char	*expansion_str(char *str, t_list **lst_env)
 	return (output);
 }
 
-void	test(char *str, t_list **env, char *expected)
-{
-	char			*output;
-	static int		i = 1;
+// void	test(char *str, t_list **env, char *expected)
+// {
+// 	char			*output;
+// 	static int		i = 1;
 
-	output = expansion_str(str, env);
-	// printf("expected : %s\n", expected);
-	printf("Len exp : %d\n", (int)ft_strlen(output));
-	printf("Len out : %d\n", len_expansion_str(str, env));
-	printf("Test %d | ", i);
-	if (ft_strcmp(output, expected) == 0)
-	{
-		printf("\033[0;32mOK");
-	}
-	else
-		printf("\033[0;31mKO");
-	printf("\033[0;37m\n");
-	free(output);
-	i++;
-}
+// 	output = expansion_str(str, env);
+// 	// printf("expected : %s\n", expected);
+// 	printf("Len exp : %d\n", (int)ft_strlen(output));
+// 	printf("Len out : %d\n", len_expansion_str(str, env));
+// 	printf("Test %d | ", i);
+// 	if (ft_strcmp(output, expected) == 0)
+// 	{
+// 		printf("\033[0;32mOK");
+// 	}
+// 	else
+// 		printf("\033[0;31mKO");
+// 	printf("\033[0;37m\n");
+// 	free(output);
+// 	i++;
+// }
 
-int	main()
-{
-	t_list	*lst1;
+// int	main()
+// {
+// 	t_list	*lst1;
 
-	lst1 = ft_lstnew(init_key_val("USER", "nveneros"));
+// 	lst1 = ft_lstnew(init_key_val("USER", "nveneros"));
 
-	// expansion_var("salut $123\"$USER\"suite $'$USER' '$USER'$", &lst1);
-	// expansion_var("$USER | $'$USER'\"$USER\" $$", &lst1);
-	// expansion_var("$hello_bye_bye$", &lst1);
-	// expansion_var("hel$'$'USER", &lst1);
-	test("\"$USER|$USER>\"", &lst1, "\"nveneros|nveneros>\"");
-	test("salut $123", &lst1, "salut $123");
-	test("hel$'$'USER", &lst1, "hel$'$'USER");
-	test("$USER | $'$USER'\"$USER\" $$", &lst1, "nveneros | $'$USER'\"nveneros\" $$");
-	free_key_val(lst1->content);
-	free(lst1);
-	return (0);
-}
+// 	// expansion_var("salut $123\"$USER\"suite $'$USER' '$USER'$", &lst1);
+// 	// expansion_var("$USER | $'$USER'\"$USER\" $$", &lst1);
+// 	// expansion_var("$hello_bye_bye$", &lst1);
+// 	// expansion_var("hel$'$'USER", &lst1);
+// 	test("\"$USER|$USER>\"", &lst1, "\"nveneros|nveneros>\"");
+// 	test("salut $123", &lst1, "salut $123");
+// 	test("hel$'$'USER", &lst1, "hel$'$'USER");
+// 	test("$USER | $'$USER'\"$USER\" $$", &lst1, "nveneros | $'$USER'\"nveneros\" $$");
+// 	free_key_val(lst1->content);
+// 	free(lst1);
+// 	return (0);
+// }

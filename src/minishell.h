@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/21 16:45:59 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:24:28 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void	print_list_operators(t_list **operators);
 void	init_int_zero(int *first, int *second, int *third, int *fourth);
 
 //basic_redirections.c
-void	apply_basic_redirect(t_list **lst_cmd, int nb_cmd);
+void	add_basic_redirect(t_list **lst_cmd, int nb_cmd);
 
 //pipes.c
 int		**init_pipes(int nb_pipe);

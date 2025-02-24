@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_str.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:35:40 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/24 11:47:22 by pchateau         ###   ########.fr       */
+/*   Updated: 2025/02/24 16:36:35 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
  * @param i_out Indice qui indique la position du caractere dans output
  */
 
-void	handle_single_quote(char *str, int *i, char *output, int *i_out)
+static void	handle_single_quote(char *str, int *i, char *output, int *i_out)
 {
 	output[*i_out] = str[*i];
 	*i += 1;
@@ -46,7 +46,7 @@ void	handle_single_quote(char *str, int *i, char *output, int *i_out)
  * @return Nombre d'incrementation effectue dans str
  */
 
-int	handle_double_quote(char *str, char *output, int *i_out_main, t_list **lst_env)
+static int	handle_double_quote(char *str, char *output, int *i_out_main, t_list **lst_env)
 {
 	int	i;
 	int	i_out;
@@ -69,6 +69,9 @@ int	handle_double_quote(char *str, char *output, int *i_out_main, t_list **lst_e
 }
 
 
+/**
+ * Free str and return new str with expansion 
+ */
 char	*expansion_str(char *str, t_list **lst_env)
 {
 	int		i;
@@ -93,5 +96,6 @@ char	*expansion_str(char *str, t_list **lst_env)
 		output[i_out++] = str[i++];
 	}
 	output[i_out] = '\0';
+	free(str);
 	return (output);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/24 11:52:10 by pchateau         ###   ########.fr       */
+/*   Updated: 2025/02/24 17:58:41 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ int		ft_strcmp(const char *s1, const char *s2);
 t_list	**init_operators_in(char **split, int i_start, int i_end);
 t_list	**init_operators_out(char **split, int i_start, int i_end);
 
+void	print_operator(t_key_val *operator);
+
 //cmd.c
 t_list	**init_lst_cmd(char **input, int **pipes);
 t_cmd	*init_cmd(char **input, int start, int end, int **pipes);
@@ -142,4 +144,16 @@ int		len_expansion_str(char *str, t_list **lst_env);
 char	*expansion_str(char *str, t_list **lst_env);
 t_bool	is_start_of_env_var(char *str, int i);
 int		expansion_var(char *str, char *out, int *i_out, t_list **lst_env);
+char	*get_key_in_str(char *str);
+char 	*find_value_in_env(char *key, t_list **lst_env);
+
+//REDIRECTIONS
+void	handle_redirection_in(t_list *operators_in, t_list **lst_cmd, int **pipes, t_list **env);
+void	handle_redirection_out(t_list *operators_out, t_list **lst_cmd, int **pipes, t_list **env);
+int		redirect_pipe(t_key_val *content, int *last);
+int		redirect_out(t_key_val *content, t_bool is_last);
+int		redirect_out_append(t_key_val *content, t_bool is_last);
+int		redirect_in(t_key_val *content, t_bool is_last);
+int		handle_here_doc(t_key_val *content, t_bool is_last);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:35:37 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/24 09:41:04 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/24 16:39:16 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	len_in_double_quote(char *str, int *i_out, t_list **lst_env)
 	}
 	return (i);
 }
-void	len_in_single_quote(char *str, int *i, int *i_out, t_list **lst_env)
+void	len_in_single_quote(char *str, int *i, int *i_out)
 {
 	*i += 1;
 	*i_out += 1;
@@ -72,7 +72,7 @@ int	len_expansion_str(char *str, t_list **lst_env)
 	while (str[i])
 	{
 		if (str[i] == SINGLE_QUOTE)
-			len_in_single_quote(str, &i, &i_out, lst_env);
+			len_in_single_quote(str, &i, &i_out);
 		else if (str[i] == DOUBLE_QUOTE)
 			i+= len_in_double_quote(&str[i], &i_out, lst_env);
 		else if (is_start_of_env_var(str, i))

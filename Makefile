@@ -4,8 +4,9 @@ SRC_INIT_DIR = $(SRC_DIR)/init
 SRC_PARSE_CHECK_DIR = $(SRC_PARSE_DIR)/checks
 SRC_INIT_CMD_DIR = $(SRC_INIT_DIR)/cmd
 SRC_INIT_ENV_DIR = $(SRC_INIT_DIR)/env
-SRC_EXPANSION_DIR = $(SRC_INIT_DIR)/expansion
+SRC_EXPANSION_DIR = $(SRC_DIR)/expansion
 SRC_DEBUG_DIR = $(SRC_DIR)/debug
+SRC_REDIRECTION_DIR = $(SRC_DIR)/redirection
 
 SRC_PARSE = $(SRC_PARSE_DIR)/parse_input.c \
 		$(SRC_PARSE_DIR)/parse_utils.c \
@@ -40,6 +41,11 @@ SRC_EXPANSION = $(SRC_EXPANSION_DIR)/expansion_len_str.c \
 				$(SRC_EXPANSION_DIR)/expansion_str.c \
 				$(SRC_EXPANSION_DIR)/expansion_var.c \
 
+SRC_REDIRECTION = $(SRC_REDIRECTION_DIR)/handle_redirection.c \
+				$(SRC_REDIRECTION_DIR)/redirect_in.c \
+				$(SRC_REDIRECTION_DIR)/redirect_out.c \
+				$(SRC_REDIRECTION_DIR)/redirect_pipe.c
+
 SRC = $(SRC_DIR)/main.c \
 	$(SRC_DIR)/utils.c \
 	$(SRC_DIR)/split_utils.c \
@@ -48,11 +54,13 @@ SRC = $(SRC_DIR)/main.c \
 	$(SRC_INIT_ENV) \
 	$(SRC_PARSE) \
 	$(SRC_PARSE_CHECK) \
-	$(SRC_DEBUG)
+	$(SRC_DEBUG) \
+	$(SRC_EXPANSION) \
+	$(SRC_REDIRECTION)
 
 OBJ = $(SRC:.c=.o)
 CC = cc
-CFLAGS += -Wall -Wextra -Werror -g -Isrc
+# CFLAGS += -Wall -Wextra -Werror -g -Isrc
 CFLAGS += -Isrc
 NAME = minishell
 

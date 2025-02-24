@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_var.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:40:07 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/24 11:47:22 by pchateau         ###   ########.fr       */
+/*   Updated: 2025/02/24 16:40:06 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ int	len_key_in_str(char *str)
 	if (str[i] == '$')
 		i++;
 	while (str[i]
-		&& ft_isalnum(str[i])
-		|| str[i] == '_')
+		&& (ft_isalnum(str[i])
+		|| str[i] == '_'))
 	{
 		len_key++;
 		i++;
@@ -140,7 +140,7 @@ t_bool	is_start_of_env_var(char *str, int i)
 {
 	if (str[i] == '$'
 		&&  str[i + 1]
-		&& ft_isalpha(str[i + 1]) || str[i + 1] == '_')
+		&& (ft_isalpha(str[i + 1]) || str[i + 1] == '_'))
 		return (TRUE);
 	return (FALSE);
 }

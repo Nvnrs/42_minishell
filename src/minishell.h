@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/21 18:24:28 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/24 11:52:10 by pchateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 
 # define DOUBLE_QUOTE 34
 # define SINGLE_QUOTE 39
+# define HERE_DOC_FILENAME ".nRuucnTJX07KI45MgLYviuCjeD1XxLsCjRYv3md9"
 
 typedef struct s_key_val
 {
@@ -136,4 +137,9 @@ void	close_and_free_npipe(int **pipes, int nb_pipe, int n);
 void	free_all_pipes(int **pipes, int nb_pipe);
 void	free_npipe(int **pipes, int nb_pipe, int n);
 
+// EXPANSIONS
+int		len_expansion_str(char *str, t_list **lst_env);
+char	*expansion_str(char *str, t_list **lst_env);
+t_bool	is_start_of_env_var(char *str, int i);
+int		expansion_var(char *str, char *out, int *i_out, t_list **lst_env);
 #endif

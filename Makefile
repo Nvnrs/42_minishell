@@ -4,6 +4,7 @@ SRC_INIT_DIR = $(SRC_DIR)/init
 SRC_PARSE_CHECK_DIR = $(SRC_PARSE_DIR)/checks
 SRC_INIT_CMD_DIR = $(SRC_INIT_DIR)/cmd
 SRC_INIT_ENV_DIR = $(SRC_INIT_DIR)/env
+SRC_EXPANSION_DIR = $(SRC_INIT_DIR)/expansion
 SRC_DEBUG_DIR = $(SRC_DIR)/debug
 
 SRC_PARSE = $(SRC_PARSE_DIR)/parse_input.c \
@@ -32,8 +33,12 @@ SRC_INIT_ENV = $(SRC_INIT_ENV_DIR)/env_lst.c \
 		$(SRC_INIT_ENV_DIR)/env_tab_str.c
 
 SRC_DEBUG = $(SRC_DEBUG_DIR)/cmd.c \
-		$(SRC_DEBUG_DIR)/env.c \
-		$(SRC_DEBUG_DIR)/operators.c
+			$(SRC_DEBUG_DIR)/env.c \
+			$(SRC_DEBUG_DIR)/operators.c
+
+SRC_EXPANSION = $(SRC_EXPANSION_DIR)/expansion_len_str.c \
+				$(SRC_EXPANSION_DIR)/expansion_str.c \
+				$(SRC_EXPANSION_DIR)/expansion_var.c \
 
 SRC = $(SRC_DIR)/main.c \
 	$(SRC_DIR)/utils.c \
@@ -47,7 +52,7 @@ SRC = $(SRC_DIR)/main.c \
 
 OBJ = $(SRC:.c=.o)
 CC = cc
-# CFLAGS += -Wall -Wextra -Werror -g -Isrc
+CFLAGS += -Wall -Wextra -Werror -g -Isrc
 CFLAGS += -Isrc
 NAME = minishell
 
@@ -61,7 +66,7 @@ MYLIB42 = $(MYLIB42_DIR)/mylib42.a
 all : $(NAME)
 
 $(NAME) :  $(MYLIB42) $(OBJ)
-	$(CC) -g $(CFLAGS) $(OBJ) $(MYLIB42) -o $(NAME) -lreadline
+	$(CC) $(CFLAGS) $(OBJ) $(MYLIB42) -o $(NAME) -lreadline
 
 $(MYLIB42_DIR) :
 	git clone https://github.com/Nvnrs/MYLIB42.git $(MYLIB42_DIR)

@@ -1,12 +1,14 @@
 #include "minishell.h"
 
-static int	redirect_case(t_key_val *content, t_bool is_last)
+static int	redirect_case(t_key_val *content, t_bool is_last, t_bool is_in)
 {
 	int	status;
 
 	status = 0;
-	if (ft_strcmp(content->key, "base") == 0)
-		status = redirect_pipe(content, NULL);
+	if (ft_strcmp(content->key, "base") == 0 && is_in == TRUE)
+		status = redirect_pipe_in(content, is_last);
+	else if (ft_strcmp(content->key, "base") == 0 && is_in == FALSE)
+		status = redirect_pipe_out(content, is_last);
 	else if (ft_strcmp(content->key, "<") == 0)
 		status = redirect_in(content, is_last);
 	else if (ft_strcmp(content->key, "<<") == 0)
@@ -30,7 +32,7 @@ void	handle_redirection_in(t_list *operators_in, t_list **lst_cmd, int **pipes, 
 		if (operators_in->next == NULL)
 			is_last = TRUE;
 		content = operators_in->content;
-		status = redirect_case(content, is_last);
+		status = redirect_case(content, is_last, TRUE);
 		printf("status value in handle_redirection_out: %d\n", status);
 		// if (status != 0)
 		// {
@@ -58,7 +60,7 @@ void	handle_redirection_out(t_list *operators_out, t_list **lst_cmd, int **pipes
 		if (operators_out->next == NULL)
 			is_last = TRUE;
 		content = operators_out->content;
-		status = redirect_case(content, is_last);
+		status = redirect_case(content, is_last, FALSE);
 		printf("status value in handle_redirection_out: %d\n", status);
 		// if (status != 0)
 		// {

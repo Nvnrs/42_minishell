@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/24 17:58:41 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/25 09:22:08 by pchateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,8 @@ char 	*find_value_in_env(char *key, t_list **lst_env);
 //REDIRECTIONS
 void	handle_redirection_in(t_list *operators_in, t_list **lst_cmd, int **pipes, t_list **env);
 void	handle_redirection_out(t_list *operators_out, t_list **lst_cmd, int **pipes, t_list **env);
-int		redirect_pipe(t_key_val *content, int *last);
+int		redirect_pipe_in(t_key_val *content, t_bool is_last);
+int		redirect_pipe_out(t_key_val *content, t_bool is_last);
 int		redirect_out(t_key_val *content, t_bool is_last);
 int		redirect_out_append(t_key_val *content, t_bool is_last);
 int		redirect_in(t_key_val *content, t_bool is_last);

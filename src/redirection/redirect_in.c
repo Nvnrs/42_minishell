@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirect_in.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/25 15:09:38 by nveneros          #+#    #+#             */
+/*   Updated: 2025/02/25 15:09:39 by nveneros         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	redirect_in(t_key_val *content, t_bool is_last)
@@ -7,7 +19,6 @@ int	redirect_in(t_key_val *content, t_bool is_last)
 	fd = open(content->value, O_RDONLY);
 	if (fd < 0)
 	{
-		dprintf(2, "HYYYYYYYYY");
 		perror(NULL);
 		return (1);
 	}

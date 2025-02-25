@@ -6,129 +6,11 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:10:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/25 11:25:15 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:09:00 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/**
-* Effectue les redirections in et out
-* Close pipes
-* Execute la  commande de la commande
-*/
-void	handle_cmd(t_cmd *cmd, t_list **lst_cmd, t_list **env)
-{
-	char *arg[2];
-	arg[0] = "cat\0";
-	// arg[1] = "test";
-	arg[1] = NULL;
-	// printf("START\n");
-	handle_redirection_in(*cmd->operators_in, env);
-	handle_redirection_out(*cmd->operators_out, env);
-	close_and_free_pipes(cmd->pipes, 2);
-	free_lst_cmd(lst_cmd);
-	free_list_env(env);
-	execve("/bin/cat", arg, NULL);
-	exit(0);
-}
-
-/**
- * Separe les commandes en plusieurs process
- */
-int	processing(t_list **lst_cmd, int nb_cmd, t_list **env, int **pipes)
-{
-	int	i;
-	int	pid;
-	t_list	*lst;
-
-	i = 0;
-	lst = *lst_cmd;
-	while (i < nb_cmd)
-	{
-		pid = fork();
-		if (pid == -1)
-			return (1);
-		else if (pid == 0)
-			break ;
-		i++;
-		lst = lst->next;
-	}
-	if (pid == 0)
-	{
-		//printf("___________HANDLE_CMD\n");
-		handle_cmd(lst->content, lst_cmd, env);
-	}
-	close_and_free_pipes(pipes, 2);
-	while (i > 0)
-	{
-		//printf("WAIT START\n");
-		wait(NULL);//pas complet
-		//printf("WAIT END\n");
-		i--;
-	}
-	return (0);
-}
-
-// APPLY EXPANSION 
-
-void	apply_expansion_args_exec(char **args_exec, t_list **lst_env)
-{
-	int i;
-
-	i = 0;
-	while (args_exec[i])
-	{
-		args_exec[i] = expansion_str(args_exec[i], lst_env);
-		i++;
-	}
-}
-
-
-void	apply_expansion_operators(t_list **operators, t_list **lst_env)
-{
-	t_list	*lst;
-	t_key_val *content;
-
-	lst = *operators;
-	while (lst)
-	{
-		content = lst->content;
-		if (ft_strcmp(content->key, "<<") != 0)
-		{
-			content->value = expansion_str(content->value, lst_env);
-		}
-		lst = lst->next;
-	}
-		
-}
-
-/**
- * apply to
- * cmd
- * 	-> name
- * 	-> args_exec
- *  -> operators_in / out
- * 		-> value
- */
-void	apply_expansion(t_list **lst_cmd, t_list **lst_env)
-{
-	t_list	*lst;
-	t_cmd	*cmd;
-
-	lst = *lst_cmd;
-
-	while (lst)
-	{
-		cmd = lst->content;
-		if (cmd->name)
-			cmd->name = expansion_str(cmd->name, lst_env);
-		apply_expansion_args_exec(cmd->args_exec, lst_env);
-		apply_expansion_operators(cmd->operators_in, lst_env);
-		apply_expansion_operators(cmd->operators_out, lst_env);	
-		lst = lst->next;
-	}	
-}
 
 /**
  * Gere l'input de l'utilisateur
@@ -157,6 +39,7 @@ int	handle_readline(char *rd, t_list **env)
 	return (0);
 }
 
+
 int	main(int argc, char *argv[], char *envp[])
 {
 	char	*rd;
@@ -166,6 +49,7 @@ int	main(int argc, char *argv[], char *envp[])
 	(void)argc;
 	(void)argv;
 	env = init_list_env(envp);
+	set_signals();
 	flag = 1;
 	while (flag)
 	{

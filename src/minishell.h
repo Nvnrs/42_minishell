@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/25 11:22:15 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/25 13:34:35 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,38 +48,24 @@ typedef struct s_cmd
 	int		**pipes;
 }	t_cmd;
 
-//src/parsing/parse_input.c
-int		count_word_in_input(char *str);
-char	**parse_input(char *str);
+// PARSING
+int			count_word_in_input(char *str);
+char		**parse_input(char *str);
+int			handle_no_quote(char **split, int split_index, char *str, int i_start);
+int			count_no_quote(char *str, int i_start);
+int			handle_quote(char **split, int split_index, char *str, int i_start);
+int			count_quote(char *str, int i_start);
 
-//src/parsing/handle_no_quote.c
-int		handle_no_quote(char **split, int split_index, char *str, int i_start);
-int		count_no_quote(char *str, int i_start);
-
-//src/parsing/handle_quote.c
-int		handle_quote(char **split, int split_index, char *str, int i_start);
-int		count_quote(char *str, int i_start);
-
-//src/parsing/parse_utils.c
-t_bool	is_double_redirection(char *str, int index);
-t_bool	is_single_operator(char *str, int index);
-
-//src/parsing/checks/checks_after_operators.c
-t_bool	after_operators_is_empty(char *str);
-
-//src/parsing/checks/checks_operators.c
-t_bool	is_start_of_operator(char *operator, char *str, int i_str);
-t_bool	operators_are_valid(char *str);
-
-//src/parsing/checks/checks_consecutive_operators.c
-t_bool	consecutives_operators(char *str);
-
-//src/parsing/checks/check_quotes.c
-t_bool	nb_quotes_is_even(char type_quote, char other_quote, char *str);
-t_bool	quotes_are_valid(char *str);
-
-//src/parsing/checks/checks.c
-t_bool	basics_checks(char *str);
+// PARSING_CHECKS
+t_bool		is_double_redirection(char *str, int index);
+t_bool		is_single_operator(char *str, int index);
+t_bool		after_operators_is_empty(char *str);
+t_bool		is_start_of_operator(char *operator, char *str, int i_str);
+t_bool		operators_are_valid(char *str);
+t_bool		consecutives_operators(char *str);
+t_bool		nb_quotes_is_even(char type_quote, char other_quote, char *str);
+t_bool		quotes_are_valid(char *str);
+t_bool		basics_checks(char *str);
 
 // STR to ENV
 t_key_val	*init_key_val(char *key, char *value);
@@ -91,68 +77,68 @@ void		print_list_env(t_list **env);
 
 // ENV to STR
 char		**lst_env_to_tab_str(t_list **lst_env);
+char		*find_value_in_env(char *key, t_list **lst_env);
 
-//?/split_utils.c
-int		len_split(char **split);
-void	free_split(char **split);
-void	print_split(char **split);
+// OPERATORS
+t_list		**init_operators_in(char **split, int i_start, int i_end);
+t_list		**init_operators_out(char **split, int i_start, int i_end);
+void		print_operator(t_key_val *operator);
+void		print_list_operators(t_list **operators);
 
-//operators.c
-int		ft_strcmp(const char *s1, const char *s2);
-t_list	**init_operators_in(char **split, int i_start, int i_end);
-t_list	**init_operators_out(char **split, int i_start, int i_end);
+// CMD
+t_list		**init_lst_cmd(char **input, int **pipes);
+t_cmd		*init_cmd(char **input, int start, int end, int **pipes);
+void		print_start_end(char **tab, int start, int end);
+char		*get_cmd_name(char	**input, int i_start, int i_end);
+int			count_cmd_arguments(char **input, int i_start, int i_end);
+char		**get_cmd_arguments(char **input, int i_start, int i_end);
+void		free_lst_cmd(t_list **lst_cmd);
+void		print_cmd(void *cmd_content);
+void		free_cmd(void *cmd_void);
 
-void	print_operator(t_key_val *operator);
-
-//cmd.c
-t_list	**init_lst_cmd(char **input, int **pipes);
-t_cmd	*init_cmd(char **input, int start, int end, int **pipes);
-void	print_start_end(char **tab, int start, int end);
-char	*get_cmd_name(char	**input, int i_start, int i_end);
-int		count_cmd_arguments(char **input, int i_start, int i_end);
-char	**get_cmd_arguments(char **input, int i_start, int i_end);
-void	free_lst_cmd(t_list **lst_cmd);
-void	print_cmd(void *cmd_content);
-void	free_cmd(void *cmd_void);
-void	print_list_operators(t_list **operators);
-
-
-//utils.c
-void	init_int_zero(int *first, int *second, int *third, int *fourth);
-
-//pipe_redirections.c
-void	add_pipe_redirect(t_list **lst_cmd, int nb_cmd);
-
-//pipes.c
-int		**init_pipes(int nb_pipe);
-
-//close_pipes.c
-void	close_pipe(int pipes[2]);
-void	close_all_pipes(int **pipes, int nb_pipe);
-void	close_npipe(int **pipes, int nb_pipe, int n);
-void	close_and_free_pipes(int **pipes, int nb_pipe);
-void	close_and_free_npipe(int **pipes, int nb_pipe, int n);
-
-//free_pipes.c
-void	free_all_pipes(int **pipes, int nb_pipe);
-void	free_npipe(int **pipes, int nb_pipe, int n);
+// PIPES
+void		add_pipe_redirect(t_list **lst_cmd, int nb_cmd);
+int			**init_pipes(int nb_pipe);
+void		close_pipe(int pipes[2]);
+void		close_all_pipes(int **pipes, int nb_pipe);
+void		close_npipe(int **pipes, int nb_pipe, int n);
+void		close_and_free_pipes(int **pipes, int nb_pipe);
+void		close_and_free_npipe(int **pipes, int nb_pipe, int n);
+void		free_all_pipes(int **pipes, int nb_pipe);
+void		free_npipe(int **pipes, int nb_pipe, int n);
 
 // EXPANSIONS
-int		len_expansion_str(char *str, t_list **lst_env);
-char	*expansion_str(char *str, t_list **lst_env);
-t_bool	is_start_of_env_var(char *str, int i);
-int		expansion_var(char *str, char *out, int *i_out, t_list **lst_env);
-char	*get_key_in_str(char *str);
-char 	*find_value_in_env(char *key, t_list **lst_env);
+int			len_expansion_str(char *str, t_list **lst_env);
+char		*expansion_str(char *str, t_list **lst_env);
+t_bool		is_start_of_env_var(char *str, int i);
+int			expansion_var(char *str, char *out, int *i_out, t_list **lst_env);
+char		*get_key_in_str(char *str);
+char 		*find_value_in_env(char *key, t_list **lst_env);
+void		apply_expansion(t_list **lst_cmd, t_list **lst_env);
 
-//REDIRECTIONS
-void	handle_redirection_in(t_list *operators_in, t_list **env);
-void	handle_redirection_out(t_list *operators_out, t_list **env);
-int		redirect_pipe_in(t_key_val *content, t_bool is_last);
-int		redirect_pipe_out(t_key_val *content, t_bool is_last);
-int		redirect_out(t_key_val *content, t_bool is_last);
-int		redirect_out_append(t_key_val *content, t_bool is_last);
-int		redirect_in(t_key_val *content, t_bool is_last);
-int		handle_here_doc(t_key_val *content, t_bool is_last, t_list **env);
+// REDIRECTIONS
+void		handle_redirection_in(t_list *operators_in, t_list **env);
+void		handle_redirection_out(t_list *operators_out, t_list **env);
+int			redirect_pipe_in(t_key_val *content, t_bool is_last);
+int			redirect_pipe_out(t_key_val *content, t_bool is_last);
+int			redirect_out(t_key_val *content, t_bool is_last);
+int			redirect_out_append(t_key_val *content, t_bool is_last);
+int			redirect_in(t_key_val *content, t_bool is_last);
+int			handle_here_doc(t_key_val *content, t_bool is_last, t_list **env);
+
+// EXECUTING
+int			processing(t_list **lst_cmd, int nb_cmd, t_list **env, int **pipes);
+
+// SIGNALS
+void		set_signals(void);
+
+// UTILS
+void		init_int_zero(int *first, int *second, int *third, int *fourth);
+int			ft_strcmp(const char *s1, const char *s2);
+
+// SPLIT_UTILS
+int			len_split(char **split);
+void		free_split(char **split);
+void		print_split(char **split);
 
 #endif

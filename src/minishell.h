@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/25 09:22:08 by pchateau         ###   ########.fr       */
+/*   Updated: 2025/02/25 09:43:21 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ typedef struct s_cmd
 	char	**args_exec;
 	t_list	**operators_in;
 	t_list	**operators_out;
-	int		basic_redirect_in;
-	int		basic_redirect_out;
 	int		**pipes;
 }	t_cmd;
 
@@ -122,8 +120,8 @@ void	print_list_operators(t_list **operators);
 //utils.c
 void	init_int_zero(int *first, int *second, int *third, int *fourth);
 
-//basic_redirections.c
-void	add_basic_redirect(t_list **lst_cmd, int nb_cmd);
+//pipe_redirections.c
+void	add_pipe_redirect(t_list **lst_cmd, int nb_cmd);
 
 //pipes.c
 int		**init_pipes(int nb_pipe);

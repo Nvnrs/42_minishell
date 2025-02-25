@@ -5,9 +5,9 @@ static int	redirect_case(t_key_val *content, t_bool is_last, t_bool is_in)
 	int	status;
 
 	status = 0;
-	if (ft_strcmp(content->key, "base") == 0 && is_in == TRUE)
+	if (ft_strcmp(content->key, "pipe") == 0 && is_in == TRUE)
 		status = redirect_pipe_in(content, is_last);
-	else if (ft_strcmp(content->key, "base") == 0 && is_in == FALSE)
+	else if (ft_strcmp(content->key, "pipe") == 0 && is_in == FALSE)
 		status = redirect_pipe_out(content, is_last);
 	else if (ft_strcmp(content->key, "<") == 0)
 		status = redirect_in(content, is_last);

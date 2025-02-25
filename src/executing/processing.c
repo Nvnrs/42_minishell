@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:41:38 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/25 18:17:01 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/25 18:38:51 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ char	*tests_path_for_find_cmd(t_cmd *cmd, char **tests_path)
  */
 t_bool	path_is_valid(char *path)
 {
-	struct stat	*buffer;
+	struct stat	buffer;
 	
-	stat(path, buffer);
+	stat(path, &buffer);
 	if (access(path, F_OK) != 0)
 	{
 		exit_status(1, TRUE);
@@ -73,7 +73,7 @@ t_bool	path_is_valid(char *path)
 		ft_putstr_fd(": Permission denied\n", 2);
 		return (FALSE);
 	}
-	else if (S_ISDIR(buffer->st_mode) != TRUE)
+	else if (S_ISDIR(buffer.st_mode) == TRUE)
 	{
 		exit_status(126, TRUE);
 		ft_putstr_fd(path, 2);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_pipe.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 17:57:08 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/25 09:21:55 by pchateau         ###   ########.fr       */
+/*   Updated: 2025/02/25 11:07:18 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,24 @@
 
 int	redirect_pipe_in(t_key_val *content, t_bool is_last)
 {
+	int	fd;
+
 	if (is_last)
-		dup2(atoi(content->value), STDIN_FILENO);
+	{
+		fd = atoi(content->value);
+		dup2(fd, STDIN_FILENO);
+	}
 	return (0);
 }
 
 int	redirect_pipe_out(t_key_val *content, t_bool is_last)
 {
+	int	fd;
+
 	if (is_last)
-		dup2(atoi(content->value), STDOUT_FILENO);
+	{	
+		fd = atoi(content->value);
+		dup2(fd, STDOUT_FILENO);
+	}
 	return (0);
 }

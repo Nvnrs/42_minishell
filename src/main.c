@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:10:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/25 09:30:20 by pchateau         ###   ########.fr       */
+/*   Updated: 2025/02/25 11:25:15 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,24 +19,24 @@
 */
 void	handle_cmd(t_cmd *cmd, t_list **lst_cmd, t_list **env)
 {
-	char *arg[3];
-	arg[0] = "echo\0";
-	arg[1] = "test";
-	arg[2] = NULL;
+	char *arg[2];
+	arg[0] = "cat\0";
+	// arg[1] = "test";
+	arg[1] = NULL;
 	// printf("START\n");
-	handle_redirection_in(*cmd->operators_in, lst_cmd, cmd->pipes, env);
-	handle_redirection_out(*cmd->operators_out, lst_cmd, cmd->pipes, env);
+	handle_redirection_in(*cmd->operators_in, env);
+	handle_redirection_out(*cmd->operators_out, env);
 	close_and_free_pipes(cmd->pipes, 2);
 	free_lst_cmd(lst_cmd);
 	free_list_env(env);
-	execve("/bin/echo", arg, NULL);
+	execve("/bin/cat", arg, NULL);
 	exit(0);
 }
 
 /**
  * Separe les commandes en plusieurs process
  */
-int	processing(t_list **lst_cmd, int nb_cmd, t_list **env)
+int	processing(t_list **lst_cmd, int nb_cmd, t_list **env, int **pipes)
 {
 	int	i;
 	int	pid;
@@ -56,13 +56,15 @@ int	processing(t_list **lst_cmd, int nb_cmd, t_list **env)
 	}
 	if (pid == 0)
 	{
-		printf("___________HANDLE_CMD\n");
+		//printf("___________HANDLE_CMD\n");
 		handle_cmd(lst->content, lst_cmd, env);
 	}
+	close_and_free_pipes(pipes, 2);
 	while (i > 0)
 	{
-		// printf("WAIT\n");
+		//printf("WAIT START\n");
 		wait(NULL);//pas complet
+		//printf("WAIT END\n");
 		i--;
 	}
 	return (0);
@@ -100,15 +102,15 @@ void	apply_expansion_operators(t_list **operators, t_list **lst_env)
 	}
 		
 }
-	/**
-	 * apply to
-	 * cmd
-	 * 	-> name
-	 * 	-> args_exec
-	 *  -> operators_in / out
-	 * 		-> value
-	 */
 
+/**
+ * apply to
+ * cmd
+ * 	-> name
+ * 	-> args_exec
+ *  -> operators_in / out
+ * 		-> value
+ */
 void	apply_expansion(t_list **lst_cmd, t_list **lst_env)
 {
 	t_list	*lst;
@@ -119,7 +121,8 @@ void	apply_expansion(t_list **lst_cmd, t_list **lst_env)
 	while (lst)
 	{
 		cmd = lst->content;
-		cmd->name = expansion_str(cmd->name, lst_env);
+		if (cmd->name)
+			cmd->name = expansion_str(cmd->name, lst_env);
 		apply_expansion_args_exec(cmd->args_exec, lst_env);
 		apply_expansion_operators(cmd->operators_in, lst_env);
 		apply_expansion_operators(cmd->operators_out, lst_env);	
@@ -147,10 +150,10 @@ int	handle_readline(char *rd, t_list **env)
 	lst_cmd = init_lst_cmd(input, pipes);
 	free_split(input);
 	apply_expansion(lst_cmd, env);
-	processing(lst_cmd, ft_lstsize(*lst_cmd), env);
 	ft_lstiter(*lst_cmd, print_cmd);
+	//printf("pipes[0][0] = %d\npipes[0][1] = %d\npipes[1][0] = %d\npipes[1][1] = %d\n", pipes[0][0], pipes[0][1], pipes[1][0], pipes[1][1]);
+	processing(lst_cmd, ft_lstsize(*lst_cmd), env, pipes);
 	free_lst_cmd(lst_cmd);
-	close_and_free_pipes(pipes, 2);
 	return (0);
 }
 
@@ -158,10 +161,7 @@ int	main(int argc, char *argv[], char *envp[])
 {
 	char	*rd;
 	int		flag;
-	// char	**input;
 	t_list	**env;
-	// t_list	**lst_cmd;
-	// int		**pipes;
 
 	(void)argc;
 	(void)argv;
@@ -174,20 +174,6 @@ int	main(int argc, char *argv[], char *envp[])
 		{
 			if (handle_readline(rd, env) == 1)
 				continue ;
-			// add_history(rd);
-			// if (!basics_checks(rd))
-			// {
-			// 	free(rd);
-			// 	continue;
-			// }
-			// input = parse_input(rd);
-			// pipes = init_pipes(2);
-			// printf("pipes[0][0] = %d\npipes[0][1] = %d\npipes[1][0] = %d\npipes[1][1] = %d\n", pipes[0][0], pipes[0][1], pipes[1][0], pipes[1][1]);
-			// lst_cmd = init_lst_cmd(input, pipes);
-			// ft_lstiter(*lst_cmd, print_cmd);
-			// free_lst_cmd(lst_cmd);
-			// free_split(input);
-			// close_and_free_pipes(pipes, 2);
 		}
 		else if (rd == NULL)
 			flag = 0;

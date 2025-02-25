@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/25 09:43:21 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/25 11:22:15 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,13 +146,13 @@ char	*get_key_in_str(char *str);
 char 	*find_value_in_env(char *key, t_list **lst_env);
 
 //REDIRECTIONS
-void	handle_redirection_in(t_list *operators_in, t_list **lst_cmd, int **pipes, t_list **env);
-void	handle_redirection_out(t_list *operators_out, t_list **lst_cmd, int **pipes, t_list **env);
+void	handle_redirection_in(t_list *operators_in, t_list **env);
+void	handle_redirection_out(t_list *operators_out, t_list **env);
 int		redirect_pipe_in(t_key_val *content, t_bool is_last);
 int		redirect_pipe_out(t_key_val *content, t_bool is_last);
 int		redirect_out(t_key_val *content, t_bool is_last);
 int		redirect_out_append(t_key_val *content, t_bool is_last);
 int		redirect_in(t_key_val *content, t_bool is_last);
-int		handle_here_doc(t_key_val *content, t_bool is_last);
+int		handle_here_doc(t_key_val *content, t_bool is_last, t_list **env);
 
 #endif

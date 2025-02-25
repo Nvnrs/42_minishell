@@ -17,7 +17,7 @@ int	redirect_in(t_key_val *content, t_bool is_last)
 	return (0);
 }
 
-static int	write_to_here_doc(char * filename, char	*delimiter)
+static int	write_to_here_doc(char * filename, char	*delimiter, t_list **env)
 {
 	char	*line;
 	int		here_docfd;
@@ -26,9 +26,9 @@ static int	write_to_here_doc(char * filename, char	*delimiter)
 	if (here_docfd == -1)
 		return (1);
 	line = get_next_line(STDIN_FILENO);
-	//expansion variable env dans line
 	while (strcmp(line, delimiter) != 0)
 	{
+		line = expansion_str(line, env);
 		if (write(here_docfd, line, ft_strlen(line)) == -1)
 		{
 			free(line);
@@ -58,7 +58,7 @@ static char *create_name_here_doc(int *id)
 	return (name);
 }
 
-int	handle_here_doc(t_key_val *content, t_bool is_last)
+int	handle_here_doc(t_key_val *content, t_bool is_last, t_list **env)
 {
 	t_key_val	*here_doc;
 	char		*name;
@@ -72,9 +72,9 @@ int	handle_here_doc(t_key_val *content, t_bool is_last)
 	delimiter = cft_strcat_realloc(delimiter, "\n");
 	here_doc = init_key_val("<", name);
 	printf("here_doc name: %s\n", name);
-	status = write_to_here_doc(here_doc->value, delimiter);
+	status = write_to_here_doc(here_doc->value, delimiter, env);
 	if (status == 1)
-		handle_here_doc(content, is_last);
+		handle_here_doc(content, is_last, env);
 	else if (status == 0 && is_last)
 		status = redirect_in(here_doc, is_last);
 	free_key_val(here_doc);

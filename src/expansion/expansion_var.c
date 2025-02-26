@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_var.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:40:07 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/24 16:40:06 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/26 09:26:55 by pchateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char *find_value_in_env(char *key, t_list **lst_env)
 	while (lst)
 	{
 		content = lst->content;
-		if (ft_strncmp(key, content->key, ft_strlen(key)) == 0)
+		if (ft_strcmp(key, content->key) == 0)
 		{
 			return (content->value);
 		}

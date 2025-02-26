@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:35:22 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/25 11:43:30 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/26 14:11:49 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,7 @@ void	apply_expansion(t_list **lst_cmd, t_list **lst_env)
 		if (cmd->name)
 			cmd->name = expansion_str(cmd->name, lst_env);
 		apply_expansion_args_exec(cmd->args_exec, lst_env);
-		apply_expansion_operators(cmd->operators_in, lst_env);
-		apply_expansion_operators(cmd->operators_out, lst_env);
+		apply_expansion_operators(cmd->lst_operator, lst_env);
 		lst = lst->next;
 	}
 }

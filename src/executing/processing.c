@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:41:38 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/25 18:38:51 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/26 17:37:27 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,17 @@ int	exit_status(int new_status_code, t_bool update)
 
 	if (update)
 		status_code = new_status_code;
+	printf("inside exit_status(): %d\n", status_code);
+	printf("new exit_status(): %d\n", new_status_code);
 	return (status_code);
+}
+
+char	*get_exit_status_str(void)
+{
+	char	*exit_status_str;
+
+	exit_status_str = ft_itoa(exit_status(0, FALSE));
+	return (exit_status_str);
 }
 
 char	*tests_path_for_find_cmd(t_cmd *cmd, char **tests_path)
@@ -38,7 +48,7 @@ char	*tests_path_for_find_cmd(t_cmd *cmd, char **tests_path)
 	{
 		path_with_slash = ft_strjoin(tests_path[i], "/");
 		path_cmd = ft_strjoin(path_with_slash, cmd->name);
-		if (access(path_cmd, F_OK | X_OK) == 0)
+		if (access(path_cmd, F_OK) == 0)
 		{
 			free(path_with_slash);
 			return (path_cmd);
@@ -50,34 +60,36 @@ char	*tests_path_for_find_cmd(t_cmd *cmd, char **tests_path)
 	return (NULL);
 }
 
+int	handle_error(int status_code, char *context, char *message)
+{
+	ft_putstr_fd(context, 2);
+	ft_putstr_fd(message, 2);
+	return (exit_status(status_code, TRUE));
+}
+
 /**
 	Check if the given path is valid
 	Return error code
  */
-t_bool	path_is_valid(char *path)
+
+t_bool	cmd_path_is_valid(char *path)
 {
 	struct stat	buffer;
 	
 	stat(path, &buffer);
 	if (access(path, F_OK) != 0)
 	{
-		exit_status(1, TRUE);
-		ft_putstr_fd(path, 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
+		handle_error(1, path, ": No such file or directory\n");
 		return (FALSE);
 	}
-	else if (access(path, X_OK) != 0)
+	if (access(path, X_OK) != 0)
 	{
-		exit_status(126, TRUE);
-		ft_putstr_fd(path, 2);
-		ft_putstr_fd(": Permission denied\n", 2);
+		handle_error(126, path, ": Permission denied\n");
 		return (FALSE);
 	}
-	else if (S_ISDIR(buffer.st_mode) == TRUE)
+	if (S_ISDIR(buffer.st_mode) == TRUE)
 	{
-		exit_status(126, TRUE);
-		ft_putstr_fd(path, 2);
-		ft_putstr_fd(": Is a directory\n", 2);
+		handle_error(126, path, ": Is a directory\n");
 		return (FALSE);
 	}
 	return (TRUE);
@@ -121,20 +133,22 @@ char *get_path_cmd(t_cmd *cmd, t_list **env)
 		if (str_contain_c(cmd->name,'/'))
 		{
 			printf("HERE : %s", cmd->name);
-			if (path_is_valid(cmd->name))
+			if (cmd_path_is_valid(cmd->name))
 				return (ft_strdup(cmd->name));
 			return (NULL);
 		}
 		path = find_path_with_env(cmd, env);
+		printf("PATH :%s\n", path);
 		if (path == NULL)
 		{
-			ft_putstr_fd(cmd->name, 2);
-			ft_putstr_fd(": Command not found\n", 2);
+			handle_error(127, cmd->name, ": Command not found\n");
 			return (NULL);
 		}
+		if (!cmd_path_is_valid(path))
+			return (free(path), (NULL));
 		return (path);
 	}
-	if (path_is_valid(cmd->name))
+	if (cmd_path_is_valid(cmd->name))
 		return (ft_strdup(cmd->name));
 	return (NULL);
 }
@@ -144,24 +158,31 @@ static void	handle_cmd(t_cmd *cmd, t_list **lst_cmd, t_list **env)
 	char *path_cmd;
 	// printf("START\n");
 	//path = get_path_cmd(cmd, env);
-	handle_redirection_in(*cmd->operators_in, env);
-	handle_redirection_out(*cmd->operators_out, env);
+	if(handle_redirection(*cmd->lst_operator, env, cmd) != 0)
+	{
+		close_and_free_pipes(cmd->pipes, 2);
+		free_lst_cmd(lst_cmd);
+		free_list_env(env);
+		exit(exit_status(0, FALSE));
+	}
 	path_cmd = get_path_cmd(cmd, env);//tester avec NULL
-	printf("PATH : %s\n", path_cmd);
+	// printf("PATH :%s\n", path_cmd);
+	printf("CODE : %d\n", exit_status(0, FALSE));
 	if (path_cmd == NULL)
 	{
 		// printf("command not found\n");
 		close_and_free_pipes(cmd->pipes, 2);
 		free_lst_cmd(lst_cmd);
 		free_list_env(env);
-		exit(EXIT_FAILURE);
+		exit(exit_status(0, FALSE));
 	}
 	close_and_free_pipes(cmd->pipes, 2);
-	// free_lst_cmd(lst_cmd);
+	if (execve(path_cmd, cmd->args_exec, NULL) == -1)//passer env en str
+		perror(path_cmd);
+	free_lst_cmd(lst_cmd);
 	free_list_env(env);
-	if (execve(path_cmd, cmd->args_exec, NULL) == -1)
-		perror(NULL);
-	exit(0);
+	free(path_cmd);
+	exit(exit_status(1, TRUE));
 }
 
 /**
@@ -172,6 +193,8 @@ int	processing(t_list **lst_cmd, int nb_cmd, t_list **env, int **pipes)
 	int	i;
 	int	pid;
 	t_list	*lst;
+	int	wstatus;
+	int	status_code;
 
 	i = 0;
 	lst = *lst_cmd;
@@ -186,17 +209,58 @@ int	processing(t_list **lst_cmd, int nb_cmd, t_list **env, int **pipes)
 		lst = lst->next;
 	}
 	if (pid == 0)
-	{
-		//printf("___________HANDLE_CMD\n");
 		handle_cmd(lst->content, lst_cmd, env);
-	}
 	close_and_free_pipes(pipes, 2);
 	while (i > 0)
 	{
-		//printf("WAIT START\n");
-		wait(NULL);//pas complet
-		//printf("WAIT END\n");
+		waitpid(-1, &wstatus, 0);//pas complet
+		if (WIFEXITED(wstatus))
+		{
+			status_code = WEXITSTATUS(wstatus);
+			printf("exit status code of child:%d\n", status_code);
+			exit_status(status_code, TRUE);
+		}
 		i--;
 	}
 	return (0);
 }
+
+// int	processing(t_list **lst_cmd, int nb_cmd, t_list **env, int **pipes)
+// {
+// 	int	i;
+// 	int	*pid;
+// 	t_list	*lst;
+// 	int	wstatus;
+// 	int	status_code;
+
+// 	i = 0;
+// 	lst = *lst_cmd;
+// 	pid = malloc(nb_cmd * sizeof(int));
+// 	while (i < nb_cmd)
+// 	{
+// 		pid[i] = fork();
+// 		if (pid[i] == -1)
+// 			return (EXIT_FAILURE);
+// 		else if (pid[i] == 0)
+// 		{
+// 			handle_cmd(lst->content, lst_cmd, env);
+// 			break;
+// 		}
+// 		i++;
+// 		lst = lst->next;
+// 	}
+// 	close_and_free_pipes(pipes, 2);
+// 	i = 0;
+// 	while (i < nb_cmd)
+// 	{
+// 		waitpid(pid[i], &wstatus, 0);//pas complet
+// 		if (WIFEXITED(wstatus))
+// 		{
+// 			status_code = WEXITSTATUS(wstatus);
+// 			printf("exit status code of child:%d\n", status_code);
+// 			exit_status(status_code, TRUE);
+// 		}
+// 		i++;
+// 	}
+// 	return (0);
+// }

@@ -2,56 +2,66 @@
 
 static void	redirect_first(t_cmd *cmd)
 {
-	char	*first_pipe_write;
+	int	first_pipe_write;
 
-	first_pipe_write = ft_itoa(cmd->pipes[0][1]);
-	ft_lstadd_front(cmd->operators_out, ft_lstnew(init_key_val("pipe", first_pipe_write)));
-	free(first_pipe_write);
+	first_pipe_write = cmd->pipes[0][1];//itoa
+	// ft_lstadd_front(cmd->operators_out, ft_lstnew(init_key_val("pipe", first_pipe_write)));
+	// free(first_pipe_write);
+	cmd->pipefd_in = -1;
+	cmd->pipefd_out = first_pipe_write;
 }
 
 static void	redirect_last(t_cmd *cmd, int index_cmd)
 {
-	char	*first_pipe_read;
-	char	*second_pipe_read;
+	int	first_pipe_read;
+	int	second_pipe_read;
 
 	if (index_cmd % 2 == 1)
 	{
-		first_pipe_read = ft_itoa(cmd->pipes[0][0]);
-		ft_lstadd_front(cmd->operators_in, ft_lstnew(init_key_val("pipe", first_pipe_read)));
-		free(first_pipe_read);
+		first_pipe_read = cmd->pipes[0][0];
+		// ft_lstadd_front(cmd->operators_in, ft_lstnew(init_key_val("pipe", first_pipe_read)));
+		// free(first_pipe_read);
+		cmd->pipefd_in = first_pipe_read;
+		cmd->pipefd_out = -1;
 	}
 	else if (index_cmd % 2 == 0)
 	{
-		second_pipe_read = ft_itoa(cmd->pipes[1][0]);
-		ft_lstadd_front(cmd->operators_in, ft_lstnew(init_key_val("pipe", second_pipe_read)));
-		free(second_pipe_read);
+		second_pipe_read = cmd->pipes[1][0];
+		// ft_lstadd_front(cmd->operators_in, ft_lstnew(init_key_val("pipe", second_pipe_read)));
+		// free(second_pipe_read);
+		cmd->pipefd_in = second_pipe_read;
+		cmd->pipefd_out = -1;
 	}
 }
 
 static void	redirect_middle(t_cmd *cmd, int index_cmd)
 {
-	char	*first_pipe_read;
-	char	*first_pipe_write;
-	char	*second_pipe_read;
-	char	*second_pipe_write;
+	int	first_pipe_read;
+	int	first_pipe_write;
+	int	second_pipe_read;
+	int	second_pipe_write;
 
 	if (index_cmd % 2 == 1)
 	{
-		first_pipe_read = ft_itoa(cmd->pipes[0][0]);
-		second_pipe_write = ft_itoa(cmd->pipes[1][1]);
-		ft_lstadd_front(cmd->operators_in, ft_lstnew(init_key_val("pipe", first_pipe_read)));
-		ft_lstadd_front(cmd->operators_out, ft_lstnew(init_key_val("pipe", second_pipe_write)));
-		free(first_pipe_read);
-		free(second_pipe_write);
+		first_pipe_read = cmd->pipes[0][0];
+		second_pipe_write = cmd->pipes[1][1];
+		// ft_lstadd_front(cmd->operators_in, ft_lstnew(init_key_val("pipe", first_pipe_read)));
+		// ft_lstadd_front(cmd->operators_out, ft_lstnew(init_key_val("pipe", second_pipe_write)));
+		// free(first_pipe_read);
+		// free(second_pipe_write);
+		cmd->pipefd_in = first_pipe_read;
+		cmd->pipefd_out = second_pipe_write;
 	}
 	else if (index_cmd % 2 == 0)
 	{
-		second_pipe_read = ft_itoa(cmd->pipes[1][0]);
-		first_pipe_write = ft_itoa(cmd->pipes[0][1]);
-		ft_lstadd_front(cmd->operators_in, ft_lstnew(init_key_val("pipe", second_pipe_read)));
-		ft_lstadd_front(cmd->operators_out, ft_lstnew(init_key_val("pipe", first_pipe_write)));
-		free(second_pipe_read);
-		free(first_pipe_write);
+		second_pipe_read = cmd->pipes[1][0];
+		first_pipe_write = cmd->pipes[0][1];
+		// ft_lstadd_front(cmd->operators_in, ft_lstnew(init_key_val("pipe", second_pipe_read)));
+		// ft_lstadd_front(cmd->operators_out, ft_lstnew(init_key_val("pipe", first_pipe_write)));
+		// free(second_pipe_read);
+		// free(first_pipe_write);
+		cmd->pipefd_in = second_pipe_read;
+		cmd->pipefd_out = first_pipe_write;
 	}
 }
 

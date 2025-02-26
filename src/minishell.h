@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/25 13:34:35 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/26 16:50:42 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,15 @@ typedef struct s_cmd
 {
 	char	*name;
 	char	**args_exec;
-	t_list	**operators_in;
-	t_list	**operators_out;
+	t_list	**lst_operator;
+	int		pipefd_in;
+	int		pipefd_out;
+	// t_list	**operators_in;
+	// t_list	**operators_out;
 	int		**pipes;
 }	t_cmd;
+
+typedef int t_exit_status;
 
 // PARSING
 int			count_word_in_input(char *str);
@@ -66,6 +71,8 @@ t_bool		consecutives_operators(char *str);
 t_bool		nb_quotes_is_even(char type_quote, char other_quote, char *str);
 t_bool		quotes_are_valid(char *str);
 t_bool		basics_checks(char *str);
+t_bool		str_contain_only_point(char *str);
+
 
 // STR to ENV
 t_key_val	*init_key_val(char *key, char *value);
@@ -80,8 +87,6 @@ char		**lst_env_to_tab_str(t_list **lst_env);
 char		*find_value_in_env(char *key, t_list **lst_env);
 
 // OPERATORS
-t_list		**init_operators_in(char **split, int i_start, int i_end);
-t_list		**init_operators_out(char **split, int i_start, int i_end);
 void		print_operator(t_key_val *operator);
 void		print_list_operators(t_list **operators);
 
@@ -117,10 +122,7 @@ char 		*find_value_in_env(char *key, t_list **lst_env);
 void		apply_expansion(t_list **lst_cmd, t_list **lst_env);
 
 // REDIRECTIONS
-void		handle_redirection_in(t_list *operators_in, t_list **env);
-void		handle_redirection_out(t_list *operators_out, t_list **env);
-int			redirect_pipe_in(t_key_val *content, t_bool is_last);
-int			redirect_pipe_out(t_key_val *content, t_bool is_last);
+
 int			redirect_out(t_key_val *content, t_bool is_last);
 int			redirect_out_append(t_key_val *content, t_bool is_last);
 int			redirect_in(t_key_val *content, t_bool is_last);
@@ -128,6 +130,7 @@ int			handle_here_doc(t_key_val *content, t_bool is_last, t_list **env);
 
 // EXECUTING
 int			processing(t_list **lst_cmd, int nb_cmd, t_list **env, int **pipes);
+t_bool		cmd_path_is_valid(char *path);
 
 // SIGNALS
 void		set_signals(void);
@@ -140,5 +143,21 @@ int			ft_strcmp(const char *s1, const char *s2);
 int			len_split(char **split);
 void		free_split(char **split);
 void		print_split(char **split);
+
+int			exit_status(int new_status_code, t_bool update);
+char		*get_exit_status_str(void);
+
+char		*get_value_from_key(char *key, t_list **lst_env);
+
+t_list		**init_lst_operator(char **split, int i_start, int i_end);
+
+void		redirect_pipe(t_list *lst_operator, t_cmd *cmd);
+
+int			handle_redirection(t_list *lst_operator, t_list **env, t_cmd *cmd);
+
+t_bool		operator_out_in_lst_operator(t_list *lst_operator);
+t_bool		operator_in_in_lst_operator(t_list *lst_operator);
+
+int			handle_error(int status_code, char *context, char *message);
 
 #endif

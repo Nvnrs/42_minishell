@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 15:53:02 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/25 09:45:00 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/26 13:33:28 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,9 @@ t_cmd	*init_cmd(char **input, int start, int end, int **pipes)
 	cmd = malloc(sizeof (t_cmd));
 	cmd->name = get_cmd_name(input, start, end);
 	cmd->args_exec = get_cmd_arguments(input, start, end);
-	cmd->operators_in = init_operators_in(input, start, end);
-	cmd->operators_out = init_operators_out(input, start, end);
+	cmd->lst_operator = init_lst_operator(input, start, end);
+	// cmd->operators_in = init_operators_in(input, start, end);
+	// cmd->operators_out = init_operators_out(input, start, end);
 	cmd->pipes = pipes;
 	return (cmd);
 }
@@ -67,18 +68,24 @@ void	free_cmd(void *cmd_void)
 	cmd = cmd_void;
 	free(cmd->name);
 	free_split(cmd->args_exec);	
-	if (cmd->operators_in != NULL)
+	if (cmd->lst_operator!= NULL)
 	{
-		if (*cmd->operators_in != NULL)
-			ft_lstclear(cmd->operators_in, free_key_val);
-		free(cmd->operators_in);
+		if (*cmd->lst_operator != NULL)
+	 		ft_lstclear(cmd->lst_operator, free_key_val);
+	 	free(cmd->lst_operator);
 	}
-	if (cmd->operators_out != NULL)
-	{
-		if (*cmd->operators_out != NULL)
-			ft_lstclear(cmd->operators_out, free_key_val);
-		free(cmd->operators_out);
-	}
+	// if (cmd->operators_in != NULL)
+	// {
+	// 	if (*cmd->operators_in != NULL)
+	// 		ft_lstclear(cmd->operators_in, free_key_val);
+	// 	free(cmd->operators_in);
+	// }
+	// if (cmd->operators_out != NULL)
+	// {
+	// 	if (*cmd->operators_out != NULL)
+	// 		ft_lstclear(cmd->operators_out, free_key_val);
+	// 	free(cmd->operators_out);
+	// }
 	free(cmd);
 }
 

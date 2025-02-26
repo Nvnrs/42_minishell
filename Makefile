@@ -14,7 +14,8 @@ SRC_PARSE_CHECK = $(SRC_PARSE_CHECK_DIR)/checks_after_operators.c \
 				$(SRC_PARSE_CHECK_DIR)/checks_consecutive_operators.c \
 				$(SRC_PARSE_CHECK_DIR)/checks_operators.c \
 				$(SRC_PARSE_CHECK_DIR)/checks_quotes.c \
-				$(SRC_PARSE_CHECK_DIR)/checks.c
+				$(SRC_PARSE_CHECK_DIR)/checks.c \
+				$(SRC_PARSE_CHECK_DIR)/check_only_point.c
 
 SRC_PARSE = $(SRC_PARSE_DIR)/parse_input.c \
 		$(SRC_PARSE_DIR)/parse_utils.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_var.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:40:07 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/26 09:26:55 by pchateau         ###   ########.fr       */
+/*   Updated: 2025/02/26 10:07:40 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,17 @@ char	*get_key_in_str(char *str)
 	return (key);
 }
 
+char	*get_value_from_key(char *key, t_list **lst_env)
+{
+	char	*value;
+
+	if (strcmp(key, "?"))
+		value = get_exit_status_str();
+	else
+		value = find_value_in_env(key, lst_env);
+	return (value);
+}
+
 /**
  * Effectue l'expansion d'une variable d'envrionnement
  * 
@@ -113,7 +124,7 @@ int	expansion_var(char *str, char *out, int *i_out, t_list **lst_env)
 	i = 0;
 	key = get_key_in_str(str);
 	len_key = ft_strlen(key);
-	value = find_value_in_env(key, lst_env);
+	value = get_value_from_key(key, lst_env);
 	if (value == NULL)
 	{
 		free(key);
@@ -125,6 +136,8 @@ int	expansion_var(char *str, char *out, int *i_out, t_list **lst_env)
 		i++;
 		*i_out += 1;
 	}
+	if (strcmp(key, "?"))
+		free(value);
 	free(key);
 	return (len_key);
 }

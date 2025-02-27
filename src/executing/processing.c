@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:41:38 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/27 15:26:06 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/27 16:11:36 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,8 @@ char *get_path_cmd(t_cmd *cmd, t_list **env)
 
 static void	handle_cmd(t_cmd *cmd, t_list **lst_cmd, t_list **env, int *tab_pid)
 {
-	char *path_cmd;
+	char	*path_cmd;
+	char	**str_env;
 	// printf("START\n");
 	//path = get_path_cmd(cmd, env);
 	if(handle_redirection(*cmd->lst_operator, env, cmd) != 0)
@@ -183,9 +184,11 @@ static void	handle_cmd(t_cmd *cmd, t_list **lst_cmd, t_list **env, int *tab_pid)
 		exit(exit_status(0, FALSE));
 	}
 	close_and_free_pipes(cmd->pipes, 2);
-	if (execve(path_cmd, cmd->args_exec, NULL) == -1)//passer env en str
+	str_env = lst_env_to_tab_str(env);
+	if (execve(path_cmd, cmd->args_exec, str_env) == -1)//passer env en str
 		perror(path_cmd);
 	free_lst_cmd(lst_cmd);
+	free_split(str_env);
 	free_list_env(env);
 	free(path_cmd);
 	free(tab_pid);

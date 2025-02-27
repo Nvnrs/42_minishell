@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:10:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/27 13:48:20 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/27 16:58:04 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	handle_readline(char *rd, t_list **env)
 	lst_cmd = init_lst_cmd(input, pipes);
 	free_split(input);
 	apply_expansion(lst_cmd, env);
+	apply_remove_quotes(lst_cmd);
 	ft_lstiter(*lst_cmd, print_cmd);
 	//printf("pipes[0][0] = %d\npipes[0][1] = %d\npipes[1][0] = %d\npipes[1][1] = %d\n", pipes[0][0], pipes[0][1], pipes[1][0], pipes[1][1]);
 	processing(lst_cmd, ft_lstsize(*lst_cmd), env, pipes);

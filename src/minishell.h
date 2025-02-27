@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/26 16:50:42 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/27 14:38:35 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ void		free_npipe(int **pipes, int nb_pipe, int n);
 // EXPANSIONS
 int			len_expansion_str(char *str, t_list **lst_env);
 char		*expansion_str(char *str, t_list **lst_env);
-t_bool		is_start_of_env_var(char *str, int i);
+t_bool		is_start_of_expansion(char *str, int i);
 int			expansion_var(char *str, char *out, int *i_out, t_list **lst_env);
 char		*get_key_in_str(char *str);
 char 		*find_value_in_env(char *key, t_list **lst_env);

@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:35:40 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/26 09:49:52 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/27 14:45:27 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int	handle_double_quote(char *str, char *output, int *i_out_main, t_list 
 	output[i_out++] = str[i++];
 	while (str[i] != DOUBLE_QUOTE)
 	{
-		if (is_start_of_env_var(str, i))
+		if (is_start_of_expansion(str, i))
 		{
 			i++;
 			i+= expansion_var(&str[i], output, &i_out, lst_env);

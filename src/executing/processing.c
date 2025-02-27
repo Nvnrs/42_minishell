@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:41:38 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/26 17:37:27 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/27 14:58:40 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@ int	exit_status(int new_status_code, t_bool update)
 
 	if (update)
 		status_code = new_status_code;
-	printf("inside exit_status(): %d\n", status_code);
-	printf("new exit_status(): %d\n", new_status_code);
+	// printf("inside exit_status(): %d\n", status_code);
+	// if (update)
+		// printf("new exit_status(): %d\n", new_status_code);
 	return (status_code);
 }
 
@@ -107,6 +108,7 @@ t_bool	path_var_env_exist(t_list **env)
 	path_env = find_value_in_env("PATH", env);
 	if (path_env == NULL)
 		return (FALSE);
+	free(path_env);
 	return (TRUE);
 }
 
@@ -121,6 +123,8 @@ char *find_path_with_env(t_cmd *cmd, t_list **env)
 	path_env = find_value_in_env("PATH", env);
 	paths_in_path_env = ft_split(path_env, ':');
 	path_cmd = tests_path_for_find_cmd(cmd, paths_in_path_env);
+	free(path_env);
+	free_split(paths_in_path_env);
 	return (path_cmd);
 }
 
@@ -153,7 +157,7 @@ char *get_path_cmd(t_cmd *cmd, t_list **env)
 	return (NULL);
 }
 
-static void	handle_cmd(t_cmd *cmd, t_list **lst_cmd, t_list **env)
+static void	handle_cmd(t_cmd *cmd, t_list **lst_cmd, t_list **env, int *tab_pid)
 {
 	char *path_cmd;
 	// printf("START\n");
@@ -163,17 +167,19 @@ static void	handle_cmd(t_cmd *cmd, t_list **lst_cmd, t_list **env)
 		close_and_free_pipes(cmd->pipes, 2);
 		free_lst_cmd(lst_cmd);
 		free_list_env(env);
+		free(tab_pid);
 		exit(exit_status(0, FALSE));
 	}
 	path_cmd = get_path_cmd(cmd, env);//tester avec NULL
 	// printf("PATH :%s\n", path_cmd);
-	printf("CODE : %d\n", exit_status(0, FALSE));
+	// printf("OUTPUT CODE : %d\n", exit_status(0, FALSE));
 	if (path_cmd == NULL)
 	{
 		// printf("command not found\n");
 		close_and_free_pipes(cmd->pipes, 2);
 		free_lst_cmd(lst_cmd);
 		free_list_env(env);
+		free(tab_pid);
 		exit(exit_status(0, FALSE));
 	}
 	close_and_free_pipes(cmd->pipes, 2);
@@ -182,85 +188,56 @@ static void	handle_cmd(t_cmd *cmd, t_list **lst_cmd, t_list **env)
 	free_lst_cmd(lst_cmd);
 	free_list_env(env);
 	free(path_cmd);
+	free(tab_pid);
 	exit(exit_status(1, TRUE));
 }
 
 /**
  * Separe les commandes en plusieurs process
  */
+
 int	processing(t_list **lst_cmd, int nb_cmd, t_list **env, int **pipes)
 {
 	int	i;
-	int	pid;
+	int	*pid;
 	t_list	*lst;
 	int	wstatus;
 	int	status_code;
 
 	i = 0;
 	lst = *lst_cmd;
+	pid = malloc(nb_cmd * sizeof(int));
 	while (i < nb_cmd)
 	{
-		pid = fork();
-		if (pid == -1)
-			return (1);
-		else if (pid == 0)
-			break ;
+		pid[i] = fork();
+		if (pid[i] == -1)
+			return (EXIT_FAILURE);
+		else if (pid[i] == 0)
+		{
+			handle_cmd(lst->content, lst_cmd, env, pid);
+			break;
+		}
 		i++;
 		lst = lst->next;
 	}
-	if (pid == 0)
-		handle_cmd(lst->content, lst_cmd, env);
 	close_and_free_pipes(pipes, 2);
-	while (i > 0)
+	i = 0;
+	while (i < nb_cmd)
 	{
-		waitpid(-1, &wstatus, 0);//pas complet
-		if (WIFEXITED(wstatus))
+		waitpid(pid[i], &wstatus, 0);//pas complet
+		if (WIFSIGNALED(wstatus))
 		{
 			status_code = WEXITSTATUS(wstatus);
-			printf("exit status code of child:%d\n", status_code);
-			exit_status(status_code, TRUE);
+			printf("exit status code of child with signal:%d\n", status_code);
 		}
-		i--;
+		// if (WIFEXITED(wstatus))
+		// {
+		status_code = WEXITSTATUS(wstatus);
+		printf("exit status code of child:%d\n", status_code);
+		exit_status(status_code, TRUE);
+		// }
+		i++;
 	}
+	free(pid);
 	return (0);
 }
-
-// int	processing(t_list **lst_cmd, int nb_cmd, t_list **env, int **pipes)
-// {
-// 	int	i;
-// 	int	*pid;
-// 	t_list	*lst;
-// 	int	wstatus;
-// 	int	status_code;
-
-// 	i = 0;
-// 	lst = *lst_cmd;
-// 	pid = malloc(nb_cmd * sizeof(int));
-// 	while (i < nb_cmd)
-// 	{
-// 		pid[i] = fork();
-// 		if (pid[i] == -1)
-// 			return (EXIT_FAILURE);
-// 		else if (pid[i] == 0)
-// 		{
-// 			handle_cmd(lst->content, lst_cmd, env);
-// 			break;
-// 		}
-// 		i++;
-// 		lst = lst->next;
-// 	}
-// 	close_and_free_pipes(pipes, 2);
-// 	i = 0;
-// 	while (i < nb_cmd)
-// 	{
-// 		waitpid(pid[i], &wstatus, 0);//pas complet
-// 		if (WIFEXITED(wstatus))
-// 		{
-// 			status_code = WEXITSTATUS(wstatus);
-// 			printf("exit status code of child:%d\n", status_code);
-// 			exit_status(status_code, TRUE);
-// 		}
-// 		i++;
-// 	}
-// 	return (0);
-// }

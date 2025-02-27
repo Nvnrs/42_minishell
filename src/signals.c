@@ -8,7 +8,16 @@ static void	handle_sigint(int signum)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
+		exit_status(130, TRUE);
 	}
+}
+
+static void	block_sigint(void)
+{
+	struct sigaction	sa;
+
+	sa.sa_handler = SIG_IGN;
+	sigaction(SIGINT, &sa, NULL);
 }
 
 static void	set_sigint_handle(void)
@@ -26,13 +35,15 @@ static void	ignore_signal_but_sigint(void)
 	int					i;
 
 	sa.sa_handler = SIG_IGN;
-	i = 1;
-	while (i <= 31)
-	{
-		if (i != SIGINT)
-			sigaction(i, &sa, NULL);
-		i++;
-	}
+	// i = 1;
+	// while (i <= 31)
+	// {
+	// 	if (i != SIGINT && i != SIGCHLD)
+	// 		sigaction(i, &sa, NULL);
+	// 	i++;
+	// }
+	sigaction(SIGQUIT, &sa, NULL);
+	sigaction(SIGTSTP, &sa, NULL);
 }
 
 void	set_signals(void)

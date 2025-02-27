@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:40:07 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/26 10:07:40 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/27 14:35:12 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char *find_value_in_env(char *key, t_list **lst_env)
 		content = lst->content;
 		if (ft_strcmp(key, content->key) == 0)
 		{
-			return (content->value);
+			return (ft_strdup(content->value));
 		}
 		lst = lst->next;
 	}
@@ -51,6 +51,11 @@ int	len_key_in_str(char *str)
 	len_key = 0;
 	if (str[i] == '$')
 		i++;
+	if (str[i] == '?')
+	{
+		len_key++;
+		i++;
+	}
 	while (str[i]
 		&& (ft_isalnum(str[i])
 		|| str[i] == '_'))
@@ -82,6 +87,12 @@ char	*get_key_in_str(char *str)
 	key = malloc(len_key_in_str(str) + 1 * sizeof(char));
 	if (str[i] == '$')
 		i++;
+	if (str[i] == '?')
+	{
+		key[i_key] = str[i];
+		i_key++;
+		i++;
+	}
 	while (str[i] 
 		&& (ft_isalnum(str[i])
 		|| str[i] == '_'))
@@ -98,7 +109,7 @@ char	*get_value_from_key(char *key, t_list **lst_env)
 {
 	char	*value;
 
-	if (strcmp(key, "?"))
+	if (strcmp(key, "?") == 0)
 		value = get_exit_status_str();
 	else
 		value = find_value_in_env(key, lst_env);
@@ -123,6 +134,7 @@ int	expansion_var(char *str, char *out, int *i_out, t_list **lst_env)
 
 	i = 0;
 	key = get_key_in_str(str);
+	printf("expnasion varkey  :%s", key);
 	len_key = ft_strlen(key);
 	value = get_value_from_key(key, lst_env);
 	if (value == NULL)
@@ -136,8 +148,9 @@ int	expansion_var(char *str, char *out, int *i_out, t_list **lst_env)
 		i++;
 		*i_out += 1;
 	}
-	if (strcmp(key, "?"))
-		free(value);
+	// if (strcmp(key, "?"))
+	// 	free(value);
+	free(value);
 	free(key);
 	return (len_key);
 }
@@ -149,11 +162,11 @@ int	expansion_var(char *str, char *out, int *i_out, t_list **lst_env)
  * @param i indice du caractere actuelle dans la chaine
  * @return OUI ou NON s'il s'agit d'une expansion
  */
-t_bool	is_start_of_env_var(char *str, int i)
+t_bool	is_start_of_expansion(char *str, int i)
 {
 	if (str[i] == '$'
 		&&  str[i + 1]
-		&& (ft_isalpha(str[i + 1]) || str[i + 1] == '_'))
+		&& (ft_isalpha(str[i + 1]) || str[i + 1] == '_' || str[i + 1] == '?'))
 		return (TRUE);
 	return (FALSE);
 }

@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:35:37 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/24 16:39:16 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/27 14:35:02 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,14 @@ int	add_len_expansion_var(char *str, int *i_out, t_list **lst_env)
 
 	key = get_key_in_str(str);
 	len_key = ft_strlen(key);
-	value = find_value_in_env(key, lst_env);
+	value = get_value_from_key(key, lst_env);
 	if (value == NULL)
 	{
 		free(key);
 		return (len_key);
 	}
 	*i_out += ft_strlen(value);
+	free(value);
 	free(key);
 	return (len_key);
 }
@@ -41,7 +42,7 @@ int	len_in_double_quote(char *str, int *i_out, t_list **lst_env)
 	*i_out += 1;
 	while (str[i] != DOUBLE_QUOTE)
 	{
-		if (is_start_of_env_var(str, i))
+		if (is_start_of_expansion(str, i))
 		{
 			i++;
 			i+= add_len_expansion_var(&str[i], i_out, lst_env);
@@ -75,7 +76,7 @@ int	len_expansion_str(char *str, t_list **lst_env)
 			len_in_single_quote(str, &i, &i_out);
 		else if (str[i] == DOUBLE_QUOTE)
 			i+= len_in_double_quote(&str[i], &i_out, lst_env);
-		else if (is_start_of_env_var(str, i))
+		else if (str[i] == '$' && str[i + 1] && str[i + 1] != ' ')
 		{
 			i++;
 			i+= add_len_expansion_var(&str[i], &i_out, lst_env);

@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:09:38 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/26 16:40:37 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/27 18:32:25 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	redirect_in(t_key_val *content, t_bool is_last)
 	return (0);
 }
 
-static int	write_to_here_doc(char * filename, char	*delimiter, t_list **env)
+static int	write_to_here_doc(char *filename, char	*delimiter, t_list **env)
 {
 	char	*line;
 	int		here_docfd;
@@ -91,7 +91,10 @@ int	handle_here_doc(t_key_val *content, t_bool is_last, t_list **env)
 	if (status == 1)
 		handle_here_doc(content, is_last, env);
 	else if (status == 0 && is_last)
+	{
 		status = redirect_in(here_doc, is_last);
+		unlink(here_doc->value);
+	}
 	free_key_val(here_doc);
 	free(name);
 	free(delimiter);

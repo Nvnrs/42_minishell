@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:41:38 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/27 14:58:40 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/27 15:22:00 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,15 +227,16 @@ int	processing(t_list **lst_cmd, int nb_cmd, t_list **env, int **pipes)
 		waitpid(pid[i], &wstatus, 0);//pas complet
 		if (WIFSIGNALED(wstatus))
 		{
-			status_code = WEXITSTATUS(wstatus);
+			status_code = 128 + WTERMSIG(wstatus);
 			printf("exit status code of child with signal:%d\n", status_code);
+			exit_status(status_code, TRUE);
 		}
-		// if (WIFEXITED(wstatus))
-		// {
-		status_code = WEXITSTATUS(wstatus);
-		printf("exit status code of child:%d\n", status_code);
-		exit_status(status_code, TRUE);
-		// }
+		else if (WIFEXITED(wstatus))
+		{
+			status_code = WEXITSTATUS(wstatus);
+			printf("exit status code of child:%d\n", status_code);
+			exit_status(status_code, TRUE);
+		}
 		i++;
 	}
 	free(pid);

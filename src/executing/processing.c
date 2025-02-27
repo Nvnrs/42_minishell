@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:41:38 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/27 15:22:00 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/27 15:26:06 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,7 +224,7 @@ int	processing(t_list **lst_cmd, int nb_cmd, t_list **env, int **pipes)
 	i = 0;
 	while (i < nb_cmd)
 	{
-		waitpid(pid[i], &wstatus, 0);//pas complet
+		waitpid(pid[i], &wstatus, 0);
 		if (WIFSIGNALED(wstatus))
 		{
 			status_code = 128 + WTERMSIG(wstatus);

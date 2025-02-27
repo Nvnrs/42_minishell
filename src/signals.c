@@ -24,6 +24,7 @@ static void	set_sigint_handle(void)
 {
 	struct sigaction	sa;
 
+	ft_bzero(&sa, sizeof (struct sigaction));
 	sa.sa_handler = &handle_sigint;
 	sa.sa_flags = SA_RESTART;
 	sigaction(SIGINT, &sa, NULL);
@@ -34,14 +35,8 @@ static void	ignore_signal_but_sigint(void)
 	struct sigaction	sa;
 	int					i;
 
+	ft_bzero(&sa, sizeof (struct sigaction));
 	sa.sa_handler = SIG_IGN;
-	// i = 1;
-	// while (i <= 31)
-	// {
-	// 	if (i != SIGINT && i != SIGCHLD)
-	// 		sigaction(i, &sa, NULL);
-	// 	i++;
-	// }
 	sigaction(SIGQUIT, &sa, NULL);
 	sigaction(SIGTSTP, &sa, NULL);
 }

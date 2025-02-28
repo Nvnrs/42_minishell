@@ -1,5 +1,45 @@
 #include  "minishell.h"
 
+/**
+ * Creer une chaine de char a partir du tableau de chaine de char
+ */
+void	builtin_echo(t_cmd *cmd)
+{
+	int	i_split;
+	int	i_str;
+	char	*output_str;
+
+	i_split = 1;
+	output_str = "\0";
+	if (cmd->args_exec[i_split])
+		output_str = cmd->args_exec[i_split];
+	while (cmd->args_exec[i_split] && cmd->args_exec[i_split + 1])
+	{
+		output_str = ft_strjoin(output_str, " ");
+		output_str = ft_strjoin(output_str, cmd->args_exec[i_split + 1]);
+		i_split++;
+	}
+	// if (cmd->args_exec[i_split])
+	// 	output_str = ft_strjoin(output_str, cmd->args_exec[i_split]);
+	printf("%s\n", output_str);
+	if (len_split(cmd->args_exec) > 2)
+		free(output_str);
+	exit_status(1, TRUE);
+	
+}
+
+void	builtin_pwd(void)
+{
+	char	*current_directory;
+
+	current_directory = getcwd(NULL, 0);
+	if (current_directory)
+	{
+		printf("%s\n", current_directory);
+		free(current_directory);
+	}
+	exit_status(0, TRUE);
+}
 
 void	builtin_env(t_list **env)
 {
@@ -14,9 +54,10 @@ t_bool	is_valid_key(char *str)
 	i = 0;
 	if (ft_isalpha(str[i]) || str[i] == '_')
 	{
-		while (str[i])
+		i++;
+		while (str[i] && str[i] != '=')
 		{
-			if (!(ft_isalnum(str[i]) || str[i] == '_'))
+			if (!ft_isalnum(str[i]) && str[i] != '_')
 				return (FALSE);
 			i++;
 		}
@@ -29,35 +70,57 @@ t_key_val	*create_new_var(char *str)
 {
 	int	i;
 	int j;
-	char *key;
-	char *val;
+	t_key_val *var;
 
 	i = 0;
+	var = malloc(sizeof(t_key_val));
 	if ((ft_isalpha(str[i]) || str[i] == '_'))
 	while (str[i] && str[i] != '=')
 		i++;
 	if (str[i] == '\0' || str[i] != '=')
+	{
+		free(var);
 		return (NULL);
-	key = ft_substr(str, 0, i);
+	}
+	var->key = ft_substr(str, 0, i);
 	i++; //skip = 
-	val = ft_substr(str, i, (ft_strlen(str) - 1));
-	printf("KEY = %s\n", key);
-	printf("VAL = %s\n", val);
-	return (NULL);
+	var->value = ft_substr(str, i, (ft_strlen(str) - 1));
+	printf("KEY = %s\n", var->key);
+	printf("VAL = %s\n", var->value);
+	return (var);
 }
 
-void	builtin_export(char **args, t_cmd *cmd, t_list **env)
+
+void	save_new_var(t_key_val *new_var, t_list **env)
+{
+	t_list *lst;
+	t_key_val *content_env;
+
+	lst = *env;
+	while (lst)
+	{
+		content_env = lst->content;
+		if (ft_strcmp(content_env->key, new_var->key) == 0)
+		{
+			free_key_val(lst->content);
+			lst->content = new_var;
+			return;
+		}
+		lst = lst->next;
+	}
+	ft_lstadd_back(env, ft_lstnew(new_var));
+}
+
+void	builtin_export(char **args, t_cmd *cmd, int nb_cmd, t_list **env)
 {
 	int			i;
-	t_key_val	var;
+	t_key_val	*var;
 
 	i = 0;
 	// printf("HELLOOERIEOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO\n");
+	exit_status(0, TRUE);
 	if (args == NULL)
-	{
-		exit_status(0, TRUE);
 		return;
-	}
 	while (args[i])
 	{
 		if (!is_valid_key(args[i]))
@@ -67,11 +130,12 @@ void	builtin_export(char **args, t_cmd *cmd, t_list **env)
 			ft_putstr_fd("': not a valid identifier\n", 2);
 			exit_status(1, TRUE);
 		}
-		else
+		else if (nb_cmd == 1)
 		{
-			create_new_var(args[i]);
+			var = create_new_var(args[i]);
+			if (var)
+				save_new_var(var, env);
 		}
-		
 		i++;
 	}
 	
@@ -95,15 +159,15 @@ void	handle_builtins(t_cmd *cmd, int nb_cmd, t_list **env)
 	args = get_only_args(cmd->args_exec);
 	print_split(args);
 	if (strcmp(cmd->name, "echo") == 0)
-		return;
+		builtin_echo(cmd);
 	else if (strcmp(cmd->name, "env") == 0)
 		builtin_env(env);
 	else if (strcmp(cmd->name, "pwd") == 0)
-		return;
+		builtin_pwd();
 	else if (strcmp(cmd->name, "cd") == 0 && nb_cmd == 1)
 		return;
-	else if (strcmp(cmd->name, "export") == 0 && nb_cmd == 1)
-		builtin_export(args, cmd, env); 
+	else if (strcmp(cmd->name, "export") == 0)
+		builtin_export(args, cmd, nb_cmd, env); 
 	// else if (strcmp(cmd->name, "unset") == 0 && nb_cmd == 1)
 	// else if (strcmp(cmd->name, "exit") == 0 && nb_cmd == 1)
 }

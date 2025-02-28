@@ -6,7 +6,7 @@
 /*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:41:38 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/28 15:39:26 by pchateau         ###   ########.fr       */
+/*   Updated: 2025/02/28 17:35:40 by pchateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,12 +81,12 @@ void	wait_childs_and_handle_signals(int *pid, int nb_cmd)
 int	processing(t_list **lst_cmd, int nb_cmd, t_list **env, int **pipes)
 {
 	int	i;
-	// int	nb_fork;
+	int	nb_fork;
 	int	*pid;
 	t_list	*lst;
 
 	i = 0;
-	// nb_fork = 0;
+	nb_fork = 0;
 	lst = *lst_cmd;
 	pid = malloc(nb_cmd * sizeof(int));
 	while (i < nb_cmd)
@@ -98,7 +98,7 @@ int	processing(t_list **lst_cmd, int nb_cmd, t_list **env, int **pipes)
 		}
 		else
 		{
-			// nb_fork++;
+			nb_fork++;
 			pid[i] = fork();
 			if (pid[i] == -1)
 				return (EXIT_FAILURE);
@@ -114,6 +114,6 @@ int	processing(t_list **lst_cmd, int nb_cmd, t_list **env, int **pipes)
 	}
 	if (nb_cmd > 1)
 		close_and_free_pipes(pipes, nb_cmd - 1);
-	wait_childs_and_handle_signals(pid, nb_cmd/*, nb_fork*/);
+	wait_childs_and_handle_signals(pid, nb_fork);
 	return (0);
 }

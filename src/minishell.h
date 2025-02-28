@@ -6,7 +6,7 @@
 /*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/28 14:55:40 by pchateau         ###   ########.fr       */
+/*   Updated: 2025/02/28 15:43:22 by pchateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,10 @@ int			handle_here_doc(t_key_val *content, t_bool is_last, t_list **env);
 
 // EXECUTING
 int			processing(t_list **lst_cmd, int nb_cmd, t_list **env, int **pipes);
+
+// PATH exec
 t_bool		cmd_path_is_valid(char *path);
+char		*get_path_cmd(t_cmd *cmd, t_list **env);
 
 // SIGNALS
 void		set_signals(void);
@@ -177,7 +180,7 @@ int		index_last_out_operator(t_list *lst_operator);
 
 
 // BUILTINS
-t_bool	is_builtin(char *cmd_name);
+t_bool	is_builtin(t_cmd *cmd);
 void	handle_builtins(t_cmd *cmd, int nb_cmd, t_list **env);
 
 #endif

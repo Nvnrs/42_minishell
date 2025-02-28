@@ -1,4 +1,4 @@
-SRC_DIR = ./src
+SRC_DIR = /src
 SRC_PARSE_DIR = $(SRC_DIR)/parsing
 SRC_INIT_DIR = $(SRC_DIR)/init
 SRC_PARSE_CHECK_DIR = $(SRC_PARSE_DIR)/checks
@@ -76,7 +76,8 @@ SRC = $(SRC_DIR)/main.c \
 	$(SRC_BUILTINS) \
 	$(SRC_EXEC)
 
-OBJ = $(SRC:.c=.o)
+OBJ_DIR = ./obj
+OBJ = $(SRC:%.c=$(OBJ_DIR)%.o)
 CC = cc
 # CFLAGS += -Wall -Wextra -Werror -g -Isrc
 CFLAGS += -Isrc
@@ -86,10 +87,10 @@ LIB_DIR = ./lib
 MYLIB42_DIR = $(LIB_DIR)/MYLIB42
 MYLIB42 = $(MYLIB42_DIR)/mylib42.a
 
-%.o: %.c 
-	$(CC) $(CFLAGS) -c $(<) -o $(@)
-
 all : $(NAME)
+
+$(OBJ): $(OBJ_DIR)/%.o: %.c 
+	$(CC) $(CFLAGS) -c $(<) -o $(@)
 
 $(NAME) :  $(MYLIB42) $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) $(MYLIB42) -o $(NAME) -lreadline

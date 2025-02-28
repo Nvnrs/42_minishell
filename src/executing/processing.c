@@ -6,7 +6,7 @@
 /*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:41:38 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/28 14:49:33 by pchateau         ###   ########.fr       */
+/*   Updated: 2025/02/28 15:39:26 by pchateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ int	processing(t_list **lst_cmd, int nb_cmd, t_list **env, int **pipes)
 	{
 		if (is_builtin(lst->content))
 		{
+			printf("IS BUILTIN\n");
 			handle_builtins(lst->content, nb_cmd, env);
 		}
 		else

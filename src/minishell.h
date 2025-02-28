@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/27 16:56:58 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/28 13:54:21 by pchateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,14 +41,15 @@ typedef struct s_key_val
 
 typedef struct s_cmd
 {
-	char	*name;
-	char	**args_exec;
-	t_list	**lst_operator;
-	int		pipefd_in;
-	int		pipefd_out;
+	char		*name;
+	char		**args_exec;
+	t_list		**lst_operator;
+	int			pipefd_in;
+	int			pipefd_out;
 	// t_list	**operators_in;
 	// t_list	**operators_out;
-	int		**pipes;
+	int			**pipes;
+	int			nb_pipes;
 }	t_cmd;
 
 typedef int t_exit_status;
@@ -91,8 +92,8 @@ void		print_operator(t_key_val *operator);
 void		print_list_operators(t_list **operators);
 
 // CMD
-t_list		**init_lst_cmd(char **input, int **pipes);
-t_cmd		*init_cmd(char **input, int start, int end, int **pipes);
+t_list		**init_lst_cmd(char **input);
+t_cmd		*init_cmd(char **input, int start, int end);
 void		print_start_end(char **tab, int start, int end);
 char		*get_cmd_name(char	**input, int i_start, int i_end);
 int			count_cmd_arguments(char **input, int i_start, int i_end);
@@ -144,6 +145,7 @@ int			len_split(char **split);
 void		free_split(char **split);
 void		print_split(char **split);
 
+//A TRIER
 int			exit_status(int new_status_code, t_bool update);
 char		*get_exit_status_str(void);
 

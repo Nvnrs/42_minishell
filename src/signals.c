@@ -12,14 +12,6 @@ static void	handle_sigint(int signum)
 	}
 }
 
-static void	block_sigint(void)
-{
-	struct sigaction	sa;
-
-	sa.sa_handler = SIG_IGN;
-	sigaction(SIGINT, &sa, NULL);
-}
-
 static void	set_sigint_handle(void)
 {
 	struct sigaction	sa;

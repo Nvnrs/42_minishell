@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   processing.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:41:38 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/27 16:11:36 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/28 14:26:47 by pchateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,25 +165,25 @@ static void	handle_cmd(t_cmd *cmd, t_list **lst_cmd, t_list **env, int *tab_pid)
 	//path = get_path_cmd(cmd, env);
 	if(handle_redirection(*cmd->lst_operator, env, cmd) != 0)
 	{
-		close_and_free_pipes(cmd->pipes, 2);
+		//close_and_free_pipes(cmd->pipes, 2);
 		free_lst_cmd(lst_cmd);
 		free_list_env(env);
 		free(tab_pid);
 		exit(exit_status(0, FALSE));
 	}
+	//close_and_free_pipes(cmd->pipes, 2);
 	path_cmd = get_path_cmd(cmd, env);//tester avec NULL
 	// printf("PATH :%s\n", path_cmd);
 	// printf("OUTPUT CODE : %d\n", exit_status(0, FALSE));
 	if (path_cmd == NULL)
 	{
 		// printf("command not found\n");
-		close_and_free_pipes(cmd->pipes, 2);
+		//close_and_free_pipes(cmd->pipes, 2);
 		free_lst_cmd(lst_cmd);
 		free_list_env(env);
 		free(tab_pid);
 		exit(exit_status(0, FALSE));
 	}
-	close_and_free_pipes(cmd->pipes, 2);
 	str_env = lst_env_to_tab_str(env);
 	if (execve(path_cmd, cmd->args_exec, str_env) == -1)//passer env en str
 		perror(path_cmd);
@@ -195,39 +195,31 @@ static void	handle_cmd(t_cmd *cmd, t_list **lst_cmd, t_list **env, int *tab_pid)
 	exit(exit_status(1, TRUE));
 }
 
-/**
- * Separe les commandes en plusieurs process
- */
-
-int	processing(t_list **lst_cmd, int nb_cmd, t_list **env, int **pipes)
+void	print_pid_tab(int *pid, int nb_cmd)
 {
 	int	i;
-	int	*pid;
-	t_list	*lst;
-	int	wstatus;
-	int	status_code;
 
 	i = 0;
-	lst = *lst_cmd;
-	pid = malloc(nb_cmd * sizeof(int));
 	while (i < nb_cmd)
 	{
-		pid[i] = fork();
-		if (pid[i] == -1)
-			return (EXIT_FAILURE);
-		else if (pid[i] == 0)
-		{
-			handle_cmd(lst->content, lst_cmd, env, pid);
-			break;
-		}
+		printf("pid[%d]:%d\n", i, pid[i]);
 		i++;
-		lst = lst->next;
 	}
-	close_and_free_pipes(pipes, 2);
+}
+
+void	wait_childs_and_handle_signals(int *pid, int nb_cmd)
+{
+	int	i;
+	int	wstatus;
+	int	status_code;
+	
+	print_pid_tab(pid, nb_cmd);
 	i = 0;
 	while (i < nb_cmd)
 	{
+		printf("START wait number %d\n", i);
 		waitpid(pid[i], &wstatus, 0);
+		printf("END wait number %d\n", i);
 		if (WIFSIGNALED(wstatus))
 		{
 			status_code = 128 + WTERMSIG(wstatus);
@@ -243,5 +235,47 @@ int	processing(t_list **lst_cmd, int nb_cmd, t_list **env, int **pipes)
 		i++;
 	}
 	free(pid);
+}
+
+/**
+ * Separe les commandes en plusieurs process
+ */
+int	processing(t_list **lst_cmd, int nb_cmd, t_list **env, int **pipes)
+{
+	int	i;
+	// int	nb_fork;
+	int	*pid;
+	t_list	*lst;
+
+	i = 0;
+	// nb_fork = 0;
+	lst = *lst_cmd;
+	pid = malloc(nb_cmd * sizeof(int));
+	while (i < nb_cmd)
+	{
+		// if (is_builtin())
+		// {
+		// 	handle_builtins(lst->content, nb_cmd);
+		// }
+		// else
+		// {
+			// nb_fork++;
+			pid[i] = fork();
+			if (pid[i] == -1)
+				return (EXIT_FAILURE);
+			else if (pid[i] == 0)
+			{
+				handle_cmd(lst->content, lst_cmd, env, pid);
+				break;
+			}
+		// }
+		//sleep(2*i);
+		i++;
+		lst = lst->next;
+	}
+	// close_and_free_pipes(pipes, 2);
+	if (nb_cmd > 1)
+		close_and_free_pipes(pipes, nb_cmd - 1);
+	wait_childs_and_handle_signals(pid, nb_cmd/*, nb_fork*/);
 	return (0);
 }

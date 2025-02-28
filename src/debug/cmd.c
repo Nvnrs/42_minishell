@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:48:41 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/26 14:10:44 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/28 14:23:17 by pchateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,13 @@ void	print_cmd(void *cmd_content)
 	print_args_of_cmd(cmd->args_exec);
 	printf("operators_in && operator_out :\n");
 	print_list_operators(cmd->lst_operator);
+	printf("pipe_in :%d\n", cmd->pipefd_in);
+	printf("pipe_out :%d\n", cmd->pipefd_out);
+	printf("nb_pipes :%d\n", cmd->nb_pipes);
+	if (cmd->pipes == NULL)
+		printf("pipes :(NULL)\n");
+	else
+		printf("pipes :OK\n");
 	printf("\033[0;37m");
 	i++;
 }

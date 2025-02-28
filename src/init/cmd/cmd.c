@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 15:53:02 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/26 13:33:28 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/28 14:15:17 by pchateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@
 //   * t_list operators_out
 //   * int pipes[2][2]
 
-t_cmd	*init_cmd(char **input, int start, int end, int **pipes)
+
+
+t_cmd	*init_cmd(char **input, int start, int end)
 {
 	t_cmd	*cmd;
 
@@ -26,13 +28,17 @@ t_cmd	*init_cmd(char **input, int start, int end, int **pipes)
 	cmd->name = get_cmd_name(input, start, end);
 	cmd->args_exec = get_cmd_arguments(input, start, end);
 	cmd->lst_operator = init_lst_operator(input, start, end);
+	cmd->pipefd_in = -1;
+	cmd->pipefd_out = -1;
+	cmd->pipes = NULL;
+	cmd->nb_pipes = 0;
 	// cmd->operators_in = init_operators_in(input, start, end);
 	// cmd->operators_out = init_operators_out(input, start, end);
-	cmd->pipes = pipes;
+	// cmd->pipes = pipes; ajouter separement
 	return (cmd);
 }
 
-t_list	**init_lst_cmd(char **input, int **pipes)
+t_list	**init_lst_cmd(char **input)
 {
 	t_list	**lst_cmd;
 	int		i;
@@ -50,14 +56,14 @@ t_list	**init_lst_cmd(char **input, int **pipes)
 			if (i == (len_split(input) - 1))
 				end = i;
 			if (*lst_cmd == NULL)
-				*lst_cmd =  ft_lstnew(init_cmd(input, start, end, pipes));
+				*lst_cmd =  ft_lstnew(init_cmd(input, start, end));
 			else
-				ft_lstadd_back(lst_cmd, ft_lstnew(init_cmd(input, start, end, pipes)));
+				ft_lstadd_back(lst_cmd, ft_lstnew(init_cmd(input, start, end)));
 			start = i + 1;
 		}
 		i++;
 	}
-	add_pipe_redirect(lst_cmd, ft_lstsize(*lst_cmd));
+	// add_pipe_redirect(lst_cmd, ft_lstsize(*lst_cmd));
 	return (lst_cmd);
 }
 

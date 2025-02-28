@@ -5,6 +5,8 @@ int	**init_pipes(int nb_pipe)
 	int	**pipes;
 	int	i;
 
+	if (nb_pipe < 1)
+		return (NULL);
 	pipes = malloc(sizeof (int *) * nb_pipe);
 	if (pipes == NULL)
 		return (NULL);

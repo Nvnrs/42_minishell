@@ -6,7 +6,7 @@
 /*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/28 13:54:21 by pchateau         ###   ########.fr       */
+/*   Updated: 2025/02/28 14:55:40 by pchateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,5 +166,18 @@ void		apply_remove_quotes(t_list **lst_cmd);
 char		*remove_quotes_in_str(char *str);
 int 		count_pair_of_quotes_in_str(char *str);
 
+void		add_pipes_in_lst_cmd(t_list **lst_cmd, int **pipes);
+
+void		print_pid_tab(int *pid, int nb_cmd);
+
+t_bool	operator_in_in_lst_operator(t_list *lst_operator);
+t_bool	operator_out_in_lst_operator(t_list *lst_operator);
+int		index_last_in_operator(t_list *lst_operator);
+int		index_last_out_operator(t_list *lst_operator);
+
+
+// BUILTINS
+t_bool	is_builtin(char *cmd_name);
+void	handle_builtins(t_cmd *cmd, int nb_cmd, t_list **env);
 
 #endif

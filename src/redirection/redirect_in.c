@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect_in.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:09:38 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/27 18:32:25 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/02/28 14:34:48 by pchateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,9 @@ int	redirect_in(t_key_val *content, t_bool is_last)
 {
 	int fd;
 
-	// if (!file_exist_and_readable(content->value))
-	// 	return (FALSE);
 	fd = open(content->value, O_RDONLY);
 	if (fd < 0)
 	{
-		//ft_putstr_fd(content->value, 2);
 		exit_status(1, TRUE);
 		perror(content->value);
 		return (1);

@@ -1,5 +1,22 @@
 #include "minishell.h"
 
+void	add_pipes_in_lst_cmd(t_list **lst_cmd, int **pipes)
+{
+	t_list *lst;
+	t_cmd *cmd;
+	int nb_pipes;
+
+	lst = *lst_cmd;
+	nb_pipes = ft_lstsize(lst) - 1;
+	while (lst)
+	{
+		cmd = lst->content;
+		cmd->pipes = pipes;
+		cmd->nb_pipes = nb_pipes;
+		lst = lst->next;
+	}
+}
+
 int	**init_pipes(int nb_pipe)
 {
 	int	**pipes;

@@ -4,9 +4,7 @@ static void	redirect_first(t_cmd *cmd)
 {
 	int	first_pipe_write;
 
-	first_pipe_write = cmd->pipes[0][1];//itoa
-	// ft_lstadd_front(cmd->operators_out, ft_lstnew(init_key_val("pipe", first_pipe_write)));
-	// free(first_pipe_write);
+	first_pipe_write = cmd->pipes[0][1];
 	cmd->pipefd_in = -1;
 	cmd->pipefd_out = first_pipe_write;
 }
@@ -16,8 +14,6 @@ static void	redirect_last(t_cmd *cmd, int nb_cmd)
 	int	last_pipe_read;
 
 	last_pipe_read = cmd->pipes[nb_cmd - 1][0];
-	// ft_lstadd_front(cmd->operators_in, ft_lstnew(init_key_val("pipe", first_pipe_read)));
-	// free(first_pipe_read);
 	cmd->pipefd_in = last_pipe_read;
 	cmd->pipefd_out = -1;
 }
@@ -29,10 +25,6 @@ static void	redirect_middle(t_cmd *cmd, int index_cmd)
 
 	previous_pipe_read = cmd->pipes[index_cmd - 1][0];
 	current_pipe_write = cmd->pipes[index_cmd][1];
-	// ft_lstadd_front(cmd->operators_in, ft_lstnew(init_key_val("pipe", first_pipe_read)));
-	// ft_lstadd_front(cmd->operators_out, ft_lstnew(init_key_val("pipe", second_pipe_write)));
-	// free(first_pipe_read);
-	// free(second_pipe_write);
 	cmd->pipefd_in = previous_pipe_read;
 	cmd->pipefd_out = current_pipe_write;
 	

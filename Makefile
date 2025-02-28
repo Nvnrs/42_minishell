@@ -9,6 +9,7 @@ SRC_EXPANSION_DIR = $(SRC_DIR)/expansion
 SRC_DEBUG_DIR = $(SRC_DIR)/debug
 SRC_REDIRECTION_DIR = $(SRC_DIR)/redirection
 SRC_EXEC_DIR = $(SRC_DIR)/executing
+SRC_BUILTINS_DIR = $(SRC_DIR)/builtins
 
 SRC_PARSE_CHECK = $(SRC_PARSE_CHECK_DIR)/checks_after_operators.c \
 				$(SRC_PARSE_CHECK_DIR)/checks_consecutive_operators.c \
@@ -30,7 +31,7 @@ SRC_INIT_CMD = $(SRC_INIT_CMD_DIR)/cmd_arguments.c \
 SRC_INIT_ENV = $(SRC_INIT_ENV_DIR)/env_lst.c \
 			$(SRC_INIT_ENV_DIR)/env_tab_str.c
 
-SRC_INIT_PIPE = $(SRC_INIT_PIPE_DIR)/pipe_redirections.c \
+SRC_INIT_PIPE = $(SRC_INIT_PIPE_DIR)/add_pipe_redir.c \
 				$(SRC_INIT_PIPE_DIR)/close_pipes.c \
 				$(SRC_INIT_PIPE_DIR)/free_pipes.c \
 				$(SRC_INIT_PIPE_DIR)/pipes.c
@@ -53,9 +54,14 @@ SRC_EXPANSION = $(SRC_EXPANSION_DIR)/expansion_len_str.c \
 SRC_REDIRECTION = $(SRC_REDIRECTION_DIR)/handle_redirection.c \
 				$(SRC_REDIRECTION_DIR)/redirect_in.c \
 				$(SRC_REDIRECTION_DIR)/redirect_out.c \
-				$(SRC_REDIRECTION_DIR)/redirect_pipe.c
+				$(SRC_REDIRECTION_DIR)/redirect_pipe.c \
+				$(SRC_REDIRECTION_DIR)/operators_utils.c
 
-SRC_EXEC = $(SRC_EXEC_DIR)/processing.c
+SRC_EXEC = $(SRC_EXEC_DIR)/processing.c \
+		$(SRC_EXEC_DIR)/exit_status.c \
+		$(SRC_EXEC_DIR)/path.c
+
+SRC_BUILTINS = $(SRC_BUILTINS_DIR)/builtins.c
 
 SRC = $(SRC_DIR)/main.c \
 	$(SRC_DIR)/utils.c \
@@ -67,6 +73,7 @@ SRC = $(SRC_DIR)/main.c \
 	$(SRC_DEBUG) \
 	$(SRC_EXPANSION) \
 	$(SRC_REDIRECTION) \
+	$(SRC_BUILTINS) \
 	$(SRC_EXEC)
 
 OBJ = $(SRC:.c=.o)

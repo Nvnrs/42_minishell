@@ -6,35 +6,11 @@
 /*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 17:57:08 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/28 14:06:15 by pchateau         ###   ########.fr       */
+/*   Updated: 2025/02/28 14:33:42 by pchateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// int	redirect_pipe_in(t_key_val *content, t_bool is_last)
-// {
-// 	int	fd;
-
-// 	if (is_last)
-// 	{
-// 		fd = atoi(content->value);
-// 		dup2(fd, STDIN_FILENO);
-// 	}
-// 	return (0);
-// }
-
-// int	redirect_pipe_out(t_key_val *content, t_bool is_last)
-// {
-// 	int	fd;
-
-// 	if (is_last)
-// 	{	
-// 		fd = atoi(content->value);
-// 		dup2(fd, STDOUT_FILENO);
-// 	}
-// 	return (0);
-// }
 
 void	redirect_pipe(t_list *lst_operator, t_cmd *cmd)
 {

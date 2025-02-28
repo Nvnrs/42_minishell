@@ -1,14 +1,49 @@
 #include  "minishell.h"
 
-void	handle_builtins(t_cmd *cmd, int nb_cmd)
+
+void	builtin_env(t_list **env)
 {
-	if (strcmp(cmd->name, "echo") == 0)
-	else if (strcmp(cmd->name, "pwd") == 0)
-	else if (strcmp(cmd->name, "env") == 0)
-	else if (strcmp(cmd->name, "cd") == 0 && nb_cmd == 1)
-	else if (strcmp(cmd->name, "export") == 0 && nb_cmd == 1)
-	else if (strcmp(cmd->name, "unset") == 0 && nb_cmd == 1)
-	else if (strcmp(cmd->name, "exit") == 0 && nb_cmd == 1)
+	print_list_env(env);
+	exit_status(0, TRUE);
+}
+
+void	builtin_export(t_cmd *cmd, t_list **env)
+{
+	char **args;
+
+	args = cmd->args;
+	if (cmd->args_exec == NULL)
+		return (exit_status(0, TRUE));
+
+}
+
+char **get_only_args(char **args_exec)
+{
+	char **args;
+
+	if (cmd->args_exec == NULL)
+		args = NULL;
+	else
+		args = args_exec[1];
+}
+
+void	handle_builtins(t_cmd *cmd, int nb_cmd, t_list **env)
+{
+	char **args;
+
+	args = get_only_args(cmd->args_exec);
+	// print_split(args);
+	// return;
+	// if (strcmp(cmd->name, "echo") == 0)
+	// 	return;
+	// else if (strcmp(cmd->name, "env") == 0)
+	// 	builtin_env(env);
+	// // else if (strcmp(cmd->name, "pwd") == 0)
+	// // else if (strcmp(cmd->name, "cd") == 0 && nb_cmd == 1)
+	// // else if (strcmp(cmd->name, "export") == 0 && nb_cmd == 1)
+	// else if (strcmp(cmd->name, "unset") == 0 && nb_cmd == 1)
+	// 	builtin_export(cmd, env);
+	// else if (strcmp(cmd->name, "exit") == 0 && nb_cmd == 1)
 }
 
 // * CD

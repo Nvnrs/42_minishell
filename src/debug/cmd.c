@@ -6,7 +6,7 @@
 /*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:48:41 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/28 14:23:17 by pchateau         ###   ########.fr       */
+/*   Updated: 2025/02/28 14:48:27 by pchateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,17 @@ void	print_args_of_cmd(char **args)
 	}
 }
 
+void	print_pid_tab(int *pid, int nb_cmd)
+{
+	int	i;
+
+	i = 0;
+	while (i < nb_cmd)
+	{
+		printf("pid[%d]:%d\n", i, pid[i]);
+		i++;
+	}
+}
 
 void	print_cmd(void *cmd_content)
 {

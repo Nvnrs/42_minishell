@@ -6,7 +6,7 @@
 /*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 15:53:02 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/28 14:15:17 by pchateau         ###   ########.fr       */
+/*   Updated: 2025/02/28 14:50:41 by pchateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,6 @@ t_cmd	*init_cmd(char **input, int start, int end)
 	cmd->pipefd_out = -1;
 	cmd->pipes = NULL;
 	cmd->nb_pipes = 0;
-	// cmd->operators_in = init_operators_in(input, start, end);
-	// cmd->operators_out = init_operators_out(input, start, end);
-	// cmd->pipes = pipes; ajouter separement
 	return (cmd);
 }
 
@@ -63,7 +60,6 @@ t_list	**init_lst_cmd(char **input)
 		}
 		i++;
 	}
-	// add_pipe_redirect(lst_cmd, ft_lstsize(*lst_cmd));
 	return (lst_cmd);
 }
 
@@ -80,18 +76,6 @@ void	free_cmd(void *cmd_void)
 	 		ft_lstclear(cmd->lst_operator, free_key_val);
 	 	free(cmd->lst_operator);
 	}
-	// if (cmd->operators_in != NULL)
-	// {
-	// 	if (*cmd->operators_in != NULL)
-	// 		ft_lstclear(cmd->operators_in, free_key_val);
-	// 	free(cmd->operators_in);
-	// }
-	// if (cmd->operators_out != NULL)
-	// {
-	// 	if (*cmd->operators_out != NULL)
-	// 		ft_lstclear(cmd->operators_out, free_key_val);
-	// 	free(cmd->operators_out);
-	// }
 	free(cmd);
 }
 

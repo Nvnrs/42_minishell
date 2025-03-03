@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:41:38 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/03 11:05:28 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/03 14:02:07 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	processing(t_list **lst_cmd, int nb_cmd, t_list **env, int **pipes)
 	if (is_builtin(lst->content) && nb_cmd == 1)// nb_cmd == 1
 	{
 		printf("IS BUILTIN\n");
-		handle_builtins_parent(lst->content, env);
+		handle_builtins_parent(lst_cmd, lst->content, env);
 		return (0);
 	}
 	pid = NULL;

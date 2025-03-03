@@ -61,7 +61,13 @@ SRC_EXEC = $(SRC_EXEC_DIR)/processing.c \
 		$(SRC_EXEC_DIR)/exit_status.c \
 		$(SRC_EXEC_DIR)/path.c
 
-SRC_BUILTINS = $(SRC_BUILTINS_DIR)/builtins.c
+SRC_BUILTINS = $(SRC_BUILTINS_DIR)/builtins.c \
+				$(SRC_BUILTINS_DIR)/echo.c \
+				$(SRC_BUILTINS_DIR)/env.c \
+				$(SRC_BUILTINS_DIR)/export.c \
+				$(SRC_BUILTINS_DIR)/pwd.c \
+				$(SRC_BUILTINS_DIR)/exit.c \
+				$(SRC_BUILTINS_DIR)/unset.c
 
 SRC = $(SRC_DIR)/main.c \
 	$(SRC_DIR)/utils.c \

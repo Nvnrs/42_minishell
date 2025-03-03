@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/03 11:01:54 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/03 14:02:08 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,14 @@ int		index_last_out_operator(t_list *lst_operator);
 // BUILTINS
 t_bool	is_builtin(t_cmd *cmd);
 void	handle_builtins_child(t_list **lst_cmd, t_cmd *cmd, t_list **env, int *pid);
-void	handle_builtins_parent(t_cmd *cmd, t_list **env);
+void	handle_builtins_parent(t_list **lst_cmd, t_cmd *cmd, t_list **env);
+void	builtin_echo(t_cmd *cmd);
+void	builtin_env(t_list **env);
+void	builtin_export(char **args, t_list **env);
+void	builtin_pwd(void);
+void	builtin_exit(char **args, t_list **lst_cmd, t_list **env, int *pid);
+void	builtin_unset(char **args, t_list **env);
 // void	handle_builtins(t_list **lst_cmd, t_cmd *cmd, t_list **env, int *pid);
+
 
 #endif

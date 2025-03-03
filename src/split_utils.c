@@ -32,7 +32,7 @@ void	print_split(char **split)
 	len = len_split(split);
 	while (i < len)
 	{
-		ft_printf("split[%d]: %s\n", i, split[i]);
+		printf("split[%d]: %s\n", i, split[i]);
 		i++;
 	}
 }

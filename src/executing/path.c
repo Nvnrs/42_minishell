@@ -52,9 +52,9 @@ t_bool	cmd_path_is_valid(char *path)
 
 t_bool	path_var_env_exist(t_list **env)
 {
-	char	*path_cmd;
+	// char	*path_cmd;
 	char	*path_env;
-	char	**paths_in_path_env;
+	// char	**paths_in_path_env;
 
 	if (env == NULL || *env == NULL)
 		return (FALSE);

@@ -1,16 +1,36 @@
 #include  "minishell.h"
 
+t_bool	is_n_option_echo(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str[i] && str[i] == '-')
+		i++;
+	else
+		return (FALSE);
+	if (str[i] && str[i] == 'n')
+	{
+		while (str[i] && str[i] == 'n')
+			i++;
+		if (str[i] == '\0')
+			return (TRUE);
+	}
+	return (FALSE);
+}
+
 /**
  * Creer une chaine de char a partir du tableau de chaine de char
  */
 void	builtin_echo(t_cmd *cmd)
 {
 	int	i_split;
-	int	i_str;
 	char	*output_str;
 
 	i_split = 1;
 	output_str = "\0";
+	if (cmd->args_exec[1] && is_n_option_echo(cmd->args_exec[1]))
+		i_split++;
 	if (cmd->args_exec[i_split])
 		output_str = cmd->args_exec[i_split];
 	while (cmd->args_exec[i_split] && cmd->args_exec[i_split + 1])
@@ -19,10 +39,12 @@ void	builtin_echo(t_cmd *cmd)
 		output_str = ft_strjoin(output_str, cmd->args_exec[i_split + 1]);
 		i_split++;
 	}
-	// if (cmd->args_exec[i_split])
-	// 	output_str = ft_strjoin(output_str, cmd->args_exec[i_split]);
-	printf("%s\n", output_str);
-	if (len_split(cmd->args_exec) > 2)
+	if ((cmd->args_exec[1] && !is_n_option_echo(cmd->args_exec[1])) || len_split(cmd->args_exec) == 1)
+		printf("%s\n", output_str);
+	else
+		printf("%s", output_str);
+	if ((len_split(cmd->args_exec) > 2 && !is_n_option_echo(cmd->args_exec[1]))
+		|| (len_split(cmd->args_exec) > 3 && is_n_option_echo(cmd->args_exec[1])))
 		free(output_str);
 	exit_status(1, TRUE);
 	
@@ -69,7 +91,6 @@ t_bool	is_valid_key(char *str)
 t_key_val	*create_new_var(char *str)
 {
 	int	i;
-	int j;
 	t_key_val *var;
 
 	i = 0;
@@ -111,7 +132,7 @@ void	save_new_var(t_key_val *new_var, t_list **env)
 	ft_lstadd_back(env, ft_lstnew(new_var));
 }
 
-void	builtin_export(char **args, t_cmd *cmd, int nb_cmd, t_list **env)
+void	builtin_export(char **args, /*t_cmd *cmd,*/ int nb_cmd, t_list **env)
 {
 	int			i;
 	t_key_val	*var;
@@ -167,7 +188,7 @@ void	handle_builtins(t_cmd *cmd, int nb_cmd, t_list **env)
 	else if (strcmp(cmd->name, "cd") == 0 && nb_cmd == 1)
 		return;
 	else if (strcmp(cmd->name, "export") == 0)
-		builtin_export(args, cmd, nb_cmd, env); 
+		builtin_export(args, /*cmd,*/ nb_cmd, env); 
 	// else if (strcmp(cmd->name, "unset") == 0 && nb_cmd == 1)
 	// else if (strcmp(cmd->name, "exit") == 0 && nb_cmd == 1)
 }

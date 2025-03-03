@@ -46,8 +46,7 @@ void	builtin_echo(t_cmd *cmd)
 	if ((len_split(cmd->args_exec) > 2 && !is_n_option_echo(cmd->args_exec[1]))
 		|| (len_split(cmd->args_exec) > 3 && is_n_option_echo(cmd->args_exec[1])))
 		free(output_str);
-	exit_status(1, TRUE);
-	
+	exit_status(0, TRUE);
 }
 
 void	builtin_pwd(void)
@@ -132,13 +131,12 @@ void	save_new_var(t_key_val *new_var, t_list **env)
 	ft_lstadd_back(env, ft_lstnew(new_var));
 }
 
-void	builtin_export(char **args, /*t_cmd *cmd,*/ int nb_cmd, t_list **env)
+void	builtin_export(char **args, t_list **env)
 {
 	int			i;
 	t_key_val	*var;
 
 	i = 0;
-	// printf("HELLOOERIEOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO\n");
 	exit_status(0, TRUE);
 	if (args == NULL)
 		return;
@@ -151,7 +149,7 @@ void	builtin_export(char **args, /*t_cmd *cmd,*/ int nb_cmd, t_list **env)
 			ft_putstr_fd("': not a valid identifier\n", 2);
 			exit_status(1, TRUE);
 		}
-		else if (nb_cmd == 1)
+		else
 		{
 			var = create_new_var(args[i]);
 			if (var)
@@ -159,7 +157,6 @@ void	builtin_export(char **args, /*t_cmd *cmd,*/ int nb_cmd, t_list **env)
 		}
 		i++;
 	}
-	
 }
 
 char **get_only_args(char **args_exec)
@@ -173,25 +170,106 @@ char **get_only_args(char **args_exec)
 	return (args);
 }
 
-void	handle_builtins(t_cmd *cmd, int nb_cmd, t_list **env)
+void	save_in_and_out(t_cmd *cmd)
+{
+	if (operator_in_in_lst_operator(*cmd->lst_operator))
+		cmd->saved_in = dup(0);
+	if (operator_out_in_lst_operator(*cmd->lst_operator))
+		cmd->saved_out = dup(1);
+}
+
+
+void	restore_in_and_out(t_cmd *cmd)
+{
+	if (cmd->saved_in != -1)
+	{
+		dup2(cmd->saved_in, 0);
+		close(cmd->saved_in);
+	}
+	if (cmd->saved_out != -1)
+	{
+		dup2(cmd->saved_out, 1);
+		close(cmd->saved_out);
+	}
+}
+
+void	builtin_case(t_cmd *cmd, t_list **env)
 {
 	char **args;
-
+	
 	args = get_only_args(cmd->args_exec);
-	print_split(args);
 	if (strcmp(cmd->name, "echo") == 0)
 		builtin_echo(cmd);
 	else if (strcmp(cmd->name, "env") == 0)
 		builtin_env(env);
 	else if (strcmp(cmd->name, "pwd") == 0)
 		builtin_pwd();
-	else if (strcmp(cmd->name, "cd") == 0 && nb_cmd == 1)
-		return;
+	else if (strcmp(cmd->name, "cd") == 0)
+		return ;
 	else if (strcmp(cmd->name, "export") == 0)
-		builtin_export(args, /*cmd,*/ nb_cmd, env); 
-	// else if (strcmp(cmd->name, "unset") == 0 && nb_cmd == 1)
-	// else if (strcmp(cmd->name, "exit") == 0 && nb_cmd == 1)
+		builtin_export(args, env); 
+	else if (strcmp(cmd->name, "unset") == 0)
+		return ;
+	else if (strcmp(cmd->name, "exit") == 0)
+		return ;
 }
+
+void	handle_builtins_parent(t_cmd *cmd, t_list **env)
+{
+	save_in_and_out(cmd);
+	if (handle_redirection(*cmd->lst_operator, env, cmd))
+	{
+		restore_in_and_out(cmd);
+		return;
+	}
+	builtin_case(cmd, env);
+	restore_in_and_out(cmd);
+}
+
+void	handle_builtins_child(t_list **lst_cmd, t_cmd *cmd, t_list **env, int *pid)
+{
+	if (handle_redirection(*cmd->lst_operator, env, cmd) != 0)
+	{
+		free_lst_and_pids(lst_cmd, env, pid);
+		exit(exit_status(0, FALSE));
+	}
+	builtin_case(cmd, env);
+	free_lst_and_pids(lst_cmd, env, pid);
+	exit(exit_status(0, FALSE));
+}
+
+// void	handle_builtins(t_list **lst_cmd, t_cmd *cmd, t_list **env, int *pid)
+// {
+// 	char **args;
+
+// 	save_in_and_out(cmd);
+// 	if (handle_redirection(*cmd->lst_operator, env, cmd) != 0
+// 		&& pid != NULL)
+// 	{
+// 		// (void)lst_cmd;
+// 		// (void)pid;
+// 		free_lst_and_pids(lst_cmd, env, pid);//attention au NULL dans le cas de nb_cmd > 1
+// 		return;
+// 	}
+// 	//free if error
+// 	args = get_only_args(cmd->args_exec);
+// 	print_split(args);
+// 	if (strcmp(cmd->name, "echo") == 0)
+// 		builtin_echo(cmd);
+// 	else if (strcmp(cmd->name, "env") == 0)
+// 		builtin_env(env);
+// 	else if (strcmp(cmd->name, "pwd") == 0)
+// 		builtin_pwd();
+// 	else if (strcmp(cmd->name, "cd") == 0)
+// 		return;
+// 	else if (strcmp(cmd->name, "export") == 0)
+// 		builtin_export(args, env); 
+// 	restore_in_and_out(cmd);
+// 	// else if (strcmp(cmd->name, "unset") == 0 && nb_cmd == 1)
+// 	// else if (strcmp(cmd->name, "exit") == 0 && nb_cmd == 1)
+// }
+
+
 
 // * CD
 // * export

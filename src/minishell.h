@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/28 15:43:22 by pchateau         ###   ########.fr       */
+/*   Updated: 2025/03/03 11:01:54 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ typedef struct s_cmd
 	// t_list	**operators_out;
 	int			**pipes;
 	int			nb_pipes;
+	int			saved_in;
+	int			saved_out;
 }	t_cmd;
 
 typedef int t_exit_status;
@@ -131,6 +133,7 @@ int			handle_here_doc(t_key_val *content, t_bool is_last, t_list **env);
 
 // EXECUTING
 int			processing(t_list **lst_cmd, int nb_cmd, t_list **env, int **pipes);
+void		free_lst_and_pids(t_list **lst_cmd, t_list **env, int *tab_pid);
 
 // PATH exec
 t_bool		cmd_path_is_valid(char *path);
@@ -181,6 +184,8 @@ int		index_last_out_operator(t_list *lst_operator);
 
 // BUILTINS
 t_bool	is_builtin(t_cmd *cmd);
-void	handle_builtins(t_cmd *cmd, int nb_cmd, t_list **env);
+void	handle_builtins_child(t_list **lst_cmd, t_cmd *cmd, t_list **env, int *pid);
+void	handle_builtins_parent(t_cmd *cmd, t_list **env);
+// void	handle_builtins(t_list **lst_cmd, t_cmd *cmd, t_list **env, int *pid);
 
 #endif

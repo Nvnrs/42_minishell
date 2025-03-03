@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 15:53:02 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/28 14:50:41 by pchateau         ###   ########.fr       */
+/*   Updated: 2025/03/03 10:03:44 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ t_cmd	*init_cmd(char **input, int start, int end)
 	cmd->pipefd_out = -1;
 	cmd->pipes = NULL;
 	cmd->nb_pipes = 0;
+	cmd->saved_in = -1;
+	cmd->saved_out = -1;
 	return (cmd);
 }
 

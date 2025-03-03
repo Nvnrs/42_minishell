@@ -32,6 +32,8 @@ void	close_npipe(int **pipes, int nb_pipe, int n)
 
 void	close_and_free_pipes(int **pipes, int nb_pipe)
 {
+	if (nb_pipe == 0)
+		return ;
 	close_all_pipes(pipes, nb_pipe);
 	free_all_pipes(pipes, nb_pipe);
 }

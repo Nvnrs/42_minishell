@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 11:41:30 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/03 11:42:29 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/03 18:01:01 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,29 +34,30 @@ t_bool	is_n_option_echo(char *str)
 /**
  * Creer une chaine de char a partir du tableau de chaine de char
  */
-void	builtin_echo(t_cmd *cmd)
+void	builtin_echo(char **args)
 {
-	int	i_split;
+	int		i;
 	char	*output_str;
 
-	i_split = 1;
-	output_str = "\0";
-	if (cmd->args_exec[1] && is_n_option_echo(cmd->args_exec[1]))
-		i_split++;
-	if (cmd->args_exec[i_split])
-		output_str = cmd->args_exec[i_split];
-	while (cmd->args_exec[i_split] && cmd->args_exec[i_split + 1])
+	i = 0;
+	output_str = ft_strdup("\0");
+	while (args[i] && is_n_option_echo(args[i]))
+		i++;
+	if (args[i] && !is_n_option_echo(args[i]))
+	{
+		free(output_str);
+		output_str = ft_strdup(args[i]);
+	}
+	while (args[i] && args[i + 1])
 	{
 		output_str = ft_strjoin(output_str, " ");
-		output_str = ft_strjoin(output_str, cmd->args_exec[i_split + 1]);
-		i_split++;
+		output_str = ft_strjoin(output_str, args[i + 1]);
+		i++;
 	}
-	if ((cmd->args_exec[1] && !is_n_option_echo(cmd->args_exec[1])) || len_split(cmd->args_exec) == 1)
-		printf("%s\n", output_str);
-	else
+	if ((args[0] && is_n_option_echo(args[0])))
 		printf("%s", output_str);
-	if ((len_split(cmd->args_exec) > 2 && !is_n_option_echo(cmd->args_exec[1]))
-		|| (len_split(cmd->args_exec) > 3 && is_n_option_echo(cmd->args_exec[1])))
-		free(output_str);
+	else
+		printf("%s\n", output_str);
+	free(output_str);
 	exit_status(0, TRUE);
 }

@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/03 14:02:08 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/03 18:25:32 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,8 @@ void		apply_expansion(t_list **lst_cmd, t_list **lst_env);
 int			redirect_out(t_key_val *content, t_bool is_last);
 int			redirect_out_append(t_key_val *content, t_bool is_last);
 int			redirect_in(t_key_val *content, t_bool is_last);
-int			handle_here_doc(t_key_val *content, t_bool is_last, t_list **env);
-
+int			handle_here_doc(t_key_val *content, t_bool is_last);
+void		create_all_here_doc(t_list **lst_cmd, t_list **env);
 // EXECUTING
 int			processing(t_list **lst_cmd, int nb_cmd, t_list **env, int **pipes);
 void		free_lst_and_pids(t_list **lst_cmd, t_list **env, int *tab_pid);
@@ -186,13 +186,17 @@ int		index_last_out_operator(t_list *lst_operator);
 t_bool	is_builtin(t_cmd *cmd);
 void	handle_builtins_child(t_list **lst_cmd, t_cmd *cmd, t_list **env, int *pid);
 void	handle_builtins_parent(t_list **lst_cmd, t_cmd *cmd, t_list **env);
-void	builtin_echo(t_cmd *cmd);
+void	builtin_echo(char **args);
 void	builtin_env(t_list **env);
 void	builtin_export(char **args, t_list **env);
 void	builtin_pwd(void);
 void	builtin_exit(char **args, t_list **lst_cmd, t_list **env, int *pid);
 void	builtin_unset(char **args, t_list **env);
+void	builtin_cd(char **args, t_list **env);
+void	create_all_here_doc(t_list **lst_cmd, t_list **env);
 // void	handle_builtins(t_list **lst_cmd, t_cmd *cmd, t_list **env, int *pid);
 
+void	save_new_var(t_key_val *new_var, t_list **env);
+void	remove_var(char *var_key, t_list **env);
 
 #endif

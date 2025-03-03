@@ -67,7 +67,8 @@ SRC_BUILTINS = $(SRC_BUILTINS_DIR)/builtins.c \
 				$(SRC_BUILTINS_DIR)/export.c \
 				$(SRC_BUILTINS_DIR)/pwd.c \
 				$(SRC_BUILTINS_DIR)/exit.c \
-				$(SRC_BUILTINS_DIR)/unset.c
+				$(SRC_BUILTINS_DIR)/unset.c \
+				$(SRC_BUILTINS_DIR)/cd.c
 
 SRC = $(SRC_DIR)/main.c \
 	$(SRC_DIR)/utils.c \

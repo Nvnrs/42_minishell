@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 11:43:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/03 14:01:25 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/03 18:12:04 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,13 @@ void	builtin_case(t_list **lst_cmd, t_cmd *cmd, t_list **env, int *pid)
 	
 	args = get_only_args(cmd->args_exec);
 	if (strcmp(cmd->name, "echo") == 0)
-		builtin_echo(cmd);
+		builtin_echo(args);
 	else if (strcmp(cmd->name, "env") == 0)
 		builtin_env(env);
 	else if (strcmp(cmd->name, "pwd") == 0)
 		builtin_pwd();
 	else if (strcmp(cmd->name, "cd") == 0)
-		return ;
+		builtin_cd(args, env);
 	else if (strcmp(cmd->name, "export") == 0)
 		builtin_export(args, env); 
 	else if (strcmp(cmd->name, "unset") == 0)

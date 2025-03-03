@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:09:38 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/03 11:38:15 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/03 18:25:15 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	redirect_in(t_key_val *content, t_bool is_last)
 	return (0);
 }
 
-static int	write_to_here_doc(char *filename, char	*delimiter, t_list **env)
+int	write_to_here_doc(char *filename, char	*delimiter, t_list **env)
 {
 	char	*line;
 	int		here_docfd;
@@ -55,45 +55,88 @@ static int	write_to_here_doc(char *filename, char	*delimiter, t_list **env)
 }
 
 
+t_bool	create_file(char *filename)
+{
+	int fd;
+
+	fd = open(filename, O_CREAT, 0644);
+	if (fd == -1)
+		return (FALSE);
+	return (TRUE);
+}
+
 static char *create_name_here_doc(int *id)
 {
 	char *name;
 	char *id_str;
+	t_bool	file_is_create;
 
-	id_str = ft_itoa(*id);
-	name = ft_strdup(HERE_DOC_FILENAME);
-	name = cft_strcat_realloc(name, id_str);
-	name = cft_strcat_realloc(name, ".txt");
-	free(id_str);
-	if (access(name, R_OK | F_OK) != 0)
+	name = NULL;
+	file_is_create = FALSE;
+	while (file_is_create == FALSE)
+	{
+		id_str = ft_itoa(*id);
+		name = ft_strdup(HERE_DOC_FILENAME);
+		name = cft_strcat_realloc(name, id_str);
+		name = cft_strcat_realloc(name, ".txt");
+		free(id_str);
 		*id += 1;
+		if (create_file(name))
+			file_is_create = TRUE;
+	}
+	printf("name file :%s\n", name);
 	return (name);
 }
 
-int	handle_here_doc(t_key_val *content, t_bool is_last, t_list **env)
+void	create_and_assign_temp_file(t_key_val *operator_content, t_list **env)
 {
-	t_key_val	*here_doc;
+	static int	id_here_doc;
 	char		*name;
-	static int 	id_here_doc;
-	char		*delimiter;
-	int			status;
-	
-	status = 0;
+	char	*delimiter;
+
 	name = create_name_here_doc(&id_here_doc);
-	delimiter = ft_strdup(content->value);
+	delimiter = ft_strdup(operator_content->value);
 	delimiter = cft_strcat_realloc(delimiter, "\n");
-	here_doc = init_key_val("<", name);
-	printf("here_doc name: %s\n", name);
-	status = write_to_here_doc(here_doc->value, delimiter, env);
-	if (status == 1)
-		handle_here_doc(content, is_last, env);
-	else if (status == 0 && is_last)
-	{
-		status = redirect_in(here_doc, is_last);
-		unlink(here_doc->value);
-	}
-	free_key_val(here_doc);
-	free(name);
+	write_to_here_doc(name, delimiter, env);
 	free(delimiter);
+	free(operator_content->value);
+	operator_content->value = name;
+}
+
+void	create_all_here_doc(t_list **lst_cmd, t_list **env)
+{
+	t_list	*cmd;
+	t_cmd	*cmd_content;
+	t_list	**lst_operators;
+	t_list	*operator;
+	t_key_val	*operator_content;
+
+	(void)env;
+	cmd = *lst_cmd;
+	while (cmd)
+	{
+		cmd_content = cmd->content;
+		lst_operators = cmd_content->lst_operator;
+		operator = *lst_operators;
+		while (operator)
+		{
+			operator_content = operator->content;
+			if (strcmp(operator_content->key, "<<") == 0)
+			{
+				create_and_assign_temp_file(operator_content, env);
+			}
+			operator = operator->next;
+		}
+		cmd = cmd->next;
+	}
+	// ft_lstiter(*lst_cmd, print_cmd);
+}
+
+int	handle_here_doc(t_key_val *content, t_bool is_last)
+{
+	int			status;
+
+	status = redirect_in(content, is_last);
+	unlink(content->value);
 	return (status);
 }

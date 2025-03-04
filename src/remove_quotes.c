@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   remove_quotes.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/04 16:50:45 by nveneros          #+#    #+#             */
+/*   Updated: 2025/03/04 17:08:18 by nveneros         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int count_pair_of_quotes_in_str(char *str)
@@ -28,6 +40,35 @@ int count_pair_of_quotes_in_str(char *str)
 	return (count);
 }
 
+void	single_quote_case(char *str, char *newstr, int *i_str, int *i_newstr)
+{
+	*i_str += 1;
+	while (str[*i_str] != SINGLE_QUOTE)
+	{
+		newstr[*i_newstr] = str[*i_str];
+		*i_str += 1;
+		*i_newstr += 1;
+	}
+}
+
+void	double_quote_case(char *str, char *newstr, int *i_str, int *i_newstr)
+{
+	*i_str += 1;
+	while (str[*i_str] != DOUBLE_QUOTE)
+	{
+		newstr[*i_newstr] = str[*i_str];
+		*i_str += 1;
+		*i_newstr += 1;
+	}
+}
+
+void	others_case(char *str, char *newstr, int *i_str, int *i_newstr)
+{
+	newstr[*i_newstr] = str[*i_str];
+	*i_newstr += 1;
+}
+
+
 char	*remove_quotes_in_str(char *str)
 {
 	char	*newstr;
@@ -41,35 +82,15 @@ char	*remove_quotes_in_str(char *str)
 	newstr = malloc(sizeof (char) * len_newstr);
 	if (newstr == NULL)
 		return (NULL);
-	i_str = 0;
-	i_newstr = 0;
+	init_int_zero(&i_str, &i_newstr, NULL, NULL);
 	while (str[i_str])
 	{
 		if (str[i_str] == SINGLE_QUOTE)
-		{
-			i_str++;
-			while (str[i_str] != SINGLE_QUOTE)
-			{
-				newstr[i_newstr] = str[i_str];
-				i_str++;
-				i_newstr++;
-			}
-		}
+			single_quote_case(str, newstr, &i_str, &i_newstr);
 		else if (str[i_str] == DOUBLE_QUOTE)
-		{
-			i_str++;
-			while (str[i_str] != DOUBLE_QUOTE)
-			{
-				newstr[i_newstr] = str[i_str];
-				i_str++;
-				i_newstr++;
-			}
-		}
+			double_quote_case(str, newstr, &i_str, &i_newstr);
 		else if (str[i_str] != SINGLE_QUOTE && str[i_str] != DOUBLE_QUOTE)
-		{
-			newstr[i_newstr] = str[i_str];
-			i_newstr++;
-		}
+			others_case(str, newstr, &i_str, &i_newstr);
 		i_str++;
 	}
 	newstr[len_newstr - 1] = '\0';

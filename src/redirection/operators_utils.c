@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   operators_utils.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/04 17:18:49 by nveneros          #+#    #+#             */
+/*   Updated: 2025/03/04 17:21:40 by nveneros         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 t_bool	operator_in_in_lst_operator(t_list *lst_operator)
@@ -31,8 +43,8 @@ t_bool	operator_out_in_lst_operator(t_list *lst_operator)
 int	index_last_in_operator(t_list *lst_operator)
 {
 	t_key_val	*content;
-	int	i;
-	int	index_last;
+	int			i;
+	int			index_last;
 
 	i = 0;
 	index_last = -1;
@@ -50,8 +62,8 @@ int	index_last_in_operator(t_list *lst_operator)
 int	index_last_out_operator(t_list *lst_operator)
 {
 	t_key_val	*content;
-	int	i;
-	int	index_last;
+	int			i;
+	int			index_last;
 
 	i = 0;
 	index_last = -1;

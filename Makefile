@@ -60,6 +60,8 @@ SRC_REDIRECTION = $(SRC_REDIRECTION_DIR)/handle_redirection.c \
 				$(SRC_REDIRECTION_DIR)/redirect_in.c \
 				$(SRC_REDIRECTION_DIR)/redirect_out.c \
 				$(SRC_REDIRECTION_DIR)/redirect_pipe.c \
+				$(SRC_REDIRECTION_DIR)/create_here_doc.c \
+				$(SRC_REDIRECTION_DIR)/create_tmp_file_here_doc.c \
 				$(SRC_REDIRECTION_DIR)/operators_utils.c
 
 SRC_EXEC = $(SRC_EXEC_DIR)/processing.c \

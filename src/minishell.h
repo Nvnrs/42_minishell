@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/04 12:02:33 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/04 17:37:56 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ int			redirect_out_append(t_key_val *content, t_bool is_last);
 int			redirect_in(t_key_val *content, t_bool is_last);
 int			handle_here_doc(t_key_val *content, t_bool is_last);
 void		create_all_here_doc(t_list **lst_cmd, t_list **env);
+char		*create_name_here_doc(int *id);
 // EXECUTING
 int			processing(t_list **lst_cmd, int nb_cmd, t_list **env, int **pipes);
 void		free_lst_and_pids(t_list **lst_cmd, t_list **env, int *tab_pid);

@@ -22,7 +22,7 @@ char	*get_exit_status_str(void)
 
 int	handle_error(int status_code, char *context, char *message)
 {
-	ft_putstr_fd(context, 2);
-	ft_putstr_fd(message, 2);
+	force_print_stderr(context);
+	force_print_stderr(message);
 	return (exit_status(status_code, TRUE));
 }

@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/03 18:25:32 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/04 11:39:42 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,7 @@ void		set_signals(void);
 // UTILS
 void		init_int_zero(int *first, int *second, int *third, int *fourth);
 int			ft_strcmp(const char *s1, const char *s2);
+void		force_print_stderr(char *message);
 
 // SPLIT_UTILS
 int			len_split(char **split);
@@ -161,7 +162,7 @@ t_list		**init_lst_operator(char **split, int i_start, int i_end);
 
 void		redirect_pipe(t_list *lst_operator, t_cmd *cmd);
 
-int			handle_redirection(t_list *lst_operator, t_list **env, t_cmd *cmd);
+int			handle_redirection(t_list *lst_operator, t_cmd *cmd);
 
 t_bool		operator_out_in_lst_operator(t_list *lst_operator);
 t_bool		operator_in_in_lst_operator(t_list *lst_operator);

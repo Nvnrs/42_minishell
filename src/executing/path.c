@@ -95,7 +95,7 @@ char *get_path_cmd(t_cmd *cmd, t_list **env)
 			return (NULL);
 		}
 		path = find_path_with_env(cmd, env);
-		printf("PATH :%s\n", path);
+		// printf("PATH :%s\n", path);
 		if (path == NULL)
 		{
 			handle_error(127, cmd->name, ": Command not found\n");

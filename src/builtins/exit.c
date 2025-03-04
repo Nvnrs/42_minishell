@@ -34,7 +34,7 @@ void	builtin_exit(char **args, t_list **lst_cmd, t_list **env, int *pid)
 		}
 		else
 		{
-			ft_putstr_fd("exit: ", 2);
+			force_print_stderr("exit: ");
 			handle_error(1, args[0], ": numeric argument required\n");
 		}
 	}

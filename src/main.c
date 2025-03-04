@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:10:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/03 18:16:45 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/04 11:33:17 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ int	handle_readline(char *rd, t_list **env)
 	free_split(input);
 	apply_expansion(lst_cmd, env);
 	apply_remove_quotes(lst_cmd);
-	ft_lstiter(*lst_cmd, print_cmd);
 	// create_here_doc;
 	create_all_here_doc(lst_cmd, env);
+	ft_lstiter(*lst_cmd, print_cmd);
 	processing(lst_cmd, ft_lstsize(*lst_cmd), env, pipes);
 	free_lst_cmd(lst_cmd);
 	return (0);

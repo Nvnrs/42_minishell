@@ -33,12 +33,12 @@ static void	chdir_with_given_path(char *path, t_list **env)
 {
 	if (access(path, F_OK) != 0)
 	{
-		ft_putstr_fd("cd: ", 2);
+		force_print_stderr("cd: ");
 		handle_error(1, path, ": no such file or directory\n");
 	}
 	else if (access(path, X_OK) != 0)
 	{
-		ft_putstr_fd("cd: ", 2);
+		force_print_stderr("cd: ");
 		handle_error(1, path, ": permission denied\n");
 	}
 	else

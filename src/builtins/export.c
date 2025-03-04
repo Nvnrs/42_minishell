@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 11:41:23 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/03 11:42:16 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/04 11:36:53 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,9 @@ void	builtin_export(char **args, t_list **env)
 	{
 		if (!is_valid_key(args[i]))
 		{
-			ft_putstr_fd("export: '", 2);
-			ft_putstr_fd(args[i], 2);
-			ft_putstr_fd("': not a valid identifier\n", 2);
+			force_print_stderr("export: '");
+			force_print_stderr(args[i]);
+			force_print_stderr("': not a valid identifier\n");
 			exit_status(1, TRUE);
 		}
 		else

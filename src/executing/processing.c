@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:41:38 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/03 14:02:07 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/04 11:42:24 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	handle_cmd(t_cmd *cmd, t_list **lst_cmd, t_list **env, int *tab_pid)
 	char	*path_cmd;
 	char	**str_env;
 	// printf("START\n");
-	if(handle_redirection(*cmd->lst_operator, env, cmd) != 0)
+	if(handle_redirection(*cmd->lst_operator, cmd) != 0)
 	{
 		free_lst_and_pids(lst_cmd, env, tab_pid);
 		exit(exit_status(0, FALSE));

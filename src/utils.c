@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:44:18 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/19 16:56:13 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/04 11:41:04 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,4 +36,9 @@ int	ft_strcmp(const char *s1, const char *s2)
 		i++;
 	}
 	return (0);
+}
+
+void	force_print_stderr(char *message)
+{
+	write(2, message, ft_strlen(message));
 }

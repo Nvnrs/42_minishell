@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:53:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/04 14:05:49 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/04 15:05:25 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,21 @@ static int	skip_spaces(char *str)
 		skip++;
 	return (skip);
 }
+static int	skip_quotes(char *str, char quote)
+{
+	int i;
 
+	i = 0;
+	if (str[i] == quote)
+	{
+		i++;
+		while (str[i] && str[i] != quote)
+		{
+			i++;
+		}
+	}
+	return (i);
+}
 t_bool	consecutives_operators(char *str)
 {
 	int	i;
@@ -50,6 +64,8 @@ t_bool	consecutives_operators(char *str)
 	i = 0;
 	while (str[i])
 	{
+		i += skip_quotes(&str[i], DOUBLE_QUOTE);
+		i += skip_quotes(&str[i], SINGLE_QUOTE);
 		if (str[i] == '|')
 		{
 			i+= 1;

@@ -6,6 +6,7 @@ SRC_INIT_CMD_DIR = $(SRC_INIT_DIR)/cmd
 SRC_INIT_ENV_DIR = $(SRC_INIT_DIR)/env
 SRC_INIT_PIPE_DIR = $(SRC_INIT_DIR)/pipe
 SRC_EXPANSION_DIR = $(SRC_DIR)/expansion
+SRC_REMOVES_QUOTES_DIR = $(SRC_DIR)/remove_quotes
 SRC_DEBUG_DIR = $(SRC_DIR)/debug
 SRC_REDIRECTION_DIR = $(SRC_DIR)/redirection
 SRC_EXEC_DIR = $(SRC_DIR)/executing
@@ -52,6 +53,9 @@ SRC_EXPANSION = $(SRC_EXPANSION_DIR)/expansion_len_str.c \
 				$(SRC_EXPANSION_DIR)/expansion_var.c \
 				$(SRC_EXPANSION_DIR)/apply_expansion.c
 
+SRC_REMOVES_QUOTES = $(SRC_REMOVES_QUOTES_DIR)/remove_quotes.c \
+					$(SRC_REMOVES_QUOTES_DIR)/apply_remove_quotes.c
+
 SRC_REDIRECTION = $(SRC_REDIRECTION_DIR)/handle_redirection.c \
 				$(SRC_REDIRECTION_DIR)/redirect_in.c \
 				$(SRC_REDIRECTION_DIR)/redirect_out.c \
@@ -75,11 +79,11 @@ SRC = $(SRC_DIR)/main.c \
 	$(SRC_DIR)/utils.c \
 	$(SRC_DIR)/split_utils.c \
 	$(SRC_DIR)/signals.c \
-	$(SRC_DIR)/remove_quotes.c \
 	$(SRC_INIT) \
 	$(SRC_PARSE) \
 	$(SRC_DEBUG) \
 	$(SRC_EXPANSION) \
+	$(SRC_REMOVES_QUOTES) \
 	$(SRC_REDIRECTION) \
 	$(SRC_BUILTINS) \
 	$(SRC_EXEC)

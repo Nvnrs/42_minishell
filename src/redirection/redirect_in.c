@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:09:38 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/03 18:25:15 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/04 16:24:39 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	write_to_here_doc(char *filename, char	*delimiter, t_list **env)
 	here_docfd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (here_docfd == -1)
 		return (1);
-	line = get_next_line(STDIN_FILENO);
+	line = readline("< ");
 	while (strcmp(line, delimiter) != 0)
 	{
 		line = expansion_str(line, env);
@@ -47,7 +47,7 @@ int	write_to_here_doc(char *filename, char	*delimiter, t_list **env)
 			return (2);
 		}
 		free(line);
-		line = get_next_line(STDIN_FILENO);
+		line = readline("< ");
 	}
 	free(line);
 	close(here_docfd);
@@ -96,7 +96,7 @@ void	create_and_assign_temp_file(t_key_val *operator_content, t_list **env)
 
 	name = create_name_here_doc(&id_here_doc);
 	delimiter = ft_strdup(operator_content->value);
-	delimiter = cft_strcat_realloc(delimiter, "\n");
+	// delimiter = cft_strcat_realloc(delimiter, "\n");
 	write_to_here_doc(name, delimiter, env);
 	free(delimiter);
 	free(operator_content->value);

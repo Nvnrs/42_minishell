@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:10:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/04 14:09:32 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/04 16:22:13 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	main(int argc, char *argv[], char *envp[])
 	flag = 1;
 	while (flag)
 	{
-		rd = readline("> ");
+		rd = readline("minismash$ ");
 		if (rd)
 		{
 			if (handle_readline(rd, env) == 1)

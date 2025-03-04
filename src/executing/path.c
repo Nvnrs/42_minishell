@@ -85,6 +85,8 @@ char *get_path_cmd(t_cmd *cmd, t_list **env)
 {
 	char	*path;
 	
+	if (cmd->name == NULL)
+		return (NULL);
 	if (path_var_env_exist(env))
 	{
 		if (str_contain_c(cmd->name,'/'))

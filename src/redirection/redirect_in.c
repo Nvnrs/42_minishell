@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 15:09:38 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/04 16:24:39 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/04 16:25:29 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int	write_to_here_doc(char *filename, char	*delimiter, t_list **env)
 			return (2);
 		}
 		free(line);
-		line = readline("< ");
+		line = readline("> ");
 	}
 	free(line);
 	close(here_docfd);

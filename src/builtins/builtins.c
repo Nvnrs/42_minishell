@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 11:43:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/04 11:41:26 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/04 16:40:12 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ t_bool	is_builtin(t_cmd *cmd)
 	char *cmd_name;
 
 	cmd_name = cmd->name;
+	if (cmd_name == NULL)
+		return (FALSE);
 	if(strcmp(cmd_name, "echo") == 0
 		|| strcmp(cmd_name, "cd") == 0
 		|| strcmp(cmd_name, "export") == 0

@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/04 11:39:42 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/04 12:02:33 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ t_bool		nb_quotes_is_even(char type_quote, char other_quote, char *str);
 t_bool		quotes_are_valid(char *str);
 t_bool		basics_checks(char *str);
 t_bool		str_contain_only_point(char *str);
+t_bool		str_contan_only_space(char *str);
 
 
 // STR to ENV

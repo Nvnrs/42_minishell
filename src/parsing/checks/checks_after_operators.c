@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:55:21 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/17 17:28:12 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/04 13:46:44 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ t_bool	after_operators_is_empty(char *str)
 	if (has_empty_after_operator("<", str))
 		return (TRUE);
 	if (has_empty_after_operator(">", str))
+		return (TRUE);
+	if (has_empty_after_operator("|", str))
 		return (TRUE);
 	return (FALSE);
 }

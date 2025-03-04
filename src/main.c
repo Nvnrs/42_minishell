@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:10:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/04 11:33:17 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/04 13:44:47 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	handle_readline(char *rd, t_list **env)
 		return (1);
 	}
 	input = parse_input(rd);
+	print_split(input);
 	lst_cmd = init_lst_cmd(input);
 	pipes = init_pipes(ft_lstsize(*lst_cmd) - 1);
 	add_pipes_in_lst_cmd(lst_cmd, pipes);
@@ -43,7 +44,6 @@ int	handle_readline(char *rd, t_list **env)
 	return (0);
 }
 
-
 int	main(int argc, char *argv[], char *envp[])
 {
 	char	*rd;
@@ -58,7 +58,7 @@ int	main(int argc, char *argv[], char *envp[])
 	while (flag)
 	{
 		rd = readline("> ");
-		if (rd && *rd)
+		if (rd)
 		{
 			if (handle_readline(rd, env) == 1)
 				continue ;

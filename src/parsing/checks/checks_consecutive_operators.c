@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:53:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/25 11:47:41 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/04 14:05:49 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,21 @@ t_bool	consecutives_operators(char *str)
 	i = 0;
 	while (str[i])
 	{
+		if (str[i] == '|')
+		{
+			i+= 1;
+			i += skip_spaces(&str[i]);
+			if (str[i] == '|')
+				return (TRUE);
+			continue;
+		}
 		len_operator = is_an_operator(str, i);
 		if (len_operator)
 		{
 			i += len_operator;
 			i += skip_spaces(&str[i]);
 			if (is_an_operator(str, i))
-			{
 				return (TRUE);
-			}
 		}
 		i++;
 	}

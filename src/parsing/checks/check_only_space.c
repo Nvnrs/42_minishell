@@ -1,28 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   checks.c                                           :+:      :+:    :+:   */
+/*   check_only_space.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/17 16:47:59 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/04 14:01:46 by nveneros         ###   ########.fr       */
+/*   Created: 2025/03/04 11:57:04 by nveneros          #+#    #+#             */
+/*   Updated: 2025/03/04 13:46:42 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_bool	basics_checks(char *str)
+t_bool	str_contan_only_space(char *str)
 {
-	if (ft_strlen(str) == 0)
-		return (FALSE);
-	if (str_contan_only_space(str))
-		return (FALSE);
-	if (str_contain_only_point(str))
-		return (force_print_stderr("filename argument required"), FALSE);
-	if (!quotes_are_valid(str))
-		return (force_print_stderr("quotes invalid\n"), FALSE);
-	if (!operators_are_valid(str))
-		return (force_print_stderr("operators invalid\n"), FALSE);
-	return (TRUE);
+	int	i;
+	int space;
+	int others;
+
+	i = 0;
+	space = 0;
+	others = 0;
+	while (str[i])
+	{
+		if (str[i] == ' ')
+			space++;
+		else
+			others++;
+		i++;
+	}
+	if (others == 0)
+		return (TRUE);
+	return (FALSE);
 }

@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/04 17:37:56 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/05 16:53:09 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ t_bool		is_single_operator(char *str, int index);
 t_bool		after_operators_is_empty(char *str);
 t_bool		is_start_of_operator(char *operator, char *str, int i_str);
 t_bool		operators_are_valid(char *str);
-t_bool		consecutives_operators(char *str);
+t_bool		consecutive_operators(char *str);
 t_bool		nb_quotes_is_even(char type_quote, char other_quote, char *str);
 t_bool		quotes_are_valid(char *str);
 t_bool		basics_checks(char *str);

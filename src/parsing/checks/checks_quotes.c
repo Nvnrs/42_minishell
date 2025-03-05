@@ -6,18 +6,17 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:52:28 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/19 11:30:14 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/05 18:07:08 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
 void	skip_inside_quote(char quote, char *str, int *i)
 {
 	*i += 1;
 	while (str[*i] && str[*i] != quote)
-	{ 
+	{
 		*i += 1;
 	}
 }

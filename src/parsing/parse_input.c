@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:11:13 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/19 13:28:48 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/05 14:43:30 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void	count_case(int *count, int *i, char *str)
 	else if (is_double_redirection(str, *i))
 	{
 		*count += 1;
-		*i += 2;//i + 2
+		*i += 2;
 	}
 	else if (is_single_operator(str, *i))
 	{
@@ -60,10 +60,10 @@ static void	parse_case(char **split, int *i_split, char *str, int *i)
 	else if (is_double_redirection(str, *i))// << >>
 	{
 		split[*i_split] = ft_substr(str, *i, 2);
-		*i += 2;//i + 2
+		*i += 2;
 		*i_split += 1;
 	}
-	else if (is_single_operator(str, *i))// < > |
+	else if (is_single_operator(str, *i))// < > 
 	{
 		split[*i_split] = ft_substr(str, *i, 1);
 		*i += 1;
@@ -86,7 +86,7 @@ char	**parse_input(char *str)
 
 	i = 0;
 	i_split = 0;
-	split = malloc((count_word_in_input(str) + 1 )* sizeof (char *));
+	split = malloc((count_word_in_input(str) + 1) * sizeof (char *));
 	while (str[i])
 		parse_case(split, &i_split, str, &i);
 	split[count_word_in_input(str)] = NULL;

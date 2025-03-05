@@ -6,17 +6,15 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:53:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/04 15:05:25 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/05 18:05:23 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* CONSECUTIVES OPERATORS */
-
 static int	is_an_operator(char *str, int i)
-{	
-	int len_operator;
+{
+	int	len_operator;
 
 	len_operator = 0;
 	if (is_start_of_operator("<<", str, i)
@@ -32,18 +30,20 @@ static int	is_an_operator(char *str, int i)
 	}
 	return (len_operator);
 }
+
 static int	skip_spaces(char *str)
 {
-	int skip;
+	int	skip;
 
 	skip = 0;
 	while (str[skip] && str[skip] == ' ')
 		skip++;
 	return (skip);
 }
+
 static int	skip_quotes(char *str, char quote)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (str[i] == quote)
@@ -56,33 +56,43 @@ static int	skip_quotes(char *str, char quote)
 	}
 	return (i);
 }
-t_bool	consecutives_operators(char *str)
+
+static t_bool	detect_consecutive_operators(char *str, int *i_main)
 {
 	int	i;
-	int	len_operator;
+
+	i = *i_main;
+	if (str[i] == '|')
+	{
+		i += 1;
+		i += skip_spaces(&str[i]);
+		if (str[i] == '|')
+			return (TRUE);
+	}
+	else if (is_an_operator(str, i))
+	{
+		i += is_an_operator(str, i);
+		i += skip_spaces(&str[i]);
+		if (is_an_operator(str, i))
+			return (TRUE);
+	}
+	else
+		i++;
+	*i_main = i;
+	return (FALSE);
+}
+
+t_bool	consecutive_operators(char *str)
+{
+	int	i;
 
 	i = 0;
 	while (str[i])
 	{
 		i += skip_quotes(&str[i], DOUBLE_QUOTE);
 		i += skip_quotes(&str[i], SINGLE_QUOTE);
-		if (str[i] == '|')
-		{
-			i+= 1;
-			i += skip_spaces(&str[i]);
-			if (str[i] == '|')
-				return (TRUE);
-			continue;
-		}
-		len_operator = is_an_operator(str, i);
-		if (len_operator)
-		{
-			i += len_operator;
-			i += skip_spaces(&str[i]);
-			if (is_an_operator(str, i))
-				return (TRUE);
-		}
-		i++;
+		if (detect_consecutive_operators(str, &i))
+			return (TRUE);
 	}
 	return (FALSE);
 }

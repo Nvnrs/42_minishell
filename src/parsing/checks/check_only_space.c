@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 11:57:04 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/04 13:46:42 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/05 14:44:16 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 t_bool	str_contan_only_space(char *str)
 {
 	int	i;
-	int space;
-	int others;
+	int	space;
+	int	others;
 
 	i = 0;
 	space = 0;

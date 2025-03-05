@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:55:21 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/04 14:11:00 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/05 14:44:42 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,12 @@ static t_bool	has_empty_after_operator(char *operator, char *str)
 	{
 		if (is_start_of_operator(operator, str, i))
 		{
-			i+= ft_strlen(operator);
+			i += ft_strlen(operator);
 			if (is_only_space(&str[i]))
 			{
 				return (TRUE);
 			}
-			continue;
+			continue ;
 		}
 		i++;
 	}

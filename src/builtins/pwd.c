@@ -6,11 +6,11 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 11:42:50 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/03 11:47:06 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/06 17:16:13 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include  "minishell.h"
+#include "minishell.h"
 
 void	builtin_pwd(void)
 {

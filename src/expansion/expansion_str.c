@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:35:40 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/27 14:45:27 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/06 17:28:00 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static void	handle_single_quote(char *str, int *i, char *output, int *i_out)
 	}
 }
 
-
 /**
  * Demarre a une double quote, effectue une expansion si besoin et avance
  * jusqu'a la quote fermante
@@ -46,7 +45,8 @@ static void	handle_single_quote(char *str, int *i, char *output, int *i_out)
  * @return Nombre d'incrementation effectue dans str
  */
 
-static int	handle_double_quote(char *str, char *output, int *i_out_main, t_list **lst_env)
+static int	handle_double_quote(char *str, char *output,
+	int *i_out_main, t_list **lst_env)
 {
 	int	i;
 	int	i_out;
@@ -59,15 +59,14 @@ static int	handle_double_quote(char *str, char *output, int *i_out_main, t_list 
 		if (is_start_of_expansion(str, i))
 		{
 			i++;
-			i+= expansion_var(&str[i], output, &i_out, lst_env);
-			continue;
-		}	
+			i += expansion_var(&str[i], output, &i_out, lst_env);
+			continue ;
+		}
 		output[i_out++] = str[i++];
 	}
 	*i_out_main = i_out;
 	return (i);
 }
-
 
 /**
  * Free str and return new str with expansion 
@@ -86,12 +85,12 @@ char	*expansion_str(char *str, t_list **lst_env)
 		if (str[i] == SINGLE_QUOTE)
 			handle_single_quote(str, &i, output, &i_out);
 		else if (str[i] == DOUBLE_QUOTE)
-			i+= handle_double_quote(&str[i], output, &i_out, lst_env);
+			i += handle_double_quote(&str[i], output, &i_out, lst_env);
 		else if (str[i] == '$' && str[i + 1] && str[i + 1] != ' ')
 		{
 			i++;
-			i+= expansion_var(&str[i], output, &i_out, lst_env);
-			continue;
+			i += expansion_var(&str[i], output, &i_out, lst_env);
+			continue ;
 		}
 		output[i_out++] = str[i++];
 	}

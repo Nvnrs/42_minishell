@@ -6,12 +6,11 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:41:38 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/04 16:45:20 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/06 17:23:53 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 void	free_lst_and_pids(t_list **lst_cmd, t_list **env, int *tab_pid)
 {
@@ -28,12 +27,12 @@ static void	handle_cmd(t_cmd *cmd, t_list **lst_cmd, t_list **env, int *tab_pid)
 	char	*path_cmd;
 	char	**str_env;
 	// printf("START\n");
-	if(handle_redirection(*cmd->lst_operator, cmd) != 0)
+	if (handle_redirection(*cmd->lst_operator, cmd) != 0)
 	{
 		free_lst_and_pids(lst_cmd, env, tab_pid);
 		exit(exit_status(0, FALSE));
 	}
-	path_cmd = get_path_cmd(cmd, env);//tester avec NULL
+	path_cmd = get_path_cmd(cmd, env);
 	// printf("PATH :%s\n", path_cmd);
 	// printf("OUTPUT CODE : %d\n", exit_status(0, FALSE));
 	if (path_cmd == NULL)
@@ -42,7 +41,7 @@ static void	handle_cmd(t_cmd *cmd, t_list **lst_cmd, t_list **env, int *tab_pid)
 		exit(exit_status(0, FALSE));
 	}
 	str_env = lst_env_to_tab_str(env);
-	if (execve(path_cmd, cmd->args_exec, str_env) == -1)//passer env en str
+	if (execve(path_cmd, cmd->args_exec, str_env) == -1)
 		perror(path_cmd);
 	free_lst_and_pids(lst_cmd, env, tab_pid);
 	free_split(str_env);
@@ -55,7 +54,7 @@ void	wait_childs_and_handle_signals(int *pid, int nb_cmd)
 	int	i;
 	int	wstatus;
 	int	status_code;
-	
+
 	// print_pid_tab(pid, nb_cmd);
 	i = 0;
 	while (i < nb_cmd)
@@ -85,13 +84,13 @@ void	wait_childs_and_handle_signals(int *pid, int nb_cmd)
  */
 int	processing(t_list **lst_cmd, int nb_cmd, t_list **env, int **pipes)
 {
-	int	i;
-	int	*pid;
+	int		i;
+	int		*pid;
 	t_list	*lst;
 
 	i = 0;
 	lst = *lst_cmd;
-	if (is_builtin(lst->content) && nb_cmd == 1)// nb_cmd == 1
+	if (is_builtin(lst->content) && nb_cmd == 1)
 	{
 		printf("IS BUILTIN\n");
 		handle_builtins_parent(lst_cmd, lst->content, env);
@@ -105,14 +104,13 @@ int	processing(t_list **lst_cmd, int nb_cmd, t_list **env, int **pipes)
 		if (pid[i] == -1)
 			return (EXIT_FAILURE);
 		else if (pid[i] == 0)
-		{//handle builtins
+		{
 			if (is_builtin(lst->content))
 				handle_builtins_child(lst_cmd, lst->content, env, pid);
 			else
 				handle_cmd(lst->content, lst_cmd, env, pid);
-			break;
+			break ;
 		}
-		//sleep(2*i);
 		i++;
 		lst = lst->next;
 	}

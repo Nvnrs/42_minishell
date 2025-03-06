@@ -6,15 +6,15 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 11:43:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/06 13:36:39 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/06 17:15:23 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include  "minishell.h"
+#include "minishell.h"
 
-char **get_only_args(char **args_exec)
+char	**get_only_args(char **args_exec)
 {
-	char **args;
+	char	**args;
 
 	if (args_exec == NULL)
 		args = NULL;
@@ -30,7 +30,6 @@ void	save_in_and_out(t_cmd *cmd)
 	if (operator_out_in_lst_operator(*cmd->lst_operator))
 		cmd->saved_out = dup(1);
 }
-
 
 void	restore_in_and_out(t_cmd *cmd)
 {
@@ -48,8 +47,8 @@ void	restore_in_and_out(t_cmd *cmd)
 
 void	builtin_case(t_list **lst_cmd, t_cmd *cmd, t_list **env, int *pid)
 {
-	char **args;
-	
+	char	**args;
+
 	args = get_only_args(cmd->args_exec);
 	if (strcmp(cmd->name, "echo") == 0)
 		builtin_echo(args);
@@ -60,7 +59,7 @@ void	builtin_case(t_list **lst_cmd, t_cmd *cmd, t_list **env, int *pid)
 	else if (strcmp(cmd->name, "cd") == 0)
 		builtin_cd(args, env);
 	else if (strcmp(cmd->name, "export") == 0)
-		builtin_export(args, env); 
+		builtin_export(args, env);
 	else if (strcmp(cmd->name, "unset") == 0)
 		builtin_unset(args, env);
 	else if (strcmp(cmd->name, "exit") == 0)
@@ -73,7 +72,7 @@ void	handle_builtins_parent(t_list **lst_cmd, t_cmd *cmd, t_list **env)
 	if (handle_redirection(*cmd->lst_operator, cmd))
 	{
 		restore_in_and_out(cmd);
-		return;
+		return ;
 	}
 	builtin_case(lst_cmd, cmd, env, NULL);
 	restore_in_and_out(cmd);
@@ -91,15 +90,14 @@ void	handle_builtins_child(t_list **lst_cmd, t_cmd *cmd, t_list **env, int *pid)
 	exit(exit_status(0, FALSE));
 }
 
-
 t_bool	is_builtin(t_cmd *cmd)
 {
-	char *cmd_name;
+	char	*cmd_name;
 
 	cmd_name = cmd->name;
 	if (cmd_name == NULL)
 		return (FALSE);
-	if(strcmp(cmd_name, "echo") == 0
+	if (strcmp(cmd_name, "echo") == 0
 		|| strcmp(cmd_name, "cd") == 0
 		|| strcmp(cmd_name, "export") == 0
 		|| strcmp(cmd_name, "unset") == 0
@@ -107,6 +105,6 @@ t_bool	is_builtin(t_cmd *cmd)
 		|| strcmp(cmd_name, "echo") == 0
 		|| strcmp(cmd_name, "pwd") == 0
 		|| strcmp(cmd_name, "env") == 0)
-			return (TRUE);
+		return (TRUE);
 	return (FALSE);
 }

@@ -6,11 +6,11 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 11:43:44 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/03 11:44:01 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/06 17:15:20 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include  "minishell.h"
+#include "minishell.h"
 
 void	builtin_env(t_list **env)
 {

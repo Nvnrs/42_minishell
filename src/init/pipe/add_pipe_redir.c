@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   add_pipe_redir.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/06 17:34:31 by nveneros          #+#    #+#             */
+/*   Updated: 2025/03/06 17:37:07 by nveneros         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void	redirect_first(t_cmd *cmd)
@@ -21,13 +33,12 @@ static void	redirect_last(t_cmd *cmd, int nb_cmd)
 static void	redirect_middle(t_cmd *cmd, int index_cmd)
 {
 	int	previous_pipe_read;
-	int current_pipe_write;
+	int	current_pipe_write;
 
 	previous_pipe_read = cmd->pipes[index_cmd - 1][0];
 	current_pipe_write = cmd->pipes[index_cmd][1];
 	cmd->pipefd_in = previous_pipe_read;
 	cmd->pipefd_out = current_pipe_write;
-	
 }
 
 static void	add_pipe_redirect_on_node(t_cmd *cmd, int nb_cmd, int index_cmd)
@@ -54,7 +65,7 @@ void	add_pipe_redirect(t_list **lst_cmd, int nb_cmd)
 		return ;
 	i = 0;
 	head = *lst_cmd;
-	while(head != NULL)
+	while (head != NULL)
 	{
 		add_pipe_redirect_on_node(head->content, nb_cmd, i);
 		i++;

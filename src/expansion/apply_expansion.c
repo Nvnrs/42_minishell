@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:35:22 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/26 14:11:49 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/06 17:25:07 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	apply_expansion_args_exec(char **args_exec, t_list **lst_env)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (args_exec[i])
@@ -26,8 +26,8 @@ static void	apply_expansion_args_exec(char **args_exec, t_list **lst_env)
 
 static void	apply_expansion_operators(t_list **operators, t_list **lst_env)
 {
-	t_list	*lst;
-	t_key_val *content;
+	t_list		*lst;
+	t_key_val	*content;
 
 	lst = *operators;
 	while (lst)
@@ -39,24 +39,14 @@ static void	apply_expansion_operators(t_list **operators, t_list **lst_env)
 		}
 		lst = lst->next;
 	}
-		
 }
 
-/**
- * apply to
- * cmd
- * 	-> name
- * 	-> args_exec
- *  -> operators_in / out
- * 		-> value
- */
 void	apply_expansion(t_list **lst_cmd, t_list **lst_env)
 {
 	t_list	*lst;
 	t_cmd	*cmd;
 
 	lst = *lst_cmd;
-
 	while (lst)
 	{
 		cmd = lst->content;
@@ -67,4 +57,3 @@ void	apply_expansion(t_list **lst_cmd, t_list **lst_env)
 		lst = lst->next;
 	}
 }
-

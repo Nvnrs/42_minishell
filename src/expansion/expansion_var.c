@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:40:07 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/27 14:35:12 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/06 17:32:47 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,12 @@
  * @param lst_env Liste des variables d'environnement
  * @return valeur de la variable ou NULl si inexistante
  */
-char *find_value_in_env(char *key, t_list **lst_env)
+char	*find_value_in_env(char *key, t_list **lst_env)
 {
-	t_list	*lst;
-	t_key_val *content;
+	t_list		*lst;
+	t_key_val	*content;
 
 	lst = *lst_env;
-
 	while (lst)
 	{
 		content = lst->content;
@@ -35,7 +34,6 @@ char *find_value_in_env(char *key, t_list **lst_env)
 		}
 		lst = lst->next;
 	}
-	
 	return (NULL);
 }
 
@@ -45,7 +43,7 @@ char *find_value_in_env(char *key, t_list **lst_env)
 int	len_key_in_str(char *str)
 {
 	int	i;
-	int len_key;
+	int	len_key;
 
 	i = 0;
 	len_key = 0;
@@ -58,7 +56,7 @@ int	len_key_in_str(char *str)
 	}
 	while (str[i]
 		&& (ft_isalnum(str[i])
-		|| str[i] == '_'))
+			|| str[i] == '_'))
 	{
 		len_key++;
 		i++;
@@ -78,9 +76,9 @@ int	len_key_in_str(char *str)
 /** */
 char	*get_key_in_str(char *str)
 {
-	int	i;
-	int i_key;
-	char *key;
+	int		i;
+	int		i_key;
+	char	*key;
 
 	i = 0;
 	i_key = 0;
@@ -93,9 +91,9 @@ char	*get_key_in_str(char *str)
 		i_key++;
 		i++;
 	}
-	while (str[i] 
+	while (str[i]
 		&& (ft_isalnum(str[i])
-		|| str[i] == '_'))
+			|| str[i] == '_'))
 	{
 		key[i_key] = str[i];
 		i_key++;
@@ -140,7 +138,7 @@ int	expansion_var(char *str, char *out, int *i_out, t_list **lst_env)
 	if (value == NULL)
 	{
 		free(key);
-		return len_key;
+		return (len_key);
 	}
 	while (value[i])
 	{
@@ -148,8 +146,6 @@ int	expansion_var(char *str, char *out, int *i_out, t_list **lst_env)
 		i++;
 		*i_out += 1;
 	}
-	// if (strcmp(key, "?"))
-	// 	free(value);
 	free(value);
 	free(key);
 	return (len_key);
@@ -165,7 +161,7 @@ int	expansion_var(char *str, char *out, int *i_out, t_list **lst_env)
 t_bool	is_start_of_expansion(char *str, int i)
 {
 	if (str[i] == '$'
-		&&  str[i + 1]
+		&& str[i + 1]
 		&& (ft_isalpha(str[i + 1]) || str[i + 1] == '_' || str[i + 1] == '?'))
 		return (TRUE);
 	return (FALSE);

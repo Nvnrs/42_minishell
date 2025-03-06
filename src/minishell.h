@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/06 14:37:33 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/06 17:44:31 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,13 @@ typedef struct s_data
 	int		**pipes;
 }	t_data;
 
-typedef int t_exit_status;
+typedef int	t_exit_status;
 
 // PARSING
 int			count_word_in_input(char *str);
 char		**parse_input(char *str);
-int			handle_no_quote(char **split, int split_index, char *str, int i_start);
+int			handle_no_quote(char **split, int split_index,
+				char *str, int i_start);
 int			count_no_quote(char *str, int i_start);
 int			handle_quote(char **split, int split_index, char *str, int i_start);
 int			count_quote(char *str, int i_start);
@@ -83,7 +84,6 @@ t_bool		quotes_are_valid(char *str);
 t_bool		basics_checks(char *str);
 t_bool		str_contain_only_point(char *str);
 t_bool		str_contan_only_space(char *str);
-
 
 // STR to ENV
 t_key_val	*init_key_val(char *key, char *value);
@@ -129,7 +129,7 @@ char		*expansion_str(char *str, t_list **lst_env);
 t_bool		is_start_of_expansion(char *str, int i);
 int			expansion_var(char *str, char *out, int *i_out, t_list **lst_env);
 char		*get_key_in_str(char *str);
-char 		*find_value_in_env(char *key, t_list **lst_env);
+char		*find_value_in_env(char *key, t_list **lst_env);
 void		apply_expansion(t_list **lst_cmd, t_list **lst_env);
 
 // REDIRECTIONS
@@ -140,6 +140,8 @@ int			redirect_in(t_key_val *content, t_bool is_last);
 int			handle_here_doc(t_key_val *content, t_bool is_last);
 int			create_all_here_doc(t_list **lst_cmd, t_list **env, t_data *data);
 char		*create_name_here_doc(int *id);
+void		write_to_here_doc(char *filename, char *delimiter,
+				t_list **env, t_data *data);
 // EXECUTING
 int			processing(t_list **lst_cmd, int nb_cmd, t_list **env, int **pipes);
 void		free_lst_and_pids(t_list **lst_cmd, t_list **env, int *tab_pid);
@@ -180,37 +182,37 @@ int			handle_error(int status_code, char *context, char *message);
 
 void		apply_remove_quotes(t_list **lst_cmd);
 char		*remove_quotes_in_str(char *str);
-int 		count_pair_of_quotes_in_str(char *str);
+int			count_pair_of_quotes_in_str(char *str);
 
 void		add_pipes_in_lst_cmd(t_list **lst_cmd, int **pipes);
 
 void		print_pid_tab(int *pid, int nb_cmd);
 
-t_bool	operator_in_in_lst_operator(t_list *lst_operator);
-t_bool	operator_out_in_lst_operator(t_list *lst_operator);
-int		index_last_in_operator(t_list *lst_operator);
-int		index_last_out_operator(t_list *lst_operator);
-
+t_bool		operator_in_in_lst_operator(t_list *lst_operator);
+t_bool		operator_out_in_lst_operator(t_list *lst_operator);
+int			index_last_in_operator(t_list *lst_operator);
+int			index_last_out_operator(t_list *lst_operator);
 
 // BUILTINS
-t_bool	is_builtin(t_cmd *cmd);
-void	handle_builtins_child(t_list **lst_cmd, t_cmd *cmd, t_list **env, int *pid);
-void	handle_builtins_parent(t_list **lst_cmd, t_cmd *cmd, t_list **env);
-void	builtin_echo(char **args);
-void	builtin_env(t_list **env);
-void	builtin_export(char **args, t_list **env);
-void	builtin_pwd(void);
-void	builtin_exit(char **args, t_list **lst_cmd, t_list **env, int *pid);
-void	builtin_unset(char **args, t_list **env);
-void	builtin_cd(char **args, t_list **env);
+t_bool		is_builtin(t_cmd *cmd);
+void		handle_builtins_child(t_list **lst_cmd, t_cmd *cmd,
+				t_list **env, int *pid);
+void		handle_builtins_parent(t_list **lst_cmd, t_cmd *cmd, t_list **env);
+void		builtin_echo(char **args);
+void		builtin_env(t_list **env);
+void		builtin_export(char **args, t_list **env);
+void		builtin_pwd(void);
+void		builtin_exit(char **args, t_list **lst_cmd, t_list **env, int *pid);
+void		builtin_unset(char **args, t_list **env);
+void		builtin_cd(char **args, t_list **env);
 // void	handle_builtins(t_list **lst_cmd, t_cmd *cmd, t_list **env, int *pid);
 
-void	save_new_var(t_key_val *new_var, t_list **env);
-void	remove_var(char *var_key, t_list **env);
+void		save_new_var(t_key_val *new_var, t_list **env);
+void		remove_var(char *var_key, t_list **env);
 
-void	set_sigint_handle_here_doc(void);
-void	set_sigint_handle(void);
+void		set_sigint_handle_here_doc(void);
+void		set_sigint_handle(void);
 
-void	block_sigint(void);
+void		block_sigint(void);
 
 #endif

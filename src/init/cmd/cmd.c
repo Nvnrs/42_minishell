@@ -6,19 +6,11 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 15:53:02 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/03 10:03:44 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/06 17:33:13 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-//   * char *name
-//   * char **parameters_execve
-//   * t_list operators_in
-//   * t_list operators_out
-//   * int pipes[2][2]
-
-
 
 t_cmd	*init_cmd(char **input, int start, int end)
 {
@@ -49,13 +41,13 @@ t_list	**init_lst_cmd(char **input)
 	*lst_cmd = NULL;
 	while (input[i] && input)
 	{
-		if (ft_strcmp(input[i], "|") == 0 ||  i == (len_split(input) - 1))
+		if (ft_strcmp(input[i], "|") == 0 || i == (len_split(input) - 1))
 		{
 			end = i - 1;
 			if (i == (len_split(input) - 1))
 				end = i;
 			if (*lst_cmd == NULL)
-				*lst_cmd =  ft_lstnew(init_cmd(input, start, end));
+				*lst_cmd = ft_lstnew(init_cmd(input, start, end));
 			else
 				ft_lstadd_back(lst_cmd, ft_lstnew(init_cmd(input, start, end)));
 			start = i + 1;
@@ -71,12 +63,12 @@ void	free_cmd(void *cmd_void)
 
 	cmd = cmd_void;
 	free(cmd->name);
-	free_split(cmd->args_exec);	
-	if (cmd->lst_operator!= NULL)
+	free_split(cmd->args_exec);
+	if (cmd->lst_operator != NULL)
 	{
 		if (*cmd->lst_operator != NULL)
-	 		ft_lstclear(cmd->lst_operator, free_key_val);
-	 	free(cmd->lst_operator);
+			ft_lstclear(cmd->lst_operator, free_key_val);
+		free(cmd->lst_operator);
 	}
 	free(cmd);
 }

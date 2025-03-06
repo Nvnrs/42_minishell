@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 17:11:13 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/05 14:43:30 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/06 17:38:24 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,13 @@ static void	parse_case(char **split, int *i_split, char *str, int *i)
 		*i += handle_quote(split, *i_split, str, *i);
 		*i_split += 1;
 	}
-	else if (is_double_redirection(str, *i))// << >>
+	else if (is_double_redirection(str, *i))
 	{
 		split[*i_split] = ft_substr(str, *i, 2);
 		*i += 2;
 		*i_split += 1;
 	}
-	else if (is_single_operator(str, *i))// < > 
+	else if (is_single_operator(str, *i))
 	{
 		split[*i_split] = ft_substr(str, *i, 1);
 		*i += 1;

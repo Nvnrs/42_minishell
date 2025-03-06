@@ -6,13 +6,13 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 16:50:29 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/06 14:22:33 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/06 17:39:41 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	received_signal = 0;
+int	g_received_signal = 0;
 
 static void	reset_sigint(void)
 {
@@ -27,7 +27,7 @@ static void	handle_sigint_here_doc(int signum)
 {
 	if (signum == SIGINT)
 	{
-		received_signal = 2;
+		g_received_signal = 2;
 		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);

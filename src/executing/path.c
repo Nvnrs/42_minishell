@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   path.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/06 17:23:24 by nveneros          #+#    #+#             */
+/*   Updated: 2025/03/06 17:23:35 by nveneros         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 char	*tests_path_for_find_cmd(t_cmd *cmd, char **tests_path)
@@ -30,7 +42,7 @@ char	*tests_path_for_find_cmd(t_cmd *cmd, char **tests_path)
 t_bool	cmd_path_is_valid(char *path)
 {
 	struct stat	buffer;
-	
+
 	stat(path, &buffer);
 	if (access(path, F_OK) != 0)
 	{
@@ -52,9 +64,7 @@ t_bool	cmd_path_is_valid(char *path)
 
 t_bool	path_var_env_exist(t_list **env)
 {
-	// char	*path_cmd;
 	char	*path_env;
-	// char	**paths_in_path_env;
 
 	if (env == NULL || *env == NULL)
 		return (FALSE);
@@ -65,14 +75,14 @@ t_bool	path_var_env_exist(t_list **env)
 	return (TRUE);
 }
 
-char *find_path_with_env(t_cmd *cmd, t_list **env)
+char	*find_path_with_env(t_cmd *cmd, t_list **env)
 {
 	char	*path_cmd;
 	char	*path_env;
 	char	**paths_in_path_env;
 
 	if (!path_var_env_exist(env))
-			return (NULL);
+		return (NULL);
 	path_env = find_value_in_env("PATH", env);
 	paths_in_path_env = ft_split(path_env, ':');
 	path_cmd = tests_path_for_find_cmd(cmd, paths_in_path_env);
@@ -81,23 +91,21 @@ char *find_path_with_env(t_cmd *cmd, t_list **env)
 	return (path_cmd);
 }
 
-char *get_path_cmd(t_cmd *cmd, t_list **env)
+char	*get_path_cmd(t_cmd *cmd, t_list **env)
 {
 	char	*path;
-	
+
 	if (cmd->name == NULL)
 		return (NULL);
 	if (path_var_env_exist(env))
 	{
-		if (str_contain_c(cmd->name,'/'))
+		if (str_contain_c(cmd->name, '/'))
 		{
-			printf("HERE : %s", cmd->name);
 			if (cmd_path_is_valid(cmd->name))
 				return (ft_strdup(cmd->name));
 			return (NULL);
 		}
 		path = find_path_with_env(cmd, env);
-		// printf("PATH :%s\n", path);
 		if (path == NULL)
 		{
 			handle_error(127, cmd->name, ": Command not found\n");

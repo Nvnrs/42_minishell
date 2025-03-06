@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:35:37 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/27 14:35:02 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/06 17:27:39 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int	add_len_expansion_var(char *str, int *i_out, t_list **lst_env)
 	return (len_key);
 }
 
-
 int	len_in_double_quote(char *str, int *i_out, t_list **lst_env)
 {
 	int	i;
@@ -45,14 +44,15 @@ int	len_in_double_quote(char *str, int *i_out, t_list **lst_env)
 		if (is_start_of_expansion(str, i))
 		{
 			i++;
-			i+= add_len_expansion_var(&str[i], i_out, lst_env);
-			continue;
-		}	
+			i += add_len_expansion_var(&str[i], i_out, lst_env);
+			continue ;
+		}
 		i++;
-		*i_out+=1;
+		*i_out += 1;
 	}
 	return (i);
 }
+
 void	len_in_single_quote(char *str, int *i, int *i_out)
 {
 	*i += 1;
@@ -75,12 +75,12 @@ int	len_expansion_str(char *str, t_list **lst_env)
 		if (str[i] == SINGLE_QUOTE)
 			len_in_single_quote(str, &i, &i_out);
 		else if (str[i] == DOUBLE_QUOTE)
-			i+= len_in_double_quote(&str[i], &i_out, lst_env);
+			i += len_in_double_quote(&str[i], &i_out, lst_env);
 		else if (str[i] == '$' && str[i + 1] && str[i + 1] != ' ')
 		{
 			i++;
-			i+= add_len_expansion_var(&str[i], &i_out, lst_env);
-			continue;
+			i += add_len_expansion_var(&str[i], &i_out, lst_env);
+			continue ;
 		}
 		i++;
 		i_out++;

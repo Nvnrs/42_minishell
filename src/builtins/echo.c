@@ -6,11 +6,11 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 11:41:30 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/03 18:01:01 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/06 17:15:43 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include  "minishell.h"
+#include "minishell.h"
 
 t_bool	is_n_option_echo(char *str)
 {

@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipes.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/06 17:36:30 by nveneros          #+#    #+#             */
+/*   Updated: 2025/03/06 17:36:52 by nveneros         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	add_pipes_in_lst_cmd(t_list **lst_cmd, int **pipes)
 {
-	t_list *lst;
-	t_cmd *cmd;
-	int nb_pipes;
+	t_list	*lst;
+	t_cmd	*cmd;
+	int		nb_pipes;
 
 	lst = *lst_cmd;
 	nb_pipes = ft_lstsize(lst) - 1;

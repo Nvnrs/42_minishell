@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 13:18:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/03 13:38:25 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/06 17:33:54 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ t_list	**init_list_env(char *envp[])
 	}
 	return (env);
 }
-
 
 void	free_list_env(t_list **env)
 {

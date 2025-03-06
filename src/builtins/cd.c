@@ -1,12 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cd.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/06 17:13:32 by nveneros          #+#    #+#             */
+/*   Updated: 2025/03/06 17:14:36 by nveneros         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void	update_pwd(t_list **env)
 {
-	char	*pwd;
+	char		*pwd;
 	t_key_val	*new_pwd;
-	char	*oldpwd;
+	char		*oldpwd;
 	t_key_val	*new_oldpwd;
-	char	*current_directory;
+	char		*current_directory;
 
 	pwd = find_value_in_env("PWD", env);
 	oldpwd = find_value_in_env("OLDPWD", env);
@@ -16,16 +28,14 @@ static void	update_pwd(t_list **env)
 		new_pwd = init_key_val("PWD", current_directory);
 		free(current_directory);
 		save_new_var(new_pwd, env);
-		// free_key_val(new_pwd);
 	}
 	if (oldpwd != NULL && pwd != NULL)
 	{
 		new_oldpwd = init_key_val("OLDPWD", pwd);
 		save_new_var(new_oldpwd, env);
-		// free_key_val(new_oldpwd);
 	}
 	else if (oldpwd != NULL && pwd == NULL)
-	 	remove_var("OLDPWD", env);
+		remove_var("OLDPWD", env);
 	if (pwd != NULL)
 		free(pwd);
 	if (oldpwd != NULL)

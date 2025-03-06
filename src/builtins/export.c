@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 11:41:23 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/04 11:36:53 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/06 17:17:55 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,32 +33,29 @@ t_bool	is_valid_key(char *str)
 
 t_key_val	*create_new_var(char *str)
 {
-	int	i;
-	t_key_val *var;
+	int			i;
+	t_key_val	*var;
 
 	i = 0;
 	var = malloc(sizeof(t_key_val));
 	if ((ft_isalpha(str[i]) || str[i] == '_'))
-	while (str[i] && str[i] != '=')
-		i++;
+		while (str[i] && str[i] != '=')
+			i++;
 	if (str[i] == '\0' || str[i] != '=')
 	{
 		free(var);
 		return (NULL);
 	}
 	var->key = ft_substr(str, 0, i);
-	i++; //skip = 
+	i++;
 	var->value = ft_substr(str, i, (ft_strlen(str) - 1));
-	printf("KEY = %s\n", var->key);
-	printf("VAL = %s\n", var->value);
 	return (var);
 }
 
-
 void	save_new_var(t_key_val *new_var, t_list **env)
 {
-	t_list *lst;
-	t_key_val *content_env;
+	t_list		*lst;
+	t_key_val	*content_env;
 
 	lst = *env;
 	while (lst)
@@ -68,7 +65,7 @@ void	save_new_var(t_key_val *new_var, t_list **env)
 		{
 			free_key_val(lst->content);
 			lst->content = new_var;
-			return;
+			return ;
 		}
 		lst = lst->next;
 	}
@@ -83,7 +80,7 @@ void	builtin_export(char **args, t_list **env)
 	i = 0;
 	exit_status(0, TRUE);
 	if (args == NULL)
-		return;
+		return ;
 	while (args[i])
 	{
 		if (!is_valid_key(args[i]))

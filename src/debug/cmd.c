@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:48:41 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/28 14:48:27 by pchateau         ###   ########.fr       */
+/*   Updated: 2025/03/06 17:19:01 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	print_start_end(char **tab, int start, int end)
 
 void	print_args_of_cmd(char **args)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	printf("args_exec :\n");
@@ -51,8 +51,8 @@ void	print_pid_tab(int *pid, int nb_cmd)
 
 void	print_cmd(void *cmd_content)
 {
-	t_cmd	*cmd;
-	static int i;
+	t_cmd		*cmd;
+	static int	i;
 
 	cmd = cmd_content;
 	printf("\033[0;35m%d ------------------------------ %d\n\033[0;30m", i, i);

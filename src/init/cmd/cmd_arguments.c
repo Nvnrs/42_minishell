@@ -6,13 +6,13 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:53:07 by nveneros          #+#    #+#             */
-/*   Updated: 2025/02/19 16:53:24 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/06 17:33:21 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		count_cmd_arguments(char **input, int i_start, int i_end)
+int	count_cmd_arguments(char **input, int i_start, int i_end)
 {
 	int	counter;
 

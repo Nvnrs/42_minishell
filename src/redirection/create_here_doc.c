@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 17:30:53 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/06 14:45:30 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/06 15:26:06 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,59 +24,63 @@ static void	free_data(t_data *data, char *line, char *delimiter)
 	free(delimiter);
 }
 
-void	write_to_here_doc(char *filename, char	*delimiter, t_list **env, t_data *data)
+static void	handle_parent(int pid)
+{
+	int	wstatus;
+	int	status_code;
+	
+	status_code = 0;
+	waitpid(pid, &wstatus, 0);
+	if (WIFEXITED(wstatus))
+	{
+		status_code = WEXITSTATUS(wstatus);
+		exit_status(status_code, TRUE);
+	}
+	set_sigint_handle();
+}
+
+static void	handle_child(char *filename, char	*delimiter, t_list **env, t_data *data)
 {
 	char	*line;
 	int		here_docfd;
+
+	set_sigint_handle_here_doc();
+	here_docfd = open(filename, O_WRONLY | O_TRUNC);
+	if (here_docfd == -1)
+	{
+		free_data(data, NULL, delimiter);
+		exit(exit_status(1, TRUE));
+	}
+	line = readline("> ");
+	while (line != NULL && strcmp(line, delimiter) != 0 && received_signal == 0)
+	{
+		line = expansion_str(line, env);
+		line = cft_strcat_realloc(line, "\n");
+		write(here_docfd, line, ft_strlen(line));
+		free(line);
+		if (received_signal == 0)
+			line = readline("> ");
+	}
+	close(here_docfd);
+	free_data(data, line, delimiter);
+}
+
+void	write_to_here_doc(char *filename, char	*delimiter, t_list **env, t_data *data)
+{
 	int		pid;
 
 	block_sigint();
 	pid = fork();
 	if (pid == 0)
 	{
-		set_sigint_handle_here_doc();
-		here_docfd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		if (here_docfd == -1)
-		{
-			free_data(data, NULL, delimiter);
-			exit(exit_status(1, TRUE));
-		}
-		line = readline("> ");
-		while (line != NULL && strcmp(line, delimiter) != 0 && received_signal == 0)
-		{
-			line = expansion_str(line, env);
-			line = cft_strcat_realloc(line, "\n");
-			if (write(here_docfd, line, ft_strlen(line)) == -1)
-			{
-				close(here_docfd);
-				free_data(data, line, delimiter);
-				exit(exit_status(1, TRUE));// return (2);
-			}
-			free(line);
-			if (received_signal == 0)
-				line = readline("> ");
-		}
-		close(here_docfd);
-		free_data(data, line, delimiter);
+		handle_child(filename, delimiter, env, data);
 		if (received_signal == 0)
 			exit(exit_status(0, TRUE));
 		else
 			exit(exit_status(0, FALSE));
 	}
 	else
-	{
-		int	wstatus;
-		int	status_code;
-
-		status_code = 0;
-		waitpid(pid, &wstatus, 0);
-		if (WIFEXITED(wstatus))
-		{
-			status_code = WEXITSTATUS(wstatus);
-			exit_status(status_code, TRUE);
-		}
-		set_sigint_handle();
-	}
+		handle_parent(pid);
 }
 
 void	create_and_assign_temp_file(t_key_val *operator_content, t_list **env, t_data *data)
@@ -130,35 +134,43 @@ void	del_all_here_doc(t_list **lst_cmd)
 		cmd = cmd->next;
 	}
 }
+
+
+int	create_here_doc_for_one_cmd(t_list **lst_operators, t_list **env, t_data *data)
+{
+	t_list		*operator;
+	t_key_val	*operator_content;
+
+	operator = *lst_operators;
+	while (operator)
+	{
+		operator_content = operator->content;
+		if (strcmp(operator_content->key, "<<") == 0)
+		{
+			create_and_assign_temp_file(operator_content, env, data);
+			if (exit_status(0, FALSE) != 0)
+			{
+				del_all_here_doc(data->lst_cmd);
+				return (exit_status(0, FALSE));
+			}
+		}
+		operator = operator->next;
+	}
+	return (exit_status(0, TRUE));
+}
+
 int	create_all_here_doc(t_list **lst_cmd, t_list **env, t_data *data)
 {
 	t_list		*cmd;
 	t_cmd		*cmd_content;
-	t_list		**lst_operators;
-	t_list		*operator;
-	t_key_val	*operator_content;
 
-	// (void)env;
 	cmd = *lst_cmd;
 	while (cmd)
 	{
 		cmd_content = cmd->content;
-		lst_operators = cmd_content->lst_operator;
-		operator = *lst_operators;
-		while (operator)
-		{
-			operator_content = operator->content;
-			if (strcmp(operator_content->key, "<<") == 0)
-			{
-				create_and_assign_temp_file(operator_content, env, data);
-				if (exit_status(0, FALSE) != 0)
-				{
-					del_all_here_doc(lst_cmd);
-					return (exit_status(0, FALSE));
-				}
-			}
-			operator = operator->next;
-		}
+		if (create_here_doc_for_one_cmd(cmd_content->lst_operator,
+			env, data) != 0)
+			return (exit_status(0, FALSE));
 		cmd = cmd->next;
 	}
 	return (0);

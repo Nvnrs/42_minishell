@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/05 16:53:09 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/06 14:37:33 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,13 @@ typedef struct s_cmd
 	int			saved_in;
 	int			saved_out;
 }	t_cmd;
+
+typedef struct s_data
+{
+	t_list	**lst_cmd;
+	t_list	**env;
+	int		**pipes;
+}	t_data;
 
 typedef int t_exit_status;
 
@@ -131,7 +138,7 @@ int			redirect_out(t_key_val *content, t_bool is_last);
 int			redirect_out_append(t_key_val *content, t_bool is_last);
 int			redirect_in(t_key_val *content, t_bool is_last);
 int			handle_here_doc(t_key_val *content, t_bool is_last);
-void		create_all_here_doc(t_list **lst_cmd, t_list **env);
+int			create_all_here_doc(t_list **lst_cmd, t_list **env, t_data *data);
 char		*create_name_here_doc(int *id);
 // EXECUTING
 int			processing(t_list **lst_cmd, int nb_cmd, t_list **env, int **pipes);
@@ -196,10 +203,14 @@ void	builtin_pwd(void);
 void	builtin_exit(char **args, t_list **lst_cmd, t_list **env, int *pid);
 void	builtin_unset(char **args, t_list **env);
 void	builtin_cd(char **args, t_list **env);
-void	create_all_here_doc(t_list **lst_cmd, t_list **env);
 // void	handle_builtins(t_list **lst_cmd, t_cmd *cmd, t_list **env, int *pid);
 
 void	save_new_var(t_key_val *new_var, t_list **env);
 void	remove_var(char *var_key, t_list **env);
+
+void	set_sigint_handle_here_doc(void);
+void	set_sigint_handle(void);
+
+void	block_sigint(void);
 
 #endif

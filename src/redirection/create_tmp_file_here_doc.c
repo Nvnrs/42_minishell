@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 17:32:27 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/04 17:40:43 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/06 14:39:26 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ static t_bool	create_file(char *filename)
 	fd = open(filename, O_CREAT, 0644);
 	if (fd == -1)
 		return (FALSE);
+	close(fd);
 	return (TRUE);
 }
 
@@ -40,6 +41,8 @@ char	*create_name_here_doc(int *id)
 		*id += 1;
 		if (create_file(name))
 			file_is_create = TRUE;
+		else
+			free(name);
 	}
 	printf("name file :%s\n", name);
 	return (name);

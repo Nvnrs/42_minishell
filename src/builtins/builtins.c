@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 11:43:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/04 16:40:12 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/06 13:36:39 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,6 @@ void	restore_in_and_out(t_cmd *cmd)
 		close(cmd->saved_out);
 	}
 }
-
-
-
 
 void	builtin_case(t_list **lst_cmd, t_cmd *cmd, t_list **env, int *pid)
 {

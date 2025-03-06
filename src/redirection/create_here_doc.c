@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_here_doc.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 17:30:53 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/04 17:40:14 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/06 09:25:44 by pchateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int	write_to_here_doc(char *filename, char	*delimiter, t_list **env)
 	here_docfd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (here_docfd == -1)
 		return (1);
-	line = readline("< ");
-	while (strcmp(line, delimiter) != 0)
+	line = readline("> ");
+	while (line != NULL && strcmp(line, delimiter) != 0)
 	{
 		line = expansion_str(line, env);
 		if (write(here_docfd, line, ft_strlen(line)) == -1)

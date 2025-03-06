@@ -20,6 +20,11 @@ char	*get_exit_status_str(void)
 	return (exit_status_str);
 }
 
+// int	get_exit_status()
+// {
+	
+// }
+
 int	handle_error(int status_code, char *context, char *message)
 {
 	force_print_stderr(context);

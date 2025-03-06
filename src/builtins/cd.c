@@ -1,25 +1,28 @@
 #include "minishell.h"
 
-static void	update_pwd(char *path, t_list **env)
+static void	update_pwd(t_list **env)
 {
 	char	*pwd;
 	t_key_val	*new_pwd;
 	char	*oldpwd;
 	t_key_val	*new_oldpwd;
+	char	*current_directory;
 
 	pwd = find_value_in_env("PWD", env);
 	oldpwd = find_value_in_env("OLDPWD", env);
 	if (pwd != NULL)
 	{
-		new_pwd = init_key_val("PWD", path);
+		current_directory = getcwd(NULL, 0);
+		new_pwd = init_key_val("PWD", current_directory);
+		free(current_directory);
 		save_new_var(new_pwd, env);
-		free_key_val(new_pwd);
+		// free_key_val(new_pwd);
 	}
 	if (oldpwd != NULL && pwd != NULL)
 	{
 		new_oldpwd = init_key_val("OLDPWD", pwd);
 		save_new_var(new_oldpwd, env);
-		free_key_val(new_oldpwd);
+		// free_key_val(new_oldpwd);
 	}
 	else if (oldpwd != NULL && pwd == NULL)
 	 	remove_var("OLDPWD", env);
@@ -45,7 +48,7 @@ static void	chdir_with_given_path(char *path, t_list **env)
 	{
 		exit_status(0, TRUE);
 		chdir(path);//update in env ?
-		update_pwd(path, env);
+		update_pwd(env);
 	}
 }
 

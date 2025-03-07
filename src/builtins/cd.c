@@ -6,7 +6,7 @@
 /*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 17:13:32 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/07 10:08:44 by pchateau         ###   ########.fr       */
+/*   Updated: 2025/03/07 10:14:12 by pchateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,13 @@ static void	chdir_with_given_path(char *path, t_list **env)
 	}
 }
 
+/**
+ * Handle cd builtin.
+ * Change current working directory to the given path.
+ * If no path is given, change the current working directory
+ * to the value of the environment variable HOME.
+ * Update the value of PWD and OLDPWD in the environment.
+ */
 void	builtin_cd(char **args, t_list **env)
 {
 	char	*home_value;

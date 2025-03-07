@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:40:07 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/06 17:32:47 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/07 11:32:54 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,6 @@ int	len_key_in_str(char *str)
  * @param str Adresse du debut de la cle $ ou premier caractere
  * @return la cle
  */
-
-/** */
 char	*get_key_in_str(char *str)
 {
 	int		i;
@@ -88,8 +86,8 @@ char	*get_key_in_str(char *str)
 	if (str[i] == '?')
 	{
 		key[i_key] = str[i];
-		i_key++;
-		i++;
+		key[++i_key] = '\0';
+		return (key);
 	}
 	while (str[i]
 		&& (ft_isalnum(str[i])
@@ -132,7 +130,7 @@ int	expansion_var(char *str, char *out, int *i_out, t_list **lst_env)
 
 	i = 0;
 	key = get_key_in_str(str);
-	printf("expnasion varkey  :%s", key);
+	// printf("expnasion varkey  :%s", key);
 	len_key = ft_strlen(key);
 	value = get_value_from_key(key, lst_env);
 	if (value == NULL)

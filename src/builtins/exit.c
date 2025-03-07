@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 17:15:48 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/06 17:15:49 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/07 09:50:07 by pchateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void	builtin_exit(char **args, t_list **lst_cmd, t_list **env, int *pid)
 {
 	int	exit_number;
 
+	if (ft_lstsize(*lst_cmd) == 1)
+		printf("exit\n");
 	if (args && args[0])
 	{
 		if (str_is_number(args[0]))

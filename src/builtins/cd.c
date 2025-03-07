@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 17:13:32 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/07 10:14:12 by pchateau         ###   ########.fr       */
+/*   Updated: 2025/03/07 16:51:53 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,14 @@ void	builtin_cd(char **args, t_list **env)
 {
 	char	*home_value;
 
-	if (args && args[0])
+	if (args && len_split(args) > 1)
+	{
+		handle_error(1, "cd", ": too many arguments\n");
+		return ;
+	}
+	else if (args && args[0] && ft_strlen(args[0]) == 0)
+		return ;
+	else if (args && args[0])
 		chdir_with_given_path(args[0], env);
 	else
 	{

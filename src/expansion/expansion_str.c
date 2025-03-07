@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:35:40 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/07 15:15:03 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/07 16:12:27 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ static int	handle_double_quote(char *str, char *output,
 
 /**
  * Free str and return new str with expansion 
+ * if the expansion not work, dont free the str input
  */
 char	*expansion_str(char *str, t_list **lst_env)
 {
@@ -95,6 +96,8 @@ char	*expansion_str(char *str, t_list **lst_env)
 		output[i_out++] = str[i++];
 	}
 	output[i_out] = '\0';
+	if (ft_strlen(output) == 0)
+		return (free(output), NULL);
 	free(str);
 	return (output);
 }

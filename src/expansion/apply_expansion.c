@@ -6,22 +6,58 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:35:22 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/06 17:25:07 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/07 16:07:18 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	apply_expansion_args_exec(char **args_exec, t_list **lst_env)
+static char	**rebuild_args_exec(int index_to_remove, char **args_exec)
 {
-	int	i;
+	char	**new_args_exec;
+	int		i_args_exec;
+	int		i_new_args_exec;
+
+	new_args_exec = NULL;
+	new_args_exec = malloc((len_split(args_exec) - 1 + 1) * sizeof (char *));
+	if (new_args_exec == NULL)
+		return (NULL);
+	i_args_exec = 0;
+	i_new_args_exec = 0;
+	while (args_exec[i_args_exec])
+	{
+		if (i_args_exec != index_to_remove)
+		{
+			new_args_exec[i_new_args_exec] = ft_strdup(args_exec[i_args_exec]);
+			i_new_args_exec++;
+		}
+		i_args_exec++;
+	}
+	new_args_exec[i_new_args_exec] = NULL;
+	free_split(args_exec);
+	return (new_args_exec);	
+}
+
+static char	**apply_expansion_args_exec(char **args_exec, t_list **lst_env)
+{
+	int		i;
+	char 	*arg_expansion;
+	char	**new_args_exec;
 
 	i = 0;
-	while (args_exec[i])
+	new_args_exec = args_exec;
+	while (new_args_exec[i])
 	{
-		args_exec[i] = expansion_str(args_exec[i], lst_env);
-		i++;
+		arg_expansion = expansion_str(new_args_exec[i], lst_env);
+		if (arg_expansion == NULL)
+			new_args_exec = rebuild_args_exec(i, new_args_exec);
+		else
+		{
+			new_args_exec[i] = arg_expansion;
+			i++;
+		}
 	}
+	return (new_args_exec);
 }
 
 static void	apply_expansion_operators(t_list **operators, t_list **lst_env)
@@ -52,7 +88,7 @@ void	apply_expansion(t_list **lst_cmd, t_list **lst_env)
 		cmd = lst->content;
 		if (cmd->name)
 			cmd->name = expansion_str(cmd->name, lst_env);
-		apply_expansion_args_exec(cmd->args_exec, lst_env);
+		cmd->args_exec = apply_expansion_args_exec(cmd->args_exec, lst_env);
 		apply_expansion_operators(cmd->lst_operator, lst_env);
 		lst = lst->next;
 	}

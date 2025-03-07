@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/06 17:44:31 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/07 10:19:11 by pchateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,5 +214,8 @@ void		set_sigint_handle_here_doc(void);
 void		set_sigint_handle(void);
 
 void		block_sigint(void);
+
+void		save_in_and_out(t_cmd *cmd);
+void		restore_in_and_out(t_cmd *cmd);
 
 #endif

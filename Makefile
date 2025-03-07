@@ -63,7 +63,8 @@ SRC_REDIRECTION = $(SRC_REDIRECTION_DIR)/handle_redirection.c \
 				$(SRC_REDIRECTION_DIR)/create_here_doc.c \
 				$(SRC_REDIRECTION_DIR)/create_tmp_file_here_doc.c \
 				$(SRC_REDIRECTION_DIR)/write_tmp_file_here_doc.c \
-				$(SRC_REDIRECTION_DIR)/operators_utils.c
+				$(SRC_REDIRECTION_DIR)/operators_utils.c \
+				$(SRC_REDIRECTION_DIR)/parent_redirection.c
 
 SRC_EXEC = $(SRC_EXEC_DIR)/processing.c \
 		$(SRC_EXEC_DIR)/exit_status.c \

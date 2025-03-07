@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:40:07 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/07 11:32:54 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/07 15:15:07 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,11 @@ int	expansion_var(char *str, char *out, int *i_out, t_list **lst_env)
 	key = get_key_in_str(str);
 	// printf("expnasion varkey  :%s", key);
 	len_key = ft_strlen(key);
+	if (len_key == 0)
+	{
+		free(key);
+		return (len_key);
+	}
 	value = get_value_from_key(key, lst_env);
 	if (value == NULL)
 	{

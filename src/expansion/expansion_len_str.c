@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:35:37 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/06 17:27:39 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/07 11:48:11 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	len_expansion_str(char *str, t_list **lst_env)
 			len_in_single_quote(str, &i, &i_out);
 		else if (str[i] == DOUBLE_QUOTE)
 			i += len_in_double_quote(&str[i], &i_out, lst_env);
-		else if (str[i] == '$' && str[i + 1] && str[i + 1] != ' ')
+		else if (str[i] == '$' && is_start_of_expansion(&str[i], i))
 		{
 			i++;
 			i += add_len_expansion_var(&str[i], &i_out, lst_env);

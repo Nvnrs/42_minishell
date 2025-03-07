@@ -91,6 +91,21 @@ SRC = $(SRC_DIR)/main.c \
 	$(SRC_BUILTINS) \
 	$(SRC_EXEC)
 
+ALLDIR = $(OBJ_DIR) \
+		$(OBJ_DIR)/$(SRC_DIR) \
+		$(OBJ_DIR)/$(SRC_BUILTINS_DIR) \
+		$(OBJ_DIR)/$(SRC_DEBUG_DIR) \
+		$(OBJ_DIR)/$(SRC_EXEC_DIR) \
+		$(OBJ_DIR)/$(SRC_EXPANSION_DIR) \
+		$(OBJ_DIR)/$(SRC_INIT_DIR) \
+		$(OBJ_DIR)/$(SRC_INIT_CMD_DIR) \
+		$(OBJ_DIR)/$(SRC_INIT_ENV_DIR) \
+		$(OBJ_DIR)/$(SRC_INIT_PIPE_DIR) \
+		$(OBJ_DIR)/$(SRC_PARSE_DIR) \
+		$(OBJ_DIR)/$(SRC_PARSE_CHECK_DIR) \
+		$(OBJ_DIR)/$(SRC_REDIRECTION_DIR) \
+		$(OBJ_DIR)/$(SRC_REMOVES_QUOTES_DIR)
+
 OBJ_DIR = ./obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)%.o)
 CC = cc
@@ -104,10 +119,13 @@ MYLIB42 = $(MYLIB42_DIR)/mylib42.a
 
 all : $(NAME)
 
-$(OBJ): $(OBJ_DIR)/%.o: %.c 
+$(ALLDIR):
+	mkdir $@
+
+$(OBJ): $(OBJ_DIR)/%.o:%.c
 	$(CC) $(CFLAGS) -c $(<) -o $(@)
 
-$(NAME) :  $(MYLIB42) $(OBJ)
+$(NAME) : $(MYLIB42) $(ALLDIR) $(OBJ)
 	$(CC) $(CFLAGS) $(OBJ) $(MYLIB42) -o $(NAME) -lreadline
 
 $(MYLIB42_DIR) :

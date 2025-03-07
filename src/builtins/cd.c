@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 17:13:32 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/06 17:14:36 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/07 10:08:44 by pchateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static void	free_pwds(char *pwd, char *oldpwd)
+{
+	if (pwd != NULL)
+		free(pwd);
+	if (oldpwd != NULL)
+		free(oldpwd);
+}
 
 static void	update_pwd(t_list **env)
 {
@@ -36,10 +44,7 @@ static void	update_pwd(t_list **env)
 	}
 	else if (oldpwd != NULL && pwd == NULL)
 		remove_var("OLDPWD", env);
-	if (pwd != NULL)
-		free(pwd);
-	if (oldpwd != NULL)
-		free(oldpwd);
+	free_pwds(pwd, oldpwd);
 }
 
 static void	chdir_with_given_path(char *path, t_list **env)
@@ -57,7 +62,7 @@ static void	chdir_with_given_path(char *path, t_list **env)
 	else
 	{
 		exit_status(0, TRUE);
-		chdir(path);//update in env ?
+		chdir(path);
 		update_pwd(env);
 	}
 }

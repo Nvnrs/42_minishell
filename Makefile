@@ -110,7 +110,7 @@ OBJ_DIR = ./obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)%.o)
 CC = cc
 CFLAGS += -Wall -Wextra -Werror -g -Isrc
-CFLAGS += -Isrc
+# CFLAGS += -Isrc
 NAME = minishell
 
 LIB_DIR = ./lib

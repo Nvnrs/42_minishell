@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:53:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/05 18:05:23 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/07 17:17:41 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ static int	skip_quotes(char *str, char quote)
 		{
 			i++;
 		}
+		if (str[i] == quote)
+			i++;
 	}
 	return (i);
 }

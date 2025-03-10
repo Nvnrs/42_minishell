@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 17:23:24 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/06 17:23:35 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/10 15:04:12 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ char	*find_path_with_env(t_cmd *cmd, t_list **env)
 	char	*path_env;
 	char	**paths_in_path_env;
 
-	if (!path_var_env_exist(env))
+	if (!path_var_env_exist(env) || ft_strlen(cmd->name) == 0)
 		return (NULL);
 	path_env = find_value_in_env("PATH", env);
 	paths_in_path_env = ft_split(path_env, ':');

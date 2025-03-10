@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:53:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/07 17:17:41 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/10 14:36:51 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static t_bool	detect_consecutive_operators(char *str, int *i_main)
 		if (is_an_operator(str, i))
 			return (TRUE);
 	}
-	else
+	else if (str[i])
 		i++;
 	*i_main = i;
 	return (FALSE);

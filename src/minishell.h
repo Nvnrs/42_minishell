@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/07 10:19:11 by pchateau         ###   ########.fr       */
+/*   Updated: 2025/03/10 12:17:47 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ t_bool		is_start_of_expansion(char *str, int i);
 int			expansion_var(char *str, char *out, int *i_out, t_list **lst_env);
 char		*get_key_in_str(char *str);
 char		*find_value_in_env(char *key, t_list **lst_env);
-void		apply_expansion(t_list **lst_cmd, t_list **lst_env);
+int			apply_expansion(t_list **lst_cmd, t_list **lst_env);
 
 // REDIRECTIONS
 
@@ -166,6 +166,7 @@ void		print_split(char **split);
 //A TRIER
 int			exit_status(int new_status_code, t_bool update);
 char		*get_exit_status_str(void);
+int			get_exit_status(void);
 
 char		*get_value_from_key(char *key, t_list **lst_env);
 

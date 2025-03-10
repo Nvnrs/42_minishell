@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:10:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/07 15:40:18 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/10 14:32:59 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ int	handle_readline(char *rd, t_list **env)
 	add_history(rd);
 	if (!basics_checks(rd))
 	{
-		free(rd);
 		return (1);
 	}
 	input = parse_input(rd);
@@ -45,7 +44,14 @@ int	handle_readline(char *rd, t_list **env)
 	add_pipes_in_lst_cmd(lst_cmd, pipes);
 	add_pipe_redirect(lst_cmd, ft_lstsize(*lst_cmd));
 	free_split(input);
-	apply_expansion(lst_cmd, env);
+	ft_lstiter(*lst_cmd, print_cmd);
+
+	if (apply_expansion(lst_cmd, env) != 0)
+	{
+		close_and_free_pipes(pipes, ft_lstsize(*lst_cmd) - 1);
+		free_lst_cmd(lst_cmd);
+		return (1);
+	}
 	apply_remove_quotes(lst_cmd);
 	ft_lstiter(*lst_cmd, print_cmd);
 	if (create_all_here_doc(lst_cmd, env, &data) == 0)
@@ -74,7 +80,10 @@ int	main(int argc, char *argv[], char *envp[])
 		if (rd)
 		{
 			if (handle_readline(rd, env) == 1)
+			{
+				free(rd);
 				continue ;
+			}
 		}
 		else if (rd == NULL)
 			flag = 0;
@@ -82,5 +91,6 @@ int	main(int argc, char *argv[], char *envp[])
 	}
 	rl_clear_history();
 	free_list_env(env);
+	printf("exit\n");
 	return (0);
 }

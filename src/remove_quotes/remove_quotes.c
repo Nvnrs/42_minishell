@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   remove_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
+/*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 16:50:45 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/04 17:13:05 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/11 09:27:56 by pchateau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,27 @@ int	count_pair_of_quotes_in_str(char *str)
 		if (str[i] == SINGLE_QUOTE)
 		{
 			i++;
-			while (str[i] != SINGLE_QUOTE)
+			while (str[i] && str[i] != SINGLE_QUOTE)
 				i++;
-			count += 2;
+			if (str[i] && str[i] == SINGLE_QUOTE)
+			{
+				count += 1;
+				i++;
+			}
 		}
 		else if (str[i] == DOUBLE_QUOTE)
 		{
 			i++;
-			while (str[i] != DOUBLE_QUOTE)
+			while (str[i] && str[i] != DOUBLE_QUOTE)
 				i++;
-			count += 2;
+			if (str[i] && str[i] == DOUBLE_QUOTE)
+			{
+				count += 1;
+				i++;
+			}
 		}
-		i++;
+		else
+			i++;
 	}
 	return (count);
 }
@@ -43,7 +52,7 @@ int	count_pair_of_quotes_in_str(char *str)
 void	single_quote_case(char *str, char *newstr, int *i_str, int *i_newstr)
 {
 	*i_str += 1;
-	while (str[*i_str] != SINGLE_QUOTE)
+	while (str[*i_str] && str[*i_str] != SINGLE_QUOTE)
 	{
 		newstr[*i_newstr] = str[*i_str];
 		*i_str += 1;
@@ -54,7 +63,7 @@ void	single_quote_case(char *str, char *newstr, int *i_str, int *i_newstr)
 void	double_quote_case(char *str, char *newstr, int *i_str, int *i_newstr)
 {
 	*i_str += 1;
-	while (str[*i_str] != DOUBLE_QUOTE)
+	while (str[*i_str] && str[*i_str] != DOUBLE_QUOTE)
 	{
 		newstr[*i_newstr] = str[*i_str];
 		*i_str += 1;
@@ -77,7 +86,8 @@ char	*remove_quotes_in_str(char *str)
 
 	if (count_pair_of_quotes_in_str(str) == 0)
 		return (str);
-	len_newstr = ft_strlen(str) - count_pair_of_quotes_in_str(str) + 1;
+	len_newstr = ft_strlen(str) - count_pair_of_quotes_in_str(str) * 2 + 1;
+	newstr = NULL;
 	newstr = malloc(sizeof (char) * len_newstr);
 	if (newstr == NULL)
 		return (NULL);

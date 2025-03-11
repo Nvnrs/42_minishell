@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:10:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/11 10:52:25 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/11 13:37:39 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	handle_readline(char *rd, t_list **env)
 	t_list	**lst_cmd;
 	int		**pipes;
 	t_data	data;
-
+	
 	add_history(rd);
 	if (!basics_checks(rd))
 	{

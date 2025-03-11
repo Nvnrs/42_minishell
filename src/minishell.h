@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/11 11:36:28 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/11 12:05:18 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,10 +215,13 @@ void		builtin_cd(char **args, t_list **env);
 void		save_new_var(t_key_val *new_var, t_list **env);
 void		remove_var(char *var_key, t_list **env);
 
+// SIGNALS
 void		set_sigint_handle_here_doc(void);
 void		set_sigint_handle(void);
-
+void		handle_sigint(int signum);
 void		block_sigint(void);
+void		reset_sigint(void);
+void		set_sigint_child(void);
 
 void		save_in_and_out(t_cmd *cmd);
 void		restore_in_and_out(t_cmd *cmd);

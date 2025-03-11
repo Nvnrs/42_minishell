@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 17:43:11 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/06 17:44:23 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:07:56 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ static void	handle_child(char *filename, char
 	*delimiter, t_list **env, t_data *data)
 {
 	char	*line;
+	char 	*expansion_line;
 	int		here_docfd;
 
 	set_sigint_handle_here_doc();
@@ -56,8 +57,14 @@ static void	handle_child(char *filename, char
 	while (line != NULL
 		&& strcmp(line, delimiter) != 0 && g_received_signal == 0)
 	{
-		line = expansion_str(line, env);
-		line = cft_strcat_realloc(line, "\n");
+		expansion_line = expansion_str(line, env);
+		if (expansion_line == NULL)
+		{
+			free(line);
+			line = ft_strdup("\n");
+		}
+		else
+			line = cft_strcat_realloc(expansion_line, "\n");
 		write(here_docfd, line, ft_strlen(line));
 		free(line);
 		if (g_received_signal == 0)

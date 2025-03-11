@@ -11,6 +11,7 @@ SRC_DEBUG_DIR = $(SRC_DIR)/debug
 SRC_REDIRECTION_DIR = $(SRC_DIR)/redirection
 SRC_EXEC_DIR = $(SRC_DIR)/executing
 SRC_BUILTINS_DIR = $(SRC_DIR)/builtins
+SRC_SIGNALS_DIR = $(SRC_DIR)/signals
 
 SRC_PARSE_CHECK = $(SRC_PARSE_CHECK_DIR)/checks_after_operators.c \
 				$(SRC_PARSE_CHECK_DIR)/checks_consecutive_operators.c \
@@ -80,10 +81,12 @@ SRC_BUILTINS = $(SRC_BUILTINS_DIR)/builtins.c \
 				$(SRC_BUILTINS_DIR)/unset.c \
 				$(SRC_BUILTINS_DIR)/cd.c
 
+SRC_SIGNALS = $(SRC_SIGNALS_DIR)/sigint.c \
+			$(SRC_SIGNALS_DIR)/signals.c
+
 SRC = $(SRC_DIR)/main.c \
 	$(SRC_DIR)/utils.c \
 	$(SRC_DIR)/split_utils.c \
-	$(SRC_DIR)/signals.c \
 	$(SRC_DIR)/env_utils.c \
 	$(SRC_INIT) \
 	$(SRC_PARSE) \
@@ -92,7 +95,8 @@ SRC = $(SRC_DIR)/main.c \
 	$(SRC_REMOVES_QUOTES) \
 	$(SRC_REDIRECTION) \
 	$(SRC_BUILTINS) \
-	$(SRC_EXEC)
+	$(SRC_EXEC) \
+	$(SRC_SIGNALS)
 
 ALLDIR = $(OBJ_DIR) \
 		$(OBJ_DIR)$(SRC_DIR) \
@@ -107,13 +111,13 @@ ALLDIR = $(OBJ_DIR) \
 		$(OBJ_DIR)$(SRC_PARSE_DIR) \
 		$(OBJ_DIR)$(SRC_PARSE_CHECK_DIR) \
 		$(OBJ_DIR)$(SRC_REDIRECTION_DIR) \
-		$(OBJ_DIR)$(SRC_REMOVES_QUOTES_DIR)
+		$(OBJ_DIR)$(SRC_REMOVES_QUOTES_DIR) \
+		$(OBJ_DIR)$(SRC_SIGNALS_DIR)
 
 OBJ_DIR = ./obj
 OBJ = $(SRC:%.c=$(OBJ_DIR)%.o)
 CC = cc
 CFLAGS += -Wall -Wextra -Werror -g -Isrc
-# CFLAGS += -Isrc
 NAME = minishell
 
 LIB_DIR = ./lib

@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 17:13:32 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/07 16:51:53 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/11 14:29:03 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	builtin_cd(char **args, t_list **env)
 {
 	char	*home_value;
 
+	printf("%s\n", args[0]);
 	if (args && len_split(args) > 1)
 	{
 		handle_error(1, "cd", ": too many arguments\n");

@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 16:50:29 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/06 17:39:41 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/11 11:04:05 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ static void	handle_sigint_here_doc(int signum)
 		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
-		// rl_redisplay();
 		close(0);
 		exit_status(130, TRUE);
 	}

@@ -83,6 +83,7 @@ SRC = $(SRC_DIR)/main.c \
 	$(SRC_DIR)/utils.c \
 	$(SRC_DIR)/split_utils.c \
 	$(SRC_DIR)/signals.c \
+	$(SRC_DIR)/env_utils.c \
 	$(SRC_INIT) \
 	$(SRC_PARSE) \
 	$(SRC_DEBUG) \

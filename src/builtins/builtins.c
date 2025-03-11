@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: pchateau <pchateau@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 11:43:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/07 10:18:06 by pchateau         ###   ########.fr       */
+/*   Updated: 2025/03/11 10:56:20 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,8 @@ void	handle_builtins_parent(t_list **lst_cmd, t_cmd *cmd, t_list **env)
 /**
  * Handle builtins in the child process, with fork.
  */
-void	handle_builtins_child(t_list **lst_cmd, t_cmd *cmd, t_list **env, int *pid)
+void	handle_builtins_child(t_list **lst_cmd, t_cmd *cmd,
+	t_list **env, int *pid)
 {
 	if (handle_redirection(*cmd->lst_operator, cmd) != 0)
 	{

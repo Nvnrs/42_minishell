@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 16:53:07 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/06 17:33:21 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/11 10:55:33 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int	count_cmd_arguments(char **input, int i_start, int i_end)
 	counter = 0;
 	while (input[i_start] && i_start <= i_end)
 	{
-		if (is_start_of_operator("<", input[i_start], 0) || is_start_of_operator(">", input[i_start], 0))
+		if (is_start_of_operator("<", input[i_start], 0)
+			|| is_start_of_operator(">", input[i_start], 0))
 			i_start += 2;
 		else
 		{
@@ -43,7 +44,8 @@ char	**get_cmd_arguments(char **input, int i_start, int i_end)
 	i_arguments = 0;
 	while (input[i_start] && i_start <= i_end)
 	{
-		if (is_start_of_operator("<", input[i_start], 0) || is_start_of_operator(">", input[i_start], 0))
+		if (is_start_of_operator("<", input[i_start], 0)
+			|| is_start_of_operator(">", input[i_start], 0))
 			i_start += 2;
 		else
 		{

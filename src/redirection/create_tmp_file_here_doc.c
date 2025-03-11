@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 17:32:27 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/06 14:39:26 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/11 10:52:00 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,5 @@ char	*create_name_here_doc(int *id)
 		else
 			free(name);
 	}
-	printf("name file :%s\n", name);
 	return (name);
 }

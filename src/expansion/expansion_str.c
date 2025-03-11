@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 09:35:40 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/10 10:28:40 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/11 10:58:37 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,5 @@ char	*expansion_str(char *str, t_list **lst_env)
 	output[i_out] = '\0';
 	if (ft_strlen(output) == 0)
 		return (free(output), NULL);
-	free(str);
-	return (output);
+	return (free(str), output);
 }

@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 17:18:12 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/04 17:18:28 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/11 10:51:13 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,13 @@ int	handle_redirection(t_list *lst_operator, t_cmd *cmd)
 	i = 0;
 	index_last_in = index_last_in_operator(lst_operator);
 	index_last_out = index_last_out_operator(lst_operator);
-	// printf("Index last in : %d\n", index_last_in);
-	// printf("Index last out : %d\n", index_last_out);
 	while (lst_operator)
 	{
-		// printf("Index : %d\n", i);
 		content = lst_operator->content;
 		if (i == index_last_in || i == index_last_out)
 			status = redirect_case(content, TRUE);
 		else
 			status = redirect_case(content, FALSE);
-		//printf("status value in handle_redirection_out: %d\n", status);
-		//print_operator(operators_out->content);
 		if (status != 0)
 			return (1);
 		i++;

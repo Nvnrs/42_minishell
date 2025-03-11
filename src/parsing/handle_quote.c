@@ -6,13 +6,13 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 16:38:34 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/05 14:39:18 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/11 11:05:10 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_bool	condition(char *str, int i_end)
+static t_bool	condition(char *str, int i_end)
 {
 	if (str[i_end] == SINGLE_QUOTE
 		|| str[i_end] == DOUBLE_QUOTE

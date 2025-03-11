@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:35:22 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/10 14:19:41 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/11 10:57:19 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,13 @@ static char	**rebuild_args_exec(int index_to_remove, char **args_exec)
 	}
 	new_args_exec[i_new_args_exec] = NULL;
 	free_split(args_exec);
-	return (new_args_exec);	
+	return (new_args_exec);
 }
 
 static char	**apply_expansion_args_exec(char **args_exec, t_list **lst_env)
 {
 	int		i;
-	char 	*arg_expansion;
+	char	*arg_expansion;
 	char	**new_args_exec;
 
 	i = 0;
@@ -64,7 +64,7 @@ static int	apply_expansion_operators(t_list **operators, t_list **lst_env)
 {
 	t_list		*lst;
 	t_key_val	*content;
-	char 		*expansion;
+	char		*expansion;
 
 	lst = *operators;
 	while (lst)
@@ -79,7 +79,7 @@ static int	apply_expansion_operators(t_list **operators, t_list **lst_env)
 				free(content->value);
 				content->value = NULL;
 				return (get_exit_status());
-			} 
+			}
 			else
 				content->value = expansion;
 		}
@@ -108,7 +108,6 @@ int	apply_expansion(t_list **lst_cmd, t_list **lst_env)
 			}
 			else
 				cmd->name = expansion_name;
-			
 		}
 		cmd->args_exec = apply_expansion_args_exec(cmd->args_exec, lst_env);
 		if (apply_expansion_operators(cmd->lst_operator, lst_env) != 0)

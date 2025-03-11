@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 12:49:14 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/11 11:16:38 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/11 11:19:45 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static void	key_is_in_env(t_list **curr, t_list *last, t_list **env)
 {
-	
 	if (last != NULL)
 	{
 		last->next = (*curr)->next;

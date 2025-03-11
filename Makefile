@@ -54,7 +54,8 @@ SRC_EXPANSION = $(SRC_EXPANSION_DIR)/expansion_len_str.c \
 				$(SRC_EXPANSION_DIR)/apply_expansion.c
 
 SRC_REMOVES_QUOTES = $(SRC_REMOVES_QUOTES_DIR)/remove_quotes.c \
-					$(SRC_REMOVES_QUOTES_DIR)/apply_remove_quotes.c
+					$(SRC_REMOVES_QUOTES_DIR)/apply_remove_quotes.c \
+					$(SRC_REMOVES_QUOTES_DIR)/handle_cases_quotes.c
 
 SRC_REDIRECTION = $(SRC_REDIRECTION_DIR)/handle_redirection.c \
 				$(SRC_REDIRECTION_DIR)/redirect_in.c \

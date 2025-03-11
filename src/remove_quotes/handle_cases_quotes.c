@@ -6,11 +6,23 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 11:27:20 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/11 11:28:35 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/11 11:37:06 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static t_bool	is_last_quote(char *str, int i, char quote)
+{
+	i++;
+	while (str[i])
+	{
+		if (str[i] == quote)
+			return (FALSE);
+		i++;
+	}
+	return (TRUE);
+}
 
 void	single_quote_case(char *str, char *newstr, int *i_str, int *i_newstr)
 {

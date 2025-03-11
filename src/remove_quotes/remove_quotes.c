@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 16:50:45 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/11 11:27:52 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/11 11:44:42 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	count_in_quotes(char *str, char quote, int *i, int *count)
 {
 	*i += 1;
 	while (str[*i] && str[*i] != quote)
-		i++;
+		*i += 1;
 	if (str[*i] && str[*i] == quote)
 	{
 		*count += 1;
@@ -41,18 +41,6 @@ int	count_pair_of_quotes_in_str(char *str)
 			i++;
 	}
 	return (count);
-}
-
-static t_bool	is_last_quote(char *str, int i, char quote)
-{
-	i++;
-	while (str[i])
-	{
-		if (str[i] == quote)
-			return (FALSE);
-		i++;
-	}
-	return (TRUE);
 }
 
 static void	move_if_not_end_of_str(char *str, int *i)

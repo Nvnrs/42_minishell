@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 11:41:38 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/11 10:54:24 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/11 11:46:27 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,40 +72,49 @@ void	wait_childs_and_handle_signals(int *pid, int nb_cmd)
 	free(pid);
 }
 
+int	*handle_process(t_list **lst_cmd, t_list **env, int nb_cmd)
+{
+	int		*pid;
+	int		i;
+	t_list	*cmd;
+
+	i = 0;
+	pid = NULL;
+	pid = malloc(nb_cmd * sizeof(int));
+	cmd = *lst_cmd;
+	while (i < nb_cmd)
+	{
+		pid[i] = fork();
+		if (pid[i] == -1)
+			return (free(pid), NULL);
+		else if (pid[i] == 0)
+		{
+			if (is_builtin(cmd->content))
+				handle_builtins_child(lst_cmd, cmd->content, env, pid);
+			else
+				handle_cmd(cmd->content, lst_cmd, env, pid);
+		}
+		i++;
+		cmd = cmd->next;
+	}
+	return (pid);
+}
+
 /**
  * Separe les commandes en plusieurs process
  */
 int	processing(t_list **lst_cmd, int nb_cmd, t_list **env, int **pipes)
 {
-	int		i;
 	int		*pid;
-	t_list	*lst;
+	t_list	*cmd;
 
-	i = 0;
-	lst = *lst_cmd;
-	if (is_builtin(lst->content) && nb_cmd == 1)
+	cmd = *lst_cmd;
+	if (is_builtin(cmd->content) && nb_cmd == 1)
 	{
-		handle_builtins_parent(lst_cmd, lst->content, env);
+		handle_builtins_parent(lst_cmd, cmd->content, env);
 		return (0);
 	}
-	pid = NULL;
-	pid = malloc(nb_cmd * sizeof(int));
-	while (i < nb_cmd)
-	{
-		pid[i] = fork();
-		if (pid[i] == -1)
-			return (EXIT_FAILURE);
-		else if (pid[i] == 0)
-		{
-			if (is_builtin(lst->content))
-				handle_builtins_child(lst_cmd, lst->content, env, pid);
-			else
-				handle_cmd(lst->content, lst_cmd, env, pid);
-			break ;
-		}
-		i++;
-		lst = lst->next;
-	}
+	pid = handle_process(lst_cmd, env, nb_cmd);
 	close_and_free_pipes(pipes, nb_cmd - 1);
 	wait_childs_and_handle_signals(pid, nb_cmd);
 	return (0);

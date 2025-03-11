@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 17:23:24 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/10 15:04:12 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/11 16:49:57 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_bool	cmd_path_is_valid(char *path)
 	stat(path, &buffer);
 	if (access(path, F_OK) != 0)
 	{
-		handle_error(1, path, ": No such file or directory\n");
+		handle_error(127, path, ": No such file or directory\n");
 		return (FALSE);
 	}
 	if (access(path, X_OK) != 0)

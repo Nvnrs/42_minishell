@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:10:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/11 15:27:45 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/11 16:24:22 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	main(int argc, char *argv[], char *envp[])
 	{
 		g_received_signal = 0;
 		rd = readline("minismash$ ");
-		if (rd)
+		if (rd && *rd)
 			handle_readline(rd, env);
 		else if (rd == NULL)
 			flag = 0;

@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:10:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/11 16:33:27 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/11 18:01:48 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	handle_readline(char *rd, t_list **env)
 
 	add_history(rd);
 	if (!basics_checks(rd))
-		return (1);
+		return (get_exit_status());
 	lst_cmd = get_lst_cmd_from_input(rd);
 	pipes = init_pipes(ft_lstsize(*lst_cmd) - 1);
 	assign_data_in_data(&data, lst_cmd, env, pipes);

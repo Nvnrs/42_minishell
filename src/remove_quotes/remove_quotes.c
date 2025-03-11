@@ -6,11 +6,23 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 16:50:45 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/11 10:29:04 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/11 11:27:52 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	count_in_quotes(char *str, char quote, int *i, int *count)
+{
+	*i += 1;
+	while (str[*i] && str[*i] != quote)
+		i++;
+	if (str[*i] && str[*i] == quote)
+	{
+		*count += 1;
+		*i += 1;
+	}
+}
 
 int	count_pair_of_quotes_in_str(char *str)
 {
@@ -22,27 +34,9 @@ int	count_pair_of_quotes_in_str(char *str)
 	while (str[i])
 	{
 		if (str[i] == SINGLE_QUOTE)
-		{
-			i++;
-			while (str[i] && str[i] != SINGLE_QUOTE)
-				i++;
-			if (str[i] && str[i] == SINGLE_QUOTE)
-			{
-				count += 1;
-				i++;
-			}
-		}
+			count_in_quotes(str, SINGLE_QUOTE, &i, &count);
 		else if (str[i] == DOUBLE_QUOTE)
-		{
-			i++;
-			while (str[i] && str[i] != DOUBLE_QUOTE)
-				i++;
-			if (str[i] && str[i] == DOUBLE_QUOTE)
-			{
-				count += 1;
-				i++;
-			}
-		}
+			count_in_quotes(str, DOUBLE_QUOTE, &i, &count);
 		else
 			i++;
 	}
@@ -61,42 +55,10 @@ static t_bool	is_last_quote(char *str, int i, char quote)
 	return (TRUE);
 }
 
-void	single_quote_case(char *str, char *newstr, int *i_str, int *i_newstr)
+static void	move_if_not_end_of_str(char *str, int *i)
 {
-	if (is_last_quote(str, *i_str, SINGLE_QUOTE))
-	{
-		newstr[*i_newstr] = str[*i_str];
-		*i_newstr += 1;
-	}
-	*i_str += 1;
-	while (str[*i_str] && str[*i_str] != SINGLE_QUOTE)
-	{
-		newstr[*i_newstr] = str[*i_str];
-		*i_str += 1;
-		*i_newstr += 1;
-	}
-}
-
-void	double_quote_case(char *str, char *newstr, int *i_str, int *i_newstr)
-{
-	if (is_last_quote(str, *i_str, DOUBLE_QUOTE))
-	{
-		newstr[*i_newstr] = str[*i_str];
-		*i_newstr += 1;
-	}
-	*i_str += 1;
-	while (str[*i_str] && str[*i_str] != DOUBLE_QUOTE)
-	{
-		newstr[*i_newstr] = str[*i_str];
-		*i_str += 1;
-		*i_newstr += 1;
-	}
-}
-
-void	others_case(char *str, char *newstr, int *i_str, int *i_newstr)
-{
-	newstr[*i_newstr] = str[*i_str];
-	*i_newstr += 1;
+	if (str[*i])
+		*i += 1;
 }
 
 char	*remove_quotes_in_str(char *str)
@@ -122,10 +84,8 @@ char	*remove_quotes_in_str(char *str)
 			double_quote_case(str, newstr, &i_str, &i_newstr);
 		else if (str[i_str] != SINGLE_QUOTE && str[i_str] != DOUBLE_QUOTE)
 			others_case(str, newstr, &i_str, &i_newstr);
-		if (str[i_str])
-			i_str++;
+		move_if_not_end_of_str(str, &i_str);
 	}
 	newstr[len_newstr - 1] = '\0';
-	free(str);
-	return (newstr);
+	return (free(str), newstr);
 }

@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 11:47:54 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/11 14:49:32 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:15:29 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void	block_sigint(void)
 {
 	struct sigaction	sa;
 
-	// reset_sigint();
 	ft_bzero(&sa, sizeof (struct sigaction));
 	sa.sa_handler = SIG_IGN;
 	sigaction(SIGINT, &sa, NULL);

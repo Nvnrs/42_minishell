@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:12:26 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/11 12:05:18 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:17:10 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,8 +185,10 @@ int			handle_error(int status_code, char *context, char *message);
 void		apply_remove_quotes(t_list **lst_cmd);
 char		*remove_quotes_in_str(char *str);
 int			count_pair_of_quotes_in_str(char *str);
-void		single_quote_case(char *str, char *newstr, int *i_str, int *i_newstr);
-void		double_quote_case(char *str, char *newstr, int *i_str, int *i_newstr);
+void		single_quote_case(char *str, char *newstr,
+				int *i_str, int *i_newstr);
+void		double_quote_case(char *str, char *newstr,
+				int *i_str, int *i_newstr);
 void		others_case(char *str, char *newstr, int *i_str, int *i_newstr);
 
 void		add_pipes_in_lst_cmd(t_list **lst_cmd, int **pipes);

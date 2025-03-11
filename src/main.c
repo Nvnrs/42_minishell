@@ -6,7 +6,7 @@
 /*   By: nveneros <nveneros@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:10:56 by nveneros          #+#    #+#             */
-/*   Updated: 2025/03/11 13:37:39 by nveneros         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:27:45 by nveneros         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,32 +18,39 @@
 
 extern int	g_received_signal;
 
-void	assign_data_in_data(t_data *data, t_list **lst_cmd, t_list **env, int **pipes)
+void	assign_data_in_data(t_data *data, t_list **lst_cmd,
+	t_list **env, int **pipes)
 {
 	data->lst_cmd = lst_cmd;
 	data->env = env;
 	data->pipes = pipes;
 }
 
-int	handle_readline(char *rd, t_list **env)
+static t_list	**get_lst_cmd_from_input(char *rd)
 {
 	char	**input;
 	t_list	**lst_cmd;
-	int		**pipes;
-	t_data	data;
-	
-	add_history(rd);
-	if (!basics_checks(rd))
-	{
-		return (1);
-	}
+
 	input = parse_input(rd);
 	lst_cmd = init_lst_cmd(input);
+	free_split(input);
+	return (lst_cmd);
+}
+
+int	handle_readline(char *rd, t_list **env)
+{
+	t_list	**lst_cmd;
+	int		**pipes;
+	t_data	data;
+
+	add_history(rd);
+	if (!basics_checks(rd))
+		return (1);
+	lst_cmd = get_lst_cmd_from_input(rd);
 	pipes = init_pipes(ft_lstsize(*lst_cmd) - 1);
 	assign_data_in_data(&data, lst_cmd, env, pipes);
 	add_pipes_in_lst_cmd(lst_cmd, pipes);
 	add_pipe_redirect(lst_cmd, ft_lstsize(*lst_cmd));
-	free_split(input);
 	if (apply_expansion(lst_cmd, env) != 0)
 	{
 		close_and_free_pipes(pipes, ft_lstsize(*lst_cmd) - 1);
@@ -75,13 +82,7 @@ int	main(int argc, char *argv[], char *envp[])
 		g_received_signal = 0;
 		rd = readline("minismash$ ");
 		if (rd)
-		{
-			if (handle_readline(rd, env) == 1)
-			{
-				free(rd);
-				continue ;
-			}
-		}
+			handle_readline(rd, env);
 		else if (rd == NULL)
 			flag = 0;
 		free(rd);
